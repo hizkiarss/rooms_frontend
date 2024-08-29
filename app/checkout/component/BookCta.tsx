@@ -13,7 +13,7 @@ import { Check } from "lucide-react";
 const BookCta = () => {
   return (
     <div>
-      <Card className="mt-4">
+      <Card className="">
         <CardHeader>
           <div className="flex  text-green-700">
             <Check className="w-7 h-7 mr-1" />

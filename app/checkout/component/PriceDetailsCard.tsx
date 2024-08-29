@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 const PriceDetailsCard = () => {
   return (
     <div>
-      <Card className="mt-4">
+      <Card className="">
         <CardHeader>
           <CardTitle>Price details</CardTitle>
         </CardHeader>

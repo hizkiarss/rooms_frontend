@@ -22,7 +22,7 @@ interface FormValues {
   travelerName: string;
   firstName: string;
   lastName: string;
-  phoneNumber: string;
+  mobileNumber: string;
   paymentMethod: string;
 }
 
