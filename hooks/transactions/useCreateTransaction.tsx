@@ -3,9 +3,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { graphqlClient } from "../graphQL/graphqlClient";
 
 import { CREATE_TRANSACTION } from "../graphQL/mutations";
-import { TransactionRequest } from "@/types/transactions/CreateTransactionInput";
+import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
 
-export function useCreateTransaction() {
+export const useCreateTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation<string, Error, TransactionRequest>({
@@ -20,4 +20,4 @@ export function useCreateTransaction() {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
     },
   });
-}
+};

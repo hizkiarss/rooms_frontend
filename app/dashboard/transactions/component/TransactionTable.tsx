@@ -33,9 +33,11 @@ import {
 import { columns } from "./TransactionColums";
 import { TransactionFilter } from "./TransactionFilter";
 import { useTransactions } from "@/hooks/transactions/useTransactions";
+import { useTransactionsByPropertyId } from "@/hooks/transactions/useTransactionsByPropertyId";
 
 const TransactionTable = () => {
-  const { data, isLoading, error } = useTransactions();
+  //const { data, isLoading, error } = useTransactions();
+  const { data, isLoading, error } = useTransactionsByPropertyId();
   console.log("ini datanya: ", data);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);

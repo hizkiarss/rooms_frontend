@@ -36,7 +36,7 @@ interface FormValues {
   travelerName: string;
   firstName: string;
   lastName: string;
-  phoneNumber: string;
+  mobileNumber: string;
   paymentMethod: string;
 }
 
@@ -63,12 +63,12 @@ const FormCheckoutCard: React.FC<FormCheckoutCardProps> = ({ formik }) => {
   const handleCountryCodeChange = (value: string) => {
     setCountryCode(value);
     formik.setFieldValue(
-      "phoneNumber",
-      value + " " + formik.values.phoneNumber.split(" ")[1] || ""
+      "mobileNumber",
+      value + " " + formik.values.mobileNumber.split(" ")[1] || ""
     );
   };
 
-  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlemobileNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.replace(countryCode + " ", "");
     const digitsOnly = input.replace(/\D/g, "");
 
@@ -80,7 +80,7 @@ const FormCheckoutCard: React.FC<FormCheckoutCardProps> = ({ formik }) => {
       formattedInput += digitsOnly[i];
     }
 
-    formik.setFieldValue("phoneNumber", countryCode + " " + formattedInput);
+    formik.setFieldValue("mobileNumber", countryCode + " " + formattedInput);
   };
   return (
     <Card className="w-full">
@@ -167,7 +167,7 @@ const FormCheckoutCard: React.FC<FormCheckoutCardProps> = ({ formik }) => {
             )}
           </div>
           <div className="flex flex-col space-y-1.5">
-            <label htmlFor="phoneNumber">Mobile phone number</label>
+            <label htmlFor="mobileNumber">Mobile phone number</label>
             <div className="flex gap-2">
               <Select
                 value={countryCode}
@@ -204,23 +204,23 @@ const FormCheckoutCard: React.FC<FormCheckoutCardProps> = ({ formik }) => {
               </Select>
 
               <input
-                id="phoneNumber"
-                name="phoneNumber"
+                id="mobileNumber"
+                name="mobileNumber"
                 type="tel"
                 placeholder="Mobile phone number"
-                onChange={handlePhoneNumberChange}
+                onChange={handlemobileNumberChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.phoneNumber}
+                value={formik.values.mobileNumber}
                 className={`border border-gray-300 rounded-md px-2 py-2 w-full ${
-                  formik.touched.phoneNumber && formik.errors.phoneNumber
+                  formik.touched.mobileNumber && formik.errors.mobileNumber
                     ? "border-red-500"
                     : ""
                 }`}
               />
             </div>
 
-            {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-              <div className="text-red-500">{formik.errors.phoneNumber}</div>
+            {formik.touched.mobileNumber && formik.errors.mobileNumber && (
+              <div className="text-red-500">{formik.errors.mobileNumber}</div>
             )}
           </div>
         </div>

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
-import {SessionProvider} from "next-auth/react";
-
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,16 +17,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReactQueryProvider>
-      <body className={"max-w-[1440px]]"} >
-      <div className={""}>
-              <Navbar/>
-              <div >
-                  <SessionProvider>
-                      {children}
-                  </SessionProvider>
-              </div>
-          </div>
-        </body>
+        <SessionProvider>
+          <body className={"max-w-[1440px]]"}>
+            <div className={""}>
+              <Navbar />
+              <div>{children}</div>
+            </div>
+          </body>
+        </SessionProvider>
       </ReactQueryProvider>
     </html>
   );

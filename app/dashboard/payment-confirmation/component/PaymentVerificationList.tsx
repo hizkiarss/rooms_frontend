@@ -22,64 +22,36 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { PaymentProofType } from "@/types/payment-proof/PaymentProofType";
+import usePendingPaymentProof from "@/hooks/payment-proof/usePendingPaymentProof";
+import { useAcceptPaymentProof } from "@/hooks/payment-proof/useAcceptPaymentProof";
+import { useRejectPaymentProof } from "@/hooks/payment-proof/useRejectPaymentProof";
+import usePendingPaymentProofByPropertyId from "@/hooks/payment-proof/usePendingPaymentProofByPropertyId";
 
-type PaymentProof = {
-  id: string;
-  orderNumber: string;
-  amount: number;
-  date: string;
-  imageUrl: string;
-};
-const paymentProofs: PaymentProof[] = [
-  {
-    id: "1a2b3c",
-    orderNumber: "ORD-1001",
-    amount: 250.0,
-    date: "2024-08-01",
-    imageUrl: "/checkout/45d6fb98.webp",
-  },
-  {
-    id: "4d5e6f",
-    orderNumber: "ORD-1002",
-    amount: 125.5,
-    date: "2024-08-02",
-    imageUrl: "/checkout/45d6fb98.webp",
-  },
-  {
-    id: "7g8h9i",
-    orderNumber: "ORD-1003",
-    amount: 320.75,
-    date: "2024-08-03",
-    imageUrl: "/checkout/45d6fb98.webp",
-  },
-  {
-    id: "0j1k2l",
-    orderNumber: "ORD-1004",
-    amount: 450.0,
-    date: "2024-08-04",
-    imageUrl: "/checkout/45d6fb98.webp",
-  },
-  {
-    id: "3m4n5o",
-    orderNumber: "ORD-1005",
-    amount: 200.0,
-    date: "2024-08-05",
-    imageUrl: "/checkout/45d6fb98.webp",
-  },
-];
 const PaymentVerificationList = () => {
-  const [selectedProof, setSelectedProof] = useState<PaymentProof | null>(null);
+  const [selectedProof, setSelectedProof] = useState<PaymentProofType | null>(
+    null
+  );
+  //const { data: paymentProofs, isLoading } = usePendingPaymentProof();
+  const { data: paymentProofs, isLoading } =
+    usePendingPaymentProofByPropertyId();
+  const { mutate: acceptPaymentProof } = useAcceptPaymentProof();
+  const { mutate: rejectPaymentProof } = useRejectPaymentProof();
 
   const handleApprove = (id: string) => {
-    console.log(`Approved payment proof with id: ${id}`);
+    acceptPaymentProof({ transactionId: id });
   };
 
   const handleReject = (id: string) => {
-    console.log(`Rejected payment proof with id: ${id}`);
+    rejectPaymentProof({ transactionId: id });
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="space-y-4">
-      {paymentProofs.map((proof) => (
+      {paymentProofs?.map((proof) => (
         <Card key={proof.id} className="overflow-hidden">
           <CardContent className="p-0">
             <div className="flex flex-col sm:flex-row items-center">
@@ -94,28 +66,29 @@ const PaymentVerificationList = () => {
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{proof.orderNumber}</h3>
+                    <h3 className="font-semibold">{proof.id}</h3>
                     <div className="sm:hidden flex justify-between text-sm text-gray-500 mt-1 w-full">
                       <span className="text-left mr-2">
-                        {proof.amount.toLocaleString("id-ID", {
+                        {proof.transaction.finalPrice.toLocaleString("id-ID", {
                           style: "currency",
                           currency: "IDR",
                         })}
                       </span>
                       <span className="text-right">
-                        {new Date(proof.date).toLocaleDateString()}
+                        {/* {new Date(proof.transaction.).toLocaleDateString()} */}
+                        transaction date
                       </span>
                     </div>
 
                     <p className="hidden sm:block text-sm text-gray-500">
-                      It is a long established
+                      {proof.transaction.email}
                     </p>
                   </div>
                 </div>
               </div>
               <div className="hidden sm:block flex-1 p-6">
                 <p className="text-gray-600">
-                  {proof.amount.toLocaleString("id-ID", {
+                  {proof.transaction.finalPrice.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                   })}
@@ -123,7 +96,8 @@ const PaymentVerificationList = () => {
               </div>
               <div className="hidden sm:block flex-1 p-6">
                 <p className="text-gray-600">
-                  {new Date(proof.date).toLocaleDateString()}
+                  {/* {new Date(proof.date).toLocaleDateString()} */}
+                  transaction date
                 </p>
               </div>
               <div className="p-4 sm:p-6 w-full sm:w-auto">
@@ -144,16 +118,19 @@ const PaymentVerificationList = () => {
                       <>
                         <div className="mt-2 text-center font-semibold">
                           Transaction Amount:{" "}
-                          {selectedProof.amount.toLocaleString("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                          })}
+                          {selectedProof.transaction.finalPrice.toLocaleString(
+                            "id-ID",
+                            {
+                              style: "currency",
+                              currency: "IDR",
+                            }
+                          )}
                         </div>
                         <div className="mt-4 px-[5px] sm:px-0">
                           {" "}
                           {/* Added padding for mobile */}
                           <Image
-                            src={selectedProof.imageUrl}
+                            src={selectedProof.imgUrl}
                             alt="Payment Proof"
                             width={500}
                             height={300}
@@ -181,7 +158,7 @@ const PaymentVerificationList = () => {
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() =>
-                                    handleApprove(selectedProof.id)
+                                    handleApprove(selectedProof.transaction.id)
                                   }>
                                   Approve
                                 </AlertDialogAction>
@@ -209,7 +186,7 @@ const PaymentVerificationList = () => {
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() =>
-                                    handleReject(selectedProof.id)
+                                    handleReject(selectedProof.transaction.id)
                                   }>
                                   Reject
                                 </AlertDialogAction>
