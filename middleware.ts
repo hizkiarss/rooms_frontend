@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { auth } from "@/auth"; // Make sure this path is correct
-import { getToken } from "next-auth/jwt";
+import {NextResponse} from "next/server";
+import type {NextRequest} from "next/server";
+import {auth} from "@/auth"; // Make sure this path is correct
+import {getToken} from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
     const session = await auth();
@@ -79,5 +79,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/login", "/user/:path*", "/events/:path*"],
+    matcher: ["/dashboard/:path*", "/login", "/register", "/user/:path*", "/events/:path*"],
 };
