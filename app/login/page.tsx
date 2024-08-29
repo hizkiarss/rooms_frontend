@@ -6,28 +6,29 @@ import circle_png from "@/public/login/circle.png";
 import Buttons from "@/components/Buttons";
 import google_logo from "@/public/login/google-logo.png";
 import logo from "@/public/logo.png";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import {signIn, useSession} from "next-auth/react";
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
 
 const Page = () => {
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { status } = useSession();
+    const {status} = useSession();
 
     const initialValues = {
         email: "",
-        password:"",
+        password: "",
     };
 
     const validationSchema = Yup.object({
         email: Yup.string().email("Invalid email address").required("Email is required"),
-        password: Yup.string().required("Password is required"),});
+        password: Yup.string().required("Password is required"),
+    });
 
 
-    const handleSubmit = async (values: typeof initialValues) => {
+    const handleSubmit = async (values: typeof initialValues, ) => {
         setError(null);
         setIsLoading(true);
         try {
@@ -36,10 +37,11 @@ const Page = () => {
                 email: values.email,
                 password: values.password,
             });
+            console.log(result);
 
             if (result?.error) {
-                // Handle the error here
-                setError("Invalid email or password. Please try again.");
+                setError(result.error);
+
             } else if (result?.ok) {
                 router.push("/");
             }
@@ -55,13 +57,12 @@ const Page = () => {
     const handleSubmitGoogle = async () => {
         setError(null);
         setIsLoading(true);
-        // await signIn("google")
         try {
-            const result = await signIn("google")
-            console.log(result);
+            const result = await signIn("google", { redirect: false });
+            // console.log(result);
             if (result?.error) {
                 setError("Login Failed. Please try again.");
-                console.log(result?.error);
+                console.error(result?.error);
             } else if (result?.ok) {
                 router.push("/");
             }
@@ -73,7 +74,6 @@ const Page = () => {
         }
     };
 
-
     useEffect(() => {
         if (status === "authenticated") {
             router.push("/");
@@ -81,9 +81,11 @@ const Page = () => {
     }, [status, router]);
 
     return (
-        <div className="min-h-screen overflow-hidden flex md:block justify-center items-center bg-[url('/login/login-bg.jpg')] bg-cover bg-right-top md:bg-none text-greenr">
+        <div
+            className="min-h-screen overflow-hidden flex md:block justify-center items-center bg-[url('/login/login-bg.jpg')] bg-cover bg-right-top md:bg-none text-greenr">
             <div>
-                <Image src={logo} alt="logo" className={"absolute left-[79px] md:right-10 top-[155px] md:top-10 w-14 md:w-32 h-fit z-10 md:z-0"}/>
+                <Image src={logo} alt="logo"
+                       className={"absolute left-[79px] md:right-10 top-[155px] md:top-10 w-14 md:w-32 h-fit z-10 md:z-0"}/>
             </div>
             <div className=" block md:grid md:grid-cols-2 md:gap-10">
                 <div
@@ -98,52 +100,53 @@ const Page = () => {
                 </div>
 
 
-            <div className="col-span-1 flex flex-col md:justify-center px-12 pt-16 md:px-pt-0 pb-12 md:pb-0 md:px-32 relative rounded-3xl bg-white bg-opacity-90  ">
-                <Formik initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit} >
-                    <Form>
-                        <div className={""}>
-                            <h2 className="font-semibold text-3xl md:text-6xl mb-5 md:mb-10">Welcome back.</h2>
-                            <div className="flex flex-col gap-1">
-                                <label htmlFor="email" className="font-semibold text-sm ">Email</label>
-                                <Field
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs text-greenr "
-                                />
-                                <ErrorMessage
-                                    name="email"
-                                    component="div"
-                                    className="text-red-600 text-sm mt-1"
-                                />
+                <div
+                    className="col-span-1 flex flex-col md:justify-center px-12 pt-16 md:px-pt-0 pb-12 md:pb-0 md:px-32 relative rounded-3xl bg-white bg-opacity-90  ">
+                    <Formik initialValues={initialValues}
+                            validationSchema={validationSchema}
+                            onSubmit={handleSubmit}>
+                        <Form>
+                            <div className={""}>
+                                <h2 className="font-semibold text-3xl md:text-6xl mb-5 md:mb-10">Welcome back.</h2>
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="email" className="font-semibold text-sm ">Email</label>
+                                    <Field
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs text-greenr "
+                                    />
+                                    <ErrorMessage
+                                        name="email"
+                                        component="div"
+                                        className="text-red-600 text-sm mt-1"
+                                    />
 
-                            </div>
-                            <div className="flex flex-col gap-1 mt-3 md:mt-6">
-                            <label htmlFor="password" className="font-semibold text-sm">Password</label>
-                                <Field type="password"
-                                       name="password"
-                                       id="password"
-                                       className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs "
-                                ></Field>
-                                <ErrorMessage
-                                    name="password"
-                                    component="div"
-                                    className="text-red-600 text-sm mt-1"
-                                />
+                                </div>
+                                <div className="flex flex-col gap-1 mt-3 md:mt-6">
+                                    <label htmlFor="password" className="font-semibold text-sm">Password</label>
+                                    <Field type="password"
+                                           name="password"
+                                           id="password"
+                                           className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs "
+                                    ></Field>
+                                    <ErrorMessage
+                                        name="password"
+                                        component="div"
+                                        className="text-red-600 text-sm mt-1"
+                                    />
 
-                                <button className="text-end font-semibold mt-1 text-xs md:text-sm">Forgot password?
-                                </button>
+                                    <button className="text-end font-semibold mt-1 text-xs md:text-sm">Forgot password?
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <Buttons value={"Sign in"}
-                                 className={"w-full font-semibold border !important  border-white md:border-none rounded-md text-sm md:text-xl mt-8 md:mt-5"}
-                                 type={"submit"}
-                                 disabled={isLoading}
-                        ></Buttons>
-                    </Form>
-                </Formik>
+                            <Buttons value={"Sign in"}
+                                     className={"w-full font-semibold border !important  border-white md:border-none rounded-md text-sm md:text-xl mt-8 md:mt-5"}
+                                     type={"submit"}
+                                     disabled={isLoading}
+                            ></Buttons>
+                        </Form>
+                    </Formik>
 
                     <p className="font-semibold text-xs md:text-base text-center mt-[3px] md:mt-2">or</p>
                     <button
