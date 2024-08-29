@@ -51,12 +51,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     );
 
                     const { data } = response;
+                    console.log("Login response", data);
                     console.log("Login success", data);
 
                     if (data.errors) {
-                        throw new Error(
-                            data.errors[0]?.message || "Invalid email or password"
-                        );
+                        // const errorMessage = data.errors[0]?.message || "Invalid email or password";
+                        // // if (data.errors[0]?.extensions?.classification === "UNAUTHORIZED") {
+                        // //     throw new Error("Unauthorized: Invalid email or password");
+                        // // }
+                        // throw new Error(errorMessage);
+                        const errorCode = data.errors[0]?.extensions?.classification;
+                        const errorMessage = data.errors[0]?.message || "An unknown error occurred";
+                        if (errorCode === "UNAUTHORIZED") {
+                            throw new Error("Unauthorized: Invalid email or password");
+                        }
+                        throw new Error(errorMessage);
                     }
 
                     const { token, role } = data.data.login;
@@ -72,6 +81,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         throw new Error("Invalid response from server");
                     }
                 } catch (error) {
+                    console.error("Login error:", error);
                     throw new Error(
                         error instanceof Error
                             ? error.message
@@ -113,9 +123,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         console.log("Login success", data);
 
                         if (data.errors) {
-                            throw new Error(
-                                data.errors[0]?.message || "Invalid email or password"
-                            );
+                            const errorMessage = data.errors[0]?.message || "Error during Google authentication";
+                            throw new Error(errorMessage);
+                            // throw new Error(
+                            //     data.errors[0]?.message || "Invalid email or password"
+                            // );
                         }
 
                         const { token, role } = data.data.googleLogin;
