@@ -1,34 +1,55 @@
 "use client";
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useState } from "react";
+import { Formik, Form, FormikHelpers, FormikProps } from "formik";
 import * as Yup from "yup";
 import useCloudinaryUpload from "@/hooks/useCloudinaryUpload";
+import { useAddPaymentProof } from "@/hooks/payment-proof/useAddPaymentProof";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { FileInput, ImageUp } from "lucide-react";
 
 interface FormValues {
-  name: string;
   imageUrl: string;
-  // ... tambahkan field lain sesuai kebutuhan
 }
 
-const validationSchema = Yup.object({
-  name: Yup.string().required("Required"),
-  imageUrl: Yup.string().required("Image is required"),
-  // ... tambahkan validasi lain sesuai kebutuhan
-});
+interface MyFormProps {
+  transactionId: string;
+}
 
-const MyForm: React.FC = () => {
-  const { uploadImage, isLoading, error } = useCloudinaryUpload();
+const MyForm: React.FC<MyFormProps> = ({ transactionId }) => {
+  const {
+    uploadImage,
+    isLoading: isUploading,
+    error: uploadError,
+  } = useCloudinaryUpload();
+
+  const addPaymentProofMutation = useAddPaymentProof();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const initialValues: FormValues = {
-    name: "",
     imageUrl: "",
-    // ... inisialisasi field lain
   };
 
-  const handleSubmit = async (values: FormValues, { setSubmitting }: any) => {
-    console.log(values);
-    // Kirim data ke backend
-    setSubmitting(false);
+  const validationSchema = Yup.object().shape({
+    imageUrl: Yup.string().required("Image is required"),
+  });
+
+  const handleSubmit = async (
+    values: FormValues,
+    { setSubmitting }: FormikHelpers<FormValues>
+  ) => {
+    try {
+      await addPaymentProofMutation.mutateAsync({
+        transactionId,
+        imgUrl: values.imageUrl,
+      });
+      setIsSubmitted(true); // Set state to indicate submission was successful
+    } catch (error) {
+      console.error("Failed to submit:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -36,47 +57,95 @@ const MyForm: React.FC = () => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}>
-      {({ setFieldValue, values }) => (
+      {({
+        setFieldValue,
+        values,
+        errors,
+        isSubmitting,
+      }: FormikProps<FormValues>) => (
         <Form>
-          <div>
-            <label htmlFor="name">Name</label>
-            <Field name="name" type="text" />
-            <ErrorMessage name="name" component="div" />
-          </div>
+          <Card>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="mt-6">
+                  Almost there! Upload your payment proof to finish. Only PNG
+                  and JPG files under 1MB are allowed. Heads up! You can only
+                  upload once, so make sure it's the right one. Thanks for being
+                  awesome!
+                </div>
+                <div>
+                  <Label htmlFor="image" className="sr-only">
+                    Upload Image
+                  </Label>
+                  <div
+                    className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-greenr transition"
+                    onClick={() =>
+                      document.getElementById("image-input")?.click()
+                    }>
+                    {values.imageUrl ? (
+                      <img
+                        src={values.imageUrl}
+                        alt="Uploaded"
+                        className="mx-auto max-h-52 object-cover"
+                      />
+                    ) : (
+                      <>
+                        <div className="text-greenr mx-auto mb-2">
+                          <ImageUp className="w-12 h-12 mx-auto" />
+                        </div>
+                        <p className="text-greenr font-semibold">
+                          Upload Files
+                        </p>
+                        <p className="text-gray-500">
+                          PNG and JPG files are allowed
+                        </p>
+                      </>
+                    )}
+                  </div>
 
-          <div>
-            <label htmlFor="image">Image</label>
-            <input
-              id="image"
-              name="image"
-              type="file"
-              onChange={async (event) => {
-                const file = event.currentTarget.files?.[0];
-                if (file) {
-                  try {
-                    const imageUrl = await uploadImage(file);
-                    setFieldValue("imageUrl", imageUrl);
-                  } catch (err) {
-                    console.error("Upload failed:", err);
-                  }
-                }
-              }}
-            />
-            {isLoading && <p>Uploading...</p>}
-            {error && <p>Error: {error}</p>}
-            {values.imageUrl && (
-              <img
-                src={values.imageUrl}
-                alt="Uploaded"
-                style={{ maxWidth: "200px" }}
-              />
-            )}
-            <ErrorMessage name="imageUrl" component="div" />
-          </div>
+                  <input
+                    id="image-input"
+                    name="image"
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg"
+                    className="hidden"
+                    onChange={async (event) => {
+                      const file = event.currentTarget.files?.[0];
+                      if (file) {
+                        try {
+                          const imageUrl = await uploadImage(file);
+                          setFieldValue("imageUrl", imageUrl);
+                        } catch (err) {
+                          console.error("Upload failed:", err);
+                        }
+                      }
+                    }}
+                  />
 
-          <button type="submit" disabled={isLoading}>
-            Submit
-          </button>
+                  {isUploading && (
+                    <p className="text-gray-500 mt-2">Uploading...</p>
+                  )}
+
+                  {errors.imageUrl && (
+                    <div className="text-red-500 mt-2">{errors.imageUrl}</div>
+                  )}
+                </div>
+
+                {isSubmitted ? (
+                  <p className="text-green-500">
+                    Photo uploaded! You're good to go!
+                  </p>
+                ) : (
+                  <Button
+                    className="w-full"
+                    type="submit"
+                    disabled={isSubmitting || isUploading}>
+                    Submit
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </Form>
       )}
     </Formik>

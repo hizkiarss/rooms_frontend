@@ -43,6 +43,29 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
   }
 `;
 
+export const GET_TRANSACTIONS_BY_USER_ID = gql`
+  query TransactionsByUsersId($usersId: ID!) {
+    transactionsByUsersId(usersId: $usersId) {
+      id
+      bookingCode
+      finalPrice
+      status
+      paymentMethod
+      firstName
+      lastName
+      mobileNumber
+      properties {
+        id
+        name
+      }
+      paymentProofs {
+        id
+        imgUrl
+      }
+    }
+  }
+`;
+
 export const GET_PENDING_PAYMENT_PROOF = gql`
   query PendingPaymentProof {
     pendingPaymentProof {
@@ -101,6 +124,19 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
         profilePicture
         mobileNumber
       }
+    }
+  }
+`;
+
+export const GET_PAYMENT_BY_BOOKING_CODE = gql`
+  query PaymentByBookingCode($bookingCode: String!) {
+    paymentByBookingCode(bookingCode: $bookingCode) {
+      id
+      bookingCode
+      transactionStatus
+      bank
+      vaNumber
+      grossAmount
     }
   }
 `;

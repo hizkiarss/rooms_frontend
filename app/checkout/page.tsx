@@ -15,6 +15,8 @@ import { useCreateTransaction } from "@/hooks/transactions/useCreateTransaction"
 import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
 import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
 import { useRouter } from "next/navigation";
+import CekResponse from "./[payment]/component/CekResponse";
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -43,6 +45,7 @@ const Page = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
+      // <LoadingStateAnimation />;
       const paymentMethod =
         values.paymentMethod === "manual"
           ? PaymentMethodType.MANUAL_TRANSFER
@@ -62,6 +65,7 @@ const Page = () => {
       };
       createTransaction.mutate(transactionRequest, {
         onSuccess: (randomString) => {
+          console.log("ini on success");
           //alert("Transaction created successfully!");
           setSubmitting(false);
           router.push(`/checkout/${randomString}`);
@@ -98,7 +102,7 @@ const Page = () => {
             <Buttons
               value={"Book now"}
               type={"submit"}
-              className={"w-full my-5"}
+              className={"w-full my-5 rounded-lg"}
             />
           </div>
         </div>

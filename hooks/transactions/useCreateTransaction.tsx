@@ -16,8 +16,14 @@ export const useCreateTransaction = () => {
       );
       return createTransaction;
     },
-    onSuccess: () => {
+    onSuccess: (_, input) => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", "user", input.usersId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions", "property", input.propertiesId],
+      });
     },
   });
 };

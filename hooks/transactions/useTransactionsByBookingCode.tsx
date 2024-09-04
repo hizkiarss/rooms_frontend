@@ -15,7 +15,7 @@ export const useTransactionsByBookingCode = () => {
   const { payment: bookingCode } = useParams<{ payment: string }>();
 
   return useQuery<TransactionsType>({
-    queryKey: ["transactions", bookingCode],
+    queryKey: ["transactions", "bookingCode", bookingCode],
     queryFn: async () => {
       if (!bookingCode) {
         throw new Error("Booking code is required");
@@ -27,7 +27,7 @@ export const useTransactionsByBookingCode = () => {
           GET_TRANSACTIONS_BY_BOOKING_CODE,
           { bookingCode }
         );
-        console.log("GraphQL response:", response);
+        //console.log("GraphQL response:", response);
 
         if (!response || !response.transactionsByBookingCode) {
           throw new Error("No transactions data in the response");

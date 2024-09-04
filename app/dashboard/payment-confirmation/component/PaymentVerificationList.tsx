@@ -110,7 +110,7 @@ const PaymentVerificationList = () => {
                       View Image
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="px-5 sm:px-10 md:px-20">
+                  <DialogContent className="px-5 sm:px-10 h-3/5 overflow-scroll md:px-20">
                     <DialogHeader>
                       <DialogTitle>Payment Proof</DialogTitle>
                     </DialogHeader>
