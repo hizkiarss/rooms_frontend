@@ -20,6 +20,7 @@ const config = {
     extend: {
       colors: {
         greenr: "#007989",
+        earth: "#F5F5DC",
         greensecondary: "#339999",
         border: "#007989",
         input: "#007989",

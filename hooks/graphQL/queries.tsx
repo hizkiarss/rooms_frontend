@@ -128,6 +128,7 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
   }
 `;
 
+
 export const GET_PAYMENT_BY_BOOKING_CODE = gql`
   query PaymentByBookingCode($bookingCode: String!) {
     paymentByBookingCode(bookingCode: $bookingCode) {
@@ -140,3 +141,12 @@ export const GET_PAYMENT_BY_BOOKING_CODE = gql`
     }
   }
 `;
+
+export const FIND_CITY_BY_NAME = gql`
+query FindCityByName($name: String!) {
+findCityByName(name: $name) {
+      id
+      name
+      }
+}`
+
