@@ -1,4 +1,4 @@
-import MyForm from "@/app/dashboard/payment-confirmation/component/MyForm";
+import MyForm from "@/app/dashboard/payment-confirmation/component/UploadPaymentProofForm";
 import Buttons from "@/components/Buttons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +26,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCancelTransaction } from "@/hooks/transactions/useCancelTransaction";
+import UploadPaymentProofForm from "@/app/dashboard/payment-confirmation/component/UploadPaymentProofForm";
 
 interface OrderListProps {
   bookingCode: string;
@@ -163,7 +164,7 @@ const OrderListItem: React.FC<OrderListProps> = ({
             </h4>
           </DialogTitle>
 
-          <MyForm transactionId={transactionId} />
+          <UploadPaymentProofForm transactionId={transactionId} />
         </DialogContent>
       </Dialog>
 

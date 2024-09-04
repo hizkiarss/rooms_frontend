@@ -13,11 +13,13 @@ interface FormValues {
   imageUrl: string;
 }
 
-interface MyFormProps {
+interface UploadPaymentProofFormProps {
   transactionId: string;
 }
 
-const MyForm: React.FC<MyFormProps> = ({ transactionId }) => {
+const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
+  transactionId,
+}) => {
   const {
     uploadImage,
     isLoading: isUploading,
@@ -152,4 +154,4 @@ const MyForm: React.FC<MyFormProps> = ({ transactionId }) => {
   );
 };
 
-export default MyForm;
+export default UploadPaymentProofForm;

@@ -1,5 +1,5 @@
 import React from "react";
-import MyForm from "./component/MyForm";
+import MyForm from "./component/UploadPaymentProofForm";
 import PaymentVerificationList from "./component/PaymentVerificationList";
 import { PaymentVerificationTable } from "./component/PaymentVerificationTable";
 
