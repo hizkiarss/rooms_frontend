@@ -25,7 +25,7 @@ const options: google.maps.MapOptions = {
 
 const LocationPicker: React.FC = () => {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyAshExOBQoKdI9AwcfbUaK9F4M7hb_Qsgw",
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY as string,
   });
 
   const [selected, setSelected] = useState<LatLng | null>(null);
