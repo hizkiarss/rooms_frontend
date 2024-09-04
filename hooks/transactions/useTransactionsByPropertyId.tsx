@@ -13,7 +13,7 @@ export const useTransactionsByPropertyId = () => {
   const { selectedProperty } = useSelectedProperty();
 
   return useQuery<TransactionsType[]>({
-    queryKey: ["transactions", selectedProperty],
+    queryKey: ["transactions", "property", selectedProperty],
     queryFn: async () => {
       try {
         console.log("Fetching transactions for propertyId:", selectedProperty);

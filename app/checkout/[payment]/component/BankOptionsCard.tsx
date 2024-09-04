@@ -3,12 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Shield } from "lucide-react";
+import { FormikProps, FormikValues } from "formik";
 
 interface BankOption {
   id: string;
   name: string;
   isNew: boolean;
   logoPath: string;
+}
+interface FormValues {
+  bookingCode: string;
+  bank: string;
+}
+
+interface BankOptionProps {
+  formik: FormikProps<FormValues>;
 }
 
 const bankOptions: BankOption[] = [
@@ -22,21 +31,22 @@ const bankOptions: BankOption[] = [
     id: "bri",
     name: "BRI Virtual Account",
     isNew: true,
-    logoPath: "/bankLogo/briLogo2.jpeg",
+    logoPath: "/bankLogo/briLogo.jpeg",
   },
   {
     id: "bni",
     name: "BNI Virtual Account",
     isNew: true,
-    logoPath: "/bankLogo/bniLogo2.jpeg",
+    logoPath: "/bankLogo/bniLogo.jpeg",
   },
 ];
 
-const BankOptionsCard: React.FC = () => {
+const BankOptionsCard: React.FC<BankOptionProps> = ({ formik }) => {
   const [selectedBank, setSelectedBank] = useState<string>("bca");
 
   const handleBankSelection = (value: string) => {
     setSelectedBank(value);
+    formik.setFieldValue("bank", value);
   };
   console.log("ini statenya", selectedBank);
 

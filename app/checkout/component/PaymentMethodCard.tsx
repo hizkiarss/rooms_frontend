@@ -31,6 +31,10 @@ interface PaymentMethodCardProps {
 }
 
 const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
+  const handlePaymentMethodChange = (value: string) => {
+    formik.setFieldValue("paymentMethod", value);
+  };
+
   return (
     <div className="py-4">
       <Card>
@@ -48,15 +52,10 @@ const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Tabs
-            defaultValue="manual"
-            // onValueChange={(value) =>
-            //   formik.setFieldValue("paymentMethod", value)
-            // }
-            className="w-full">
+          <Tabs defaultValue="manual" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="manual">Manual Transfer</TabsTrigger>
-              <TabsTrigger value="auto">Payment Gateway</TabsTrigger>
+              <TabsTrigger value="bank">Payment Gateway</TabsTrigger>
             </TabsList>
             <TabsContent value="manual">
               <Card>
@@ -74,7 +73,7 @@ const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="auto">
+            <TabsContent value="bank">
               <Card>
                 <CardHeader>
                   <CardTitle>Payment Gateway</CardTitle>
@@ -91,16 +90,14 @@ const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
           </Tabs>
           <div className="pl-2 pt-2">
             <RadioGroup
-              defaultValue="manual"
-              onValueChange={(value) =>
-                formik.setFieldValue("paymentMethod", value)
-              }>
+              value={formik.values.paymentMethod}
+              onValueChange={handlePaymentMethodChange}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="manual" id="r2" />
                 <Label htmlFor="r2">Manual Transfer</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="auto" id="r3" />
+                <RadioGroupItem value="bank" id="r3" />
                 <Label htmlFor="r3">Payment Gateway</Label>
               </div>
             </RadioGroup>

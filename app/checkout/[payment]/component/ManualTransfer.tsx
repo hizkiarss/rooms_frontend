@@ -10,13 +10,17 @@ import {
 import { AlertCircle, Copy, Info, Shield } from "lucide-react";
 import React from "react";
 
-const ManualTransfer = () => {
+interface ManualTransferProps {
+  totalPrice: number;
+}
+
+const ManualTransfer: React.FC<ManualTransferProps> = ({ totalPrice }) => {
   const accountNumber = "52 6032 2488";
-  const totalPayment = "IDR 2.872.316";
+  const totalPayment = totalPrice;
+  const formattedTotalPayment = totalPrice.toLocaleString("id-ID");
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    // You can add a toast notification here to indicate successful copy
   };
 
   return (
@@ -75,14 +79,18 @@ const ManualTransfer = () => {
 
           <h3 className="font-semibold mb-2">Total payment</h3>
           <div className="flex justify-between items-center space-x-3 mb-4">
-            <Input value={totalPayment} readOnly className="bg-gray-100" />
+            <Input
+              value={formattedTotalPayment}
+              readOnly
+              className="bg-gray-100"
+            />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => copyToClipboard(totalPayment)}>
+                    onClick={() => copyToClipboard(totalPayment.toString())}>
                     <Copy className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
