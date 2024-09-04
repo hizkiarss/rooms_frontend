@@ -53,6 +53,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     const { data } = response;
                     console.log("Login response", data);
                     console.log("Login success", data);
+                    console.log(response)
 
                     if (data.errors) {
                         // const errorMessage = data.errors[0]?.message || "Invalid email or password";

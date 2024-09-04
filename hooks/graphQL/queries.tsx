@@ -1,5 +1,5 @@
 "use client";
-import { gql } from "graphql-request";
+import {gql} from "graphql-request";
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions {
@@ -21,3 +21,11 @@ export const GET_TRANSACTIONS = gql`
     }
   }
 `;
+
+export const FIND_CITY_BY_NAME = gql`
+query FindCityByName($name: String!) {
+findCityByName(name: $name) {
+      id
+      name
+      }
+}`
