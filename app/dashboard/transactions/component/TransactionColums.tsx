@@ -144,10 +144,10 @@ export const columns: ColumnDef<TransactionsType>[] = [
       const router = useRouter();
 
       const handleViewCustomer = () => {
-        const email = payment.users.email;
-        router.push(
-          `/dashboard/transactions/user-detail/${encodeURIComponent(email)}`
-        );
+        const email = payment.users?.email;
+        //   router.push(
+        //     `/dashboard/transactions/user-detail/${encodeURIComponent(email)}`
+        //   );
       };
 
       return (

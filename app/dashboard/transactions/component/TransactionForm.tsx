@@ -22,7 +22,7 @@ function TransactionForm() {
 
   return (
     <div className="max-w-md mx-auto mt-10 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+      {/* <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
         Create Transaction
       </h2>
       <Formik
@@ -40,7 +40,7 @@ function TransactionForm() {
         onSubmit={(values, { setSubmitting }) => {
           createTransaction.mutate(
             {
-              ...values,
+              ...values
               finalPrice: parseFloat(values.finalPrice),
             },
             {
@@ -180,7 +180,7 @@ function TransactionForm() {
             </button>
           </Form>
         )}
-      </Formik>
+      </Formik> */}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { GET_TRANSACTIONS } from "../graphQL/queries";
 import { graphqlClient } from "../graphQL/graphqlClient";
 import { TransactionsType } from "@/types/transactions/TransactionsType";
 
-export function useTransactions() {
+export const useTransactions = () => {
   return useQuery<TransactionsType[]>({
     queryKey: ["transactions"],
     queryFn: async () => {
@@ -13,4 +13,4 @@ export function useTransactions() {
       return transactions;
     },
   });
-}
+};

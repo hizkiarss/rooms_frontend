@@ -11,32 +11,69 @@ import CancelationCard from "./component/CancelationCard";
 import ImportantInformationCard from "./component/ImportantInformationCard";
 import RoomDetailCard from "./component/RoomDetailCard";
 import PriceDetailsCard from "./component/PriceDetailsCard";
+import { useCreateTransaction } from "@/hooks/transactions/useCreateTransaction";
+import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
+import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
+import { useRouter } from "next/navigation";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
-  phoneNumber: Yup.string()
+  mobileNumber: Yup.string()
     .matches(/^\+\d{2,3}\s\d{3,}(-\d{3,4}){1,}$/, "Invalid phone number format")
     .required("Phone number is required"),
   paymentMethod: Yup.string()
-    .oneOf(["manual", "auto"], "Please select a valid payment method")
+    .oneOf(["manual", "bank"], "Please select a valid payment method")
     .required("Payment method is required"),
 });
 
 const Page = () => {
+  const router = useRouter();
+  const createTransaction = useCreateTransaction();
+  const formatDate = (date: string | Date) => {
+    return new Date(date).toISOString().split("T")[0];
+  };
   const formik = useFormik({
     initialValues: {
       travelerName: "",
       firstName: "",
       lastName: "",
-      phoneNumber: "",
+      mobileNumber: "",
       paymentMethod: "manual",
     },
-    validationSchema,
-    onSubmit: (values) => {
-      console.log("Form values:", values);
+    validationSchema: validationSchema,
+    onSubmit: (values, { setSubmitting }) => {
+      const paymentMethod =
+        values.paymentMethod === "manual"
+          ? PaymentMethodType.MANUAL_TRANSFER
+          : PaymentMethodType.BANK_TRANSFER;
+      const transactionRequest: TransactionRequest = {
+        usersId: "1",
+        propertiesId: "1",
+        paymentMethod: paymentMethod,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        mobileNumber: values.mobileNumber,
+        transactionDetailRequests: {
+          roomId: "1",
+          startDate: formatDate("2024-09-10"),
+          endDate: formatDate("2024-09-11"),
+        },
+      };
+      createTransaction.mutate(transactionRequest, {
+        onSuccess: (randomString) => {
+          //alert("Transaction created successfully!");
+          setSubmitting(false);
+          router.push(`/checkout/${randomString}`);
+        },
+        onError: (error) => {
+          alert(`Error: ${error.message}`);
+          setSubmitting(false);
+        },
+      });
     },
   });
+
   return (
     <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[130px]">
       <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl py-3">
@@ -54,7 +91,7 @@ const Page = () => {
             <CancelationCard />
             <ImportantInformationCard />
           </div>
-          <div className="md:w-5/12 lg:w-4/12 w-full ">
+          <div className="md:w-5/12 lg:w-4/12 w-full space-y-4 ">
             <RoomDetailCard />
             <BookCta />
             <PriceDetailsCard />
