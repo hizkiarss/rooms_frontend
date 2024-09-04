@@ -13,5 +13,5 @@ export type PaymentResponseType = {
   transaction_status: string;
   fraud_status: string;
   expiry_time: string;
-  va_numbers: VaNumbersType;
+  va_numbers: VaNumbersType[];
 };

@@ -6,10 +6,20 @@ export const CREATE_TRANSACTION = gql`
   }
 `;
 
+export const CANCEL_TRANSACTION = gql`
+  mutation CancelTransaction($bookingCode: String!) {
+    cancelTransaction(bookingCode: $bookingCode)
+  }
+`;
 
 export const ACCEPT_PAYMENT_PROOF = gql`
   mutation AcceptPaymentProof($transactionId: ID!) {
     acceptPaymentProof(transactionId: $transactionId)
+  }
+`;
+export const ADD_PAYMENT_PROOF = gql`
+  mutation AddPaymentProof($transactionId: ID!, $imgUrl: String!) {
+    addPaymentProof(transactionId: $transactionId, imgUrl: $imgUrl)
   }
 `;
 
@@ -40,6 +50,7 @@ export const CREATE_VIRTUAL_ACCOUNT_CODE = gql`
       }
     }
   }
+`;
 
 export const REGISTER_USER = gql`
   mutation UserRegister($input: RegisterInput!) {
@@ -56,11 +67,17 @@ export const REGISTER_TENANT = gql`
 export const VERIFY_EMAIL = gql`
   mutation VerifyEmail($email: String!) {
     verifyEmail(email: $email) {
-        id
-        email
-        username
-        role
-        mobileNumber
+      id
+      email
+      username
+      role
+      mobileNumber
     }
-}
+  }
+`;
+
+export const SAVE_PAYMENT_INITIAL = gql`
+  mutation CreatePaymentInitial($input: PaymentInitial!) {
+    createPaymentInitial(input: $input)
+  }
 `;

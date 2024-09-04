@@ -20,7 +20,8 @@ export const useCreateVirtualAccountCode = () => {
       );
       return createVirtualAccountCode;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(["virtualAccountResponse"], data);
       queryClient.invalidateQueries({ queryKey: ["virtualAccountCodes"] });
     },
   });
