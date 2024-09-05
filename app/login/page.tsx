@@ -114,7 +114,7 @@ const Page = () => {
                                         type="email"
                                         name="email"
                                         id="email"
-                                        className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs text-greenr "
+                                        className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs text-greenr z-10 "
                                     />
                                     <ErrorMessage
                                         name="email"
@@ -128,7 +128,7 @@ const Page = () => {
                                     <Field type="password"
                                            name="password"
                                            id="password"
-                                           className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs "
+                                           className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-xs z-10 "
                                     ></Field>
                                     <ErrorMessage
                                         name="password"
@@ -163,7 +163,7 @@ const Page = () => {
                         </div>
                     </div>
 
-                    <div className="hidden md:block absolute top-0 -left-10 w-[400px] h-[400px] overflow-hidden">
+                    <div className="hidden md:block absolute top-0 -left-10 w-[400px] h-[400px]  overflow-hidden">
                         <div className="absolute -top-52 -left-[250px]  w-[400px] h-[400px]">
                             <div className={"border-greenr rounded-full border h-full w-full "}>
 

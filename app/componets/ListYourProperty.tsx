@@ -8,7 +8,7 @@ const ListYourProperty = () => {
                 className={"bg-[url('/homepage/listyourproperty.jpg')] h-[600px] bg-cover bg-center rounded-2xl"}>
                 <div className={"w-full h-full bg-slate-600 bg-opacity-60 px-10 flex items-center rounded-2xl"}>
                     <div>
-                        <h2 className={"text-white font-semibold text-5xl w-1/3 mb-10"}>List your property on Vrbo and
+                        <h2 className={"text-white font-semibold text-5xl w-1/3 mb-10"}>List your property on Rooms and
                             open your door to rental income</h2>
                         <Buttons
                             value={"List your property"}
