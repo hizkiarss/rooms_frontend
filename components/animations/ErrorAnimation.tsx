@@ -16,9 +16,10 @@ const ErrorAnimation = () => {
         autoplay={true}
         style={{ width: 300, height: 300 }}
       />
-      <h4 className="scroll-m-20 text-lg font-semibold tracking-tight w-[320px] text-pretty">
-        Well, this is awkward... but don't worry, our code wizards are casting a
-        fix spell!
+      <h4 className="scroll-m-20 text-lg tracking-tight w-[320px] text-pretty text-center">
+        <p className={"font-semibold text-2xl mb-4"}>Well, this is awkward...</p>
+          <p>but don't worry, our code wizards currently are casting a
+              fix spell!</p>
       </h4>
     </div>
   );

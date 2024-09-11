@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const pathName = usePathname();
-    const excludedPaths = ["/login", "/register", "/forgot-password"]; // Add other paths here
+    const excludedPaths = ["/login", "/register", "/forgot-password", "/reset-password"]; // Add other paths here
 
     if (excludedPaths.includes(pathName)) {
         return null;

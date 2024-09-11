@@ -1,4 +1,4 @@
-import { gql } from "graphql-request";
+import {gql} from "graphql-request";
 
 export const CREATE_TRANSACTION = gql`
   mutation CreateTransaction($input: TransactionRequest!) {
@@ -80,4 +80,42 @@ export const SAVE_PAYMENT_INITIAL = gql`
   mutation CreatePaymentInitial($input: PaymentInitial!) {
     createPaymentInitial(input: $input)
   }
+`;
+
+export const UPLOAD_AVATAR = gql`
+  mutation UploadAvatar($email: String!, $imgUrl: String!) {
+    uploadAvatar(email: $email, imgUrl: $imgUrl) {
+      id
+      email
+      username
+      profilePicture
+      role
+      mobileNumber
+    }
+  }
+`;
+
+export const UPDATE_USER_INFORMATION = gql`
+mutation UpdateUserInformation($input: UpdateUserInfoInput, $email: String! ) {
+    updateUserInformation(input: $input, email: $email) {
+        id
+        email
+        username
+        profilePicture
+        role
+        mobileNumber
+    }
+}
+`;
+
+export const SEND_RESET_PASSWORD_LINK = gql`
+mutation SendResetPasswordLink ($email: String!){
+    sendResetPasswordLink(email: $email)
+}`;
+
+
+export const RESET_PASSWORD =gql`
+mutation ResetPassword ($email: String!, $input:ResetPasswordRequest!) {
+    resetPassword(email: $email, input: $input)
+}
 `;
