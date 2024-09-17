@@ -9,7 +9,7 @@ import animationData from "../../public/animations/loading-meditation.json";
 
 const LoadingStateAnimation = () => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
+    <div className="flex items-center justify-center">
       <LottieAnimation
         animationData={animationData}
         loop={true}

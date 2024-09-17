@@ -195,3 +195,16 @@ export const REVIEW_BY_PROPERTY_ID = gql`
     }
   }
 `;
+export const FIND_USER_BY_EMAIL= gql`
+query FindUserByEmail ($email: String!) {
+    findUserByEmail(email: $email) {
+        id
+        email
+        username
+        profilePicture
+        role
+        mobileNumber
+        gender
+        dateOfBirth
+    }
+}`;
