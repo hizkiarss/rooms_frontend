@@ -9,7 +9,7 @@ import animationData from "../../public/animations/wizard.json";
 
 const ErrorAnimation = () => {
   return (
-    <div className="flex-col inset-0 flex items-center justify-center ">
+    <div className="flex-col flex items-center justify-center ">
       <LottieAnimation
         animationData={animationData}
         loop={true}

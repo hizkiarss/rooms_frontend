@@ -15,7 +15,7 @@ import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
 const Page = () => {
     const [activeButton, setActiveButton] = useState("Profile");
-    const { data: user, isLoading, error } = useFindUserbyEmail("qakaben@gmail.com");
+    const { data: user, isLoading, error,isError } = useFindUserbyEmail("qakaben@gmail.com");
     const [isPageLoading, setIsPageLoading] = React.useState<boolean>(false);
 
     const handleClick = (buttonName: string) => {
@@ -39,12 +39,13 @@ const Page = () => {
     console.log(isPageLoading);
 
     if (isPageLoading || isLoading) {
-        return <div className={"w-screen h-screen flex items-center"}><LoadingStateAnimation /></div>;
+        return <div className={"h-screen flex items-center justify-center"}><LoadingStateAnimation /></div>;
     }
-    if (error) return <div className={"w-screen h-screen"}><ErrorAnimation /></div>;
+    if (isError) return <div className={"w-screen flex items-center justify-center h-screen"}><ErrorAnimation /></div>;
 
     return (
         <div>
+            {error&& <div ><ErrorAnimation /></div>}
             <div className="grid grid-cols-4 px-[130px] gap-4 mt-10 mb-20">
                 <div className="col-span-1">
                     <div className="flex items-center ml-1 mb-4">
@@ -103,7 +104,6 @@ const Page = () => {
                     <div>{renderContent()}</div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

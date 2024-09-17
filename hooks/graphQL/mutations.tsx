@@ -114,8 +114,30 @@ mutation SendResetPasswordLink ($email: String!){
 }`;
 
 
-export const RESET_PASSWORD =gql`
+export const RESET_PASSWORD = gql`
 mutation ResetPassword ($email: String!, $input:ResetPasswordRequest!) {
     resetPassword(email: $email, input: $input)
 }
 `;
+
+
+export const DELETE_ACCOUNT = gql`
+mutation DeleteAccount ($email: String!, $password: String!) {
+    deleteAccount(email: $email, password: $password)
+}
+`;
+
+export const ADD_PROPERTIES_FACILITIES = gql`
+mutation AddPropertyFacilities($id: ID!, $facilitiesId: [ID!]!) {
+    addPropertyFacilities(id: $id, facilitiesId: $facilitiesId) {
+        id
+        facilities {
+            id
+            name
+        }
+        property {
+            id
+            name
+        }
+    }
+}`;
