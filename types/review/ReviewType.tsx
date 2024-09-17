@@ -1,15 +1,18 @@
 import { type } from "os";
+import { PropertiesType } from "../properties/PropertiesType";
+import { TransactionsType } from "../transactions/TransactionsType";
+import { UserType } from "../users/Usertype";
 
 export type ReviewType = {
   id: string;
-  rating: number;
-  author: string;
-  date: string;
   feedback: string;
   reply: string;
-  //   response?: {
-  //     author: string;
-  //     date: string;
-  //     content: string;
-  //   };
+  rating: number;
+  transaction: TransactionsType;
+  users: UserType;
+  properties: PropertiesType;
+  isRead: boolean;
+  author: string;
+  date: string;
+  createdAt: string;
 };

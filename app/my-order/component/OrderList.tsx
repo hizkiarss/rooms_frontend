@@ -35,18 +35,22 @@ const OrderList = () => {
         <CardContent className="space-y-4">
           {transactions &&
             transactions.map((transaction) => (
-              <OrderListItem
-                key={transaction.id}
-                bookingCode={transaction.bookingCode}
-                imgUrl={"/img"}
-                totalPrice={transaction.finalPrice}
-                propertyName={transaction.properties.name}
-                status={transaction.status}
-                paymentMethod={transaction.paymentMethod}
-                transactionId={transaction.id}
-                paymentProofs={transaction.paymentProofs}
-                onRefresh={refreshTransactions}
-              />
+              <div>
+                <OrderListItem
+                  key={transaction.id}
+                  bookingCode={transaction.bookingCode}
+                  imgUrl={"/img"}
+                  totalPrice={transaction.finalPrice}
+                  propertyName={transaction.properties.name}
+                  status={transaction.status}
+                  paymentMethod={transaction.paymentMethod}
+                  transactionId={transaction.id}
+                  paymentProofs={transaction.paymentProofs}
+                  onRefresh={refreshTransactions}
+                  transactionDetails={transaction.transactionDetails[0]}
+                  review={transaction.reviews}
+                />
+              </div>
             ))}
         </CardContent>
       </Card>

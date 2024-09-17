@@ -32,7 +32,7 @@ const ReviewCarousel: React.FC<ReviewCarouselProps> = ({ reviews }) => {
       {currentIndex > 0 && (
         <Button
           variant="outline"
-          className="absolute top-1/2 left-0 transform -translate-y-1/2"
+          className="absolute top-1/2 left-2 transform -translate-y-1/2"
           onClick={prevReview}>
           <ChevronLeft className="h-4 w-4" />
         </Button>
@@ -41,7 +41,7 @@ const ReviewCarousel: React.FC<ReviewCarouselProps> = ({ reviews }) => {
       {currentIndex < reviews.length - 1 && (
         <Button
           variant="outline"
-          className="absolute top-1/2 right-0 transform -translate-y-1/2"
+          className="absolute top-1/2 right-2 transform -translate-y-1/2"
           onClick={nextReview}>
           <ChevronRight className="h-4 w-4" />
         </Button>

@@ -81,3 +81,21 @@ export const SAVE_PAYMENT_INITIAL = gql`
     createPaymentInitial(input: $input)
   }
 `;
+
+export const CREATE_REVIEW = gql`
+  mutation CreateReview($input: ReviewRequest!) {
+    createReview(input: $input)
+  }
+`;
+
+export const REPLY_REVIEW = gql`
+  mutation ReplyReview($reviewId: ID!, $reply: String!) {
+    replyReview(reviewId: $reviewId, reply: $reply)
+  }
+`;
+
+export const SET_READ_REVIEW = gql`
+  mutation SetReadReview($reviewId: ID!) {
+    setReadReview(reviewId: $reviewId)
+  }
+`;

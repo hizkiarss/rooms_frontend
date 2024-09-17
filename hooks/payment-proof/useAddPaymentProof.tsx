@@ -14,8 +14,12 @@ export const useAddPaymentProof = () => {
       );
       return addPaymentProof;
     },
-    onSuccess: () => {
+    onSuccess: (userId) => {
       queryClient.invalidateQueries({ queryKey: ["pending-paymentproof"] });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["transactions", "user", userId],
+      // });
+      // console.log("ini useridnya", userId);
     },
   });
 };

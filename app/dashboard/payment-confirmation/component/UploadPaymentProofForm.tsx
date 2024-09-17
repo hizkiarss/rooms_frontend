@@ -46,7 +46,7 @@ const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
         transactionId,
         imgUrl: values.imageUrl,
       });
-      setIsSubmitted(true); // Set state to indicate submission was successful
+      setIsSubmitted(true);
     } catch (error) {
       console.error("Failed to submit:", error);
     } finally {

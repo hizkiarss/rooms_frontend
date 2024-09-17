@@ -27,6 +27,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCancelTransaction } from "@/hooks/transactions/useCancelTransaction";
 import UploadPaymentProofForm from "@/app/dashboard/payment-confirmation/component/UploadPaymentProofForm";
+import { TransactionDetailRequestType } from "@/types/transactions/TransactionDetailRequestType";
+import { ReviewType } from "@/types/review/ReviewType";
+import { R } from "@tanstack/react-query-devtools/build/legacy/devtools-5wO_5H1h";
+import { Divide } from "lucide-react";
+import UserReviewForm from "./UserReviewForm";
+import SubmitSuccessAnimation from "@/components/animations/SubmitSuccessAnimation";
 
 interface OrderListProps {
   bookingCode: string;
@@ -38,6 +44,8 @@ interface OrderListProps {
   transactionId: string;
   paymentProofs: PaymentProofType[];
   onRefresh: () => void;
+  transactionDetails: TransactionDetailRequestType;
+  review: ReviewType[];
 }
 
 const OrderListItem: React.FC<OrderListProps> = ({
@@ -50,17 +58,29 @@ const OrderListItem: React.FC<OrderListProps> = ({
   transactionId,
   paymentProofs,
   onRefresh,
+  transactionDetails,
+  review,
 }) => {
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
+  const [openReviewDialog, setOpenReviewDialog] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [showReviewButton, setShowReviewButton] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
   const { mutate: cancelTransaction } = useCancelTransaction();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!openUploadDialog) {
-      onRefresh();
-    }
-  }, [openUploadDialog, onRefresh]);
+  console.log("ini review", review);
+
+  // useEffect(() => {
+  //   if (!openUploadDialog && openUploadDialog !== null) {
+  //     onRefresh();
+  //   }
+  // }, [openUploadDialog, onRefresh]);
+  const handleDialogClose = () => {
+    console.log("Dialog has been closed.");
+
+    onRefresh(); // Assuming you have an `onRefresh` function to call
+  };
 
   const handlePaymentGateway = () => {
     router.push(`/finish-payment/${bookingCode}`);
@@ -82,6 +102,62 @@ const OrderListItem: React.FC<OrderListProps> = ({
   const handleCloseConfirmDialog = () => {
     setOpenConfirmDialog(false);
   };
+
+  const handleAddReview = () => {
+    // Implement the logic to add a review
+    console.log("Add review clicked for booking:", bookingCode);
+    // You might want to open a review dialog or navigate to a review page
+    // router.push(`/add-review/${bookingCode}`);
+  };
+
+  const endDatePrimitive = transactionDetails?.endDate?.toString() || "";
+
+  if (endDatePrimitive) {
+    const formattedDate = new Date(endDatePrimitive);
+    console.log("Formatted Date:", formattedDate);
+    // const endDate = new Date(endDatePrimitive);
+    // const currentDate = new Date();
+    // setShowReviewButton(endDate < currentDate);
+  } else {
+    console.log("End date is undefined or null");
+  }
+  const formattedDate = new Date(endDatePrimitive).toLocaleDateString("id-ID", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  // const checkEndDate = () => {
+  //   if (endDatePrimitive) {
+  //     const endDate = new Date(endDatePrimitive);
+  //     const currentDate = new Date();
+  //     setShowReviewButton(endDate < currentDate);
+  //   }
+  // };
+  // useEffect(() => {
+  //   checkEndDate();
+  //   // Re-check every day
+  //   const interval = setInterval(checkEndDate, 24 * 60 * 60 * 1000);
+
+  //   return () => clearInterval(interval);
+  // }, [transactionDetails?.endDate]);
+
+  useEffect(() => {
+    const checkEndDate = () => {
+      if (endDatePrimitive) {
+        const endDate = new Date(endDatePrimitive);
+        const currentDate = new Date();
+        setShowReviewButton(endDate < currentDate);
+      }
+    };
+
+    checkEndDate();
+    // Re-check every day
+    const interval = setInterval(checkEndDate, 24 * 60 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  console.log("Formatted Date:", formattedDate);
 
   return (
     <div>
@@ -121,6 +197,13 @@ const OrderListItem: React.FC<OrderListProps> = ({
             <div className="w-full sm:w-3/5 justify-start break-words mt-2">
               IDR {totalPrice}
             </div>
+            {/* {transactionDetails && (
+              <div>
+                {" "}
+                <p>ini endDatenya: {formattedDate}</p>{" "}
+              </div>
+
+            )} */}
 
             {status === "Pending" &&
               paymentMethod === PaymentMethodType.MANUAL_TRANSFER &&
@@ -148,11 +231,28 @@ const OrderListItem: React.FC<OrderListProps> = ({
                   onClick={handlePaymentGateway}
                 />
               )}
+            {status === "Success" &&
+              showReviewButton &&
+              review &&
+              review.length == 0 && (
+                <Button
+                  onClick={() => setOpenReviewDialog(true)}
+                  className="w-full sm:w-2/5 my-0 sm:my-5 rounded-lg">
+                  Add Review
+                </Button>
+              )}
           </div>
         </CardContent>
       </Card>
 
-      <Dialog open={openUploadDialog} onOpenChange={setOpenUploadDialog}>
+      <Dialog
+        open={openUploadDialog}
+        onOpenChange={(open) => {
+          if (!open) {
+            handleDialogClose();
+          }
+          setOpenUploadDialog(open);
+        }}>
         <DialogTrigger asChild>
           <Button className="hidden">Trigger Dialog</Button>
         </DialogTrigger>
@@ -193,6 +293,44 @@ const OrderListItem: React.FC<OrderListProps> = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Dialog
+        open={openReviewDialog}
+        onOpenChange={(open) => {
+          if (!open) {
+            handleDialogClose();
+          }
+          setOpenReviewDialog(open);
+        }}>
+        <DialogTrigger asChild>
+          <Button className="hidden">Trigger Dialog</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle>
+            {" "}
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+              Share Your Stay Experience!
+            </h4>
+          </DialogTitle>
+
+          <UserReviewForm
+            userId="1"
+            propertyId="1"
+            bookingCode={bookingCode}
+            onSubmitSuccess={() => {
+              setOpenReviewDialog(false);
+              handleDialogClose();
+              setShowAnimation(true);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+      {showAnimation && (
+        <SubmitSuccessAnimation
+          message="Review Complete! Thanks for Sharing!"
+          onClose={() => setShowAnimation(false)}
+        />
+      )}
     </div>
   );
 };
