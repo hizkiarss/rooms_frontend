@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import logopng from "@/public/logo.png";
 import Image from "next/image";
@@ -15,8 +17,15 @@ import iata from "@/public/footer/iata.webp";
 import topbrand from "@/public/footer/topbrand.webp";
 import superbrand from "@/public/footer/superbrand.webp";
 import bliblitiket from "@/public/footer/bliblitiket.png";
+import {usePathname} from "next/navigation";
 
 const Footer = () => {
+    const pathName = usePathname();
+    const excludedPaths = ["/login", "/register", "/forgot-password", "/reset-password"]; // Add other paths here
+
+    if (excludedPaths.includes(pathName)) {
+        return null;
+    }
     return (
         <section>
             <div className="border-solid border-b-[1px] border-gray-300"></div>

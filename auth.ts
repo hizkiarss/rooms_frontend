@@ -5,7 +5,7 @@ import axios from "axios";
 import GoogleProvider from "next-auth/providers/google";
 
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const {handlers, auth, signIn, signOut} = NextAuth({
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -15,13 +15,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     prompt: "consent",
                     access_type: "offline",
                     response_type: "code"
-                }}
+                }
+            }
         }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: { label: "email", type: "text" },
-                password: { label: "password", type: "password" },
+                email: {label: "email", type: "text"},
+                password: {label: "password", type: "password"},
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
@@ -46,30 +47,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                             },
                         },
                         {
-                            headers: { "Content-Type": "application/json" },
+                            headers: {"Content-Type": "application/json"},
                         }
                     );
-
-                    const { data } = response;
-                    console.log("Login response", data);
-                    console.log("Login success", data);
                     console.log(response)
+                    const {data} = response;
+
+
 
                     if (data.errors) {
-                        // const errorMessage = data.errors[0]?.message || "Invalid email or password";
-                        // // if (data.errors[0]?.extensions?.classification === "UNAUTHORIZED") {
-                        // //     throw new Error("Unauthorized: Invalid email or password");
-                        // // }
-                        // throw new Error(errorMessage);
-                        const errorCode = data.errors[0]?.extensions?.classification;
-                        const errorMessage = data.errors[0]?.message || "An unknown error occurred";
-                        if (errorCode === "UNAUTHORIZED") {
-                            throw new Error("Unauthorized: Invalid email or password");
+                        console.log("error")
+                        const errorMessage = data.errors[0]?.message;
+                        switch (errorMessage) {
+                            case "Unauthorized":
+                                throw new  Error("Invalid_Credentials");
+                            case "User not found":
+                                throw new Error("user_not_found");
+                            default:
+                                throw new Error("UNEXPECTED_ERROR");
                         }
-                        throw new Error(errorMessage);
                     }
 
-                    const { token, role } = data.data.login;
+                    const {token, role} = data.data.login;
 
                     if (token) {
                         return {
@@ -93,7 +92,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user,account }) {
+        async jwt({token, user, account}) {
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
@@ -102,54 +101,54 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
             if (account?.provider === "google") {
                 console.log("bisa ges")
-                    try {
+                try {
                     const response = await axios.post(
                         'http://localhost:8080/graphql',
                         {
                             query:
-                            `mutation GoogleLogin($idToken: String!) {
+                                `mutation GoogleLogin($idToken: String!) {
                             googleLogin(idToken: $idToken) {
                                 token
                                 role
                             }
                         }`,
-                        variables:{
+                            variables: {
                                 idToken: account.id_token
-                        },
-                            headers: { "Content-Type": "application/json" },
+                            },
+                            headers: {"Content-Type": "application/json"},
 
                         }
                     );
-                        const { data } = response;
-                        console.log("Login success", data);
+                    const {data} = response;
+                    console.log("Login success", data);
 
-                        if (data.errors) {
-                            const errorMessage = data.errors[0]?.message || "Error during Google authentication";
-                            throw new Error(errorMessage);
-                            // throw new Error(
-                            //     data.errors[0]?.message || "Invalid email or password"
-                            // );
-                        }
+                    if (data.errors) {
+                        const errorMessage = data.errors[0]?.message || "Error during Google authentication";
+                        throw new Error(errorMessage);
+                        // throw new Error(
+                        //     data.errors[0]?.message || "Invalid email or password"
+                        // );
+                    }
 
-                        const { token, role } = data.data.googleLogin;
+                    const {token, role} = data.data.googleLogin;
 
-                        if (token) {
-                            return {
-                                id: token.email as string, // You might need to adjust this based on your data
-                                email: token.email,
-                                roles: [role],
-                                token: token,
-                            };
-                        } else {
-                            throw new Error("Invalid response from server");
-                        }
+                    if (token) {
+                        return {
+                            id: token.email as string, // You might need to adjust this based on your data
+                            email: token.email,
+                            roles: [role],
+                            token: token,
+                        };
+                    } else {
+                        throw new Error("Invalid response from server");
+                    }
                 } catch (error) {
                     console.error("Failed to authenticate with backend:", error);
                 }
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({session, token}) {
             if (session.user) {
                 session.user.id = token.id as string;
                 session.user.email = token.email as string;
@@ -161,10 +160,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     pages: {
         signIn: "/login",
+        error: "/login",
     },
     session: {
         strategy: "jwt",
         maxAge: 60 * 60 * 1, // 1 hour
     },
     secret: process.env.NEXTAUTH_SECRET,
+    debug: process.env.NODE_ENV === 'development'
 });
