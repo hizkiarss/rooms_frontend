@@ -86,6 +86,10 @@ const OrderListItem: React.FC<OrderListProps> = ({
     router.push(`/finish-payment/${bookingCode}`);
   };
 
+  const handleDetailReservation = () => {
+    router.push(`/my-order/reservation-details/${bookingCode}`);
+  };
+
   const handleCancelClick = () => {
     setOpenConfirmDialog(true);
   };
@@ -176,7 +180,9 @@ const OrderListItem: React.FC<OrderListProps> = ({
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>View Details</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleDetailReservation}>
+                    View Details
+                  </DropdownMenuItem>
                   <DropdownMenuItem className=" text-red-600">
                     Delete order
                   </DropdownMenuItem>

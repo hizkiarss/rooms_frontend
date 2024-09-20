@@ -9,7 +9,7 @@ export type TransactionsType = {
   id: string;
   bookingCode: string;
   finalPrice: number;
-  status: "Pending" | "Success" | "Cancelled" | "Rejected";
+  status: "Pending" | "Success" | "Cancelled" | "Rejected" | "Expired";
   email: string;
   paymentMethod: PaymentMethodType;
   firstName: string;
@@ -20,4 +20,5 @@ export type TransactionsType = {
   properties: PropertiesType;
   paymentProofs: PaymentProofType[];
   reviews: ReviewType[];
+  createdAt: string;
 };
