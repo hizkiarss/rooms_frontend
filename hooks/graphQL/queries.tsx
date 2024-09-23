@@ -245,6 +245,12 @@ export const TOTAL_ROOMS_BY_PROPERTY = gql`
   }
 `;
 
+export const CURRENTLY_OCCUPIED_ROOM_BY_PROPERTY_ID = gql`
+  query OccupiedRooms($propertyId: ID!) {
+    occupiedRooms(propertyId: $propertyId)
+  }
+`;
+
 export const TOTAL_TRANSACTIONS_BY_PROPERTY_ID = gql`
   query TotalTransactionsByPropertyId(
     $propertyId: ID!

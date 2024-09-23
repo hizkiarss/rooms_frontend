@@ -1,28 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DateRange } from "react-day-picker";
 import { addDays, format } from "date-fns";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import {
-  Activity,
-  BedSingle,
-  CalendarIcon,
-  CreditCard,
-  DollarSign,
-} from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import Overview from "./Overview";
 import DateRangePicker from "../../component/DateRangePicker";
 import Buttons from "@/components/Buttons";
 import RevenueCard from "./RevenueCard";
 import TotalRoomsCard from "./TotalRoomsCard";
 import TotalTransactionsCard from "./TotalTransactionsCard";
+import OccupiedRoomsCard from "./OccupiedRoomsCard";
+
 type TabName =
   | "Overview"
   | "Property Report"
@@ -36,7 +23,6 @@ const Report = () => {
     to: addDays(new Date(2022, 0, 20), 20),
   });
 
-  // Function to render content based on active tab
   const renderContent = () => {
     switch (activeTab) {
       case "Overview":
@@ -82,17 +68,7 @@ const Report = () => {
         <RevenueCard />
         <TotalRoomsCard />
         <TotalTransactionsCard />
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Currently Occupied Rooms
-            </CardTitle>
-            <Activity className="w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">573</div>
-          </CardContent>
-        </Card>
+        <OccupiedRoomsCard />
       </div>
 
       {renderContent()}
