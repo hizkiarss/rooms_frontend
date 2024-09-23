@@ -213,6 +213,7 @@ export const REVIEW_BY_PROPERTY_ID = gql`
     }
   }
 `;
+
 export const FIND_USER_BY_EMAIL = gql`
   query FindUserByEmail($email: String!) {
     findUserByEmail(email: $email) {
@@ -225,5 +226,15 @@ export const FIND_USER_BY_EMAIL = gql`
       gender
       dateOfBirth
     }
+  }
+`;
+
+export const REVENUE_BY_PROPERTY = gql`
+  query RevenueByProperty($propertyId: ID!, $startDate: Date, $endDate: Date) {
+    revenueByProperty(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    )
   }
 `;

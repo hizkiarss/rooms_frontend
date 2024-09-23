@@ -38,7 +38,7 @@ export const useReviewByPropertyId = (propertyId: string) => {
             // Return null to indicate no data found
             return null;
           }
-          console.error("Error fetching transactions:", error);
+          console.error("Error fetching review:", error);
         } else {
           // Handle unknown error
           console.error("Unexpected error:", error);
