@@ -22,6 +22,7 @@ import DateRangePicker from "../../component/DateRangePicker";
 import Buttons from "@/components/Buttons";
 import RevenueCard from "./RevenueCard";
 import TotalRoomsCard from "./TotalRoomsCard";
+import TotalTransactionsCard from "./TotalTransactionsCard";
 type TabName =
   | "Overview"
   | "Property Report"
@@ -80,18 +81,12 @@ const Report = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <RevenueCard />
         <TotalRoomsCard />
+        <TotalTransactionsCard />
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Transactions</CardTitle>
-            <CreditCard className="w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">1200</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Now</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Currently Occupied Rooms
+            </CardTitle>
             <Activity className="w-4" />
           </CardHeader>
           <CardContent>
