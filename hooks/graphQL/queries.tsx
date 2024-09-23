@@ -244,3 +244,17 @@ export const TOTAL_ROOMS_BY_PROPERTY = gql`
     totalRoom(propertyId: $propertyId)
   }
 `;
+
+export const TOTAL_TRANSACTIONS_BY_PROPERTY_ID = gql`
+  query TotalTransactionsByPropertyId(
+    $propertyId: ID!
+    $startDate: Date
+    $endDate: Date
+  ) {
+    totalTransactionsByPropertyId(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`;
