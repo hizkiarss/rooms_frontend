@@ -21,6 +21,7 @@ import Overview from "./Overview";
 import DateRangePicker from "../../component/DateRangePicker";
 import Buttons from "@/components/Buttons";
 import RevenueCard from "./RevenueCard";
+import TotalRoomsCard from "./TotalRoomsCard";
 type TabName =
   | "Overview"
   | "Property Report"
@@ -78,18 +79,7 @@ const Report = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <RevenueCard />
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Rooms</CardTitle>
-            <BedSingle className="w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">200</div>
-            {/* <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p> */}
-          </CardContent>
-        </Card>
+        <TotalRoomsCard />
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Transactions</CardTitle>

@@ -238,3 +238,9 @@ export const REVENUE_BY_PROPERTY = gql`
     )
   }
 `;
+
+export const TOTAL_ROOMS_BY_PROPERTY = gql`
+  query TotalRoom($propertyId: ID!) {
+    totalRoom(propertyId: $propertyId)
+  }
+`;
