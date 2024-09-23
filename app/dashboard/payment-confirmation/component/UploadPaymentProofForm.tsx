@@ -37,22 +37,23 @@ const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
         imageUrl: Yup.string().required("Image is required"),
     });
 
-    const handleSubmit = async (
-        values: FormValues,
-        {setSubmitting}: FormikHelpers<FormValues>
-    ) => {
-        try {
-            await addPaymentProofMutation.mutateAsync({
-                transactionId,
-                imgUrl: values.imageUrl,
-            });
-            setIsSubmitted(true); // Set state to indicate submission was successful
-        } catch (error) {
-            console.error("Failed to submit:", error);
-        } finally {
-            setSubmitting(false);
-        }
-    };
+  const handleSubmit = async (
+    values: FormValues,
+    { setSubmitting }: FormikHelpers<FormValues>
+  ) => {
+    try {
+      await addPaymentProofMutation.mutateAsync({
+        transactionId,
+        imgUrl: values.imageUrl,
+      });
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Failed to submit:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
 
     return (
         <Formik

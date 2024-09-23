@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import ReviewPopup from "./ReviewPopup";
 import ReviewCarousel from "./ReviewCarousel";
@@ -10,12 +11,31 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
+import { useReviewByPropertyId } from "@/hooks/Review/useReviewByPropertyId";
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
-interface ReviewCarouselProps {
-  reviews: ReviewType[];
-}
+const ReviewComponent: React.FC = () => {
+  const { data: reviews, isLoading, error } = useReviewByPropertyId("1");
 
-const ReviewComponent: React.FC<ReviewCarouselProps> = ({ reviews }) => {
+  if (isLoading)
+    return (
+      <div>
+        <LoadingStateAnimation />
+      </div>
+    );
+
+  if (error)
+    return (
+      <div>
+        <ErrorAnimation />
+      </div>
+    );
+
+  if (!reviews || reviews.length === 0) {
+    return <div></div>;
+  }
+
   const averageRating =
     reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
   return (

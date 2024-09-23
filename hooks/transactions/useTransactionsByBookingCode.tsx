@@ -11,9 +11,7 @@ import { TransactionsType } from "@/types/transactions/TransactionsType";
 import useSelectedProperty from "../useSelectedProperty";
 import { useParams } from "next/navigation";
 
-export const useTransactionsByBookingCode = () => {
-  const { payment: bookingCode } = useParams<{ payment: string }>();
-
+export const useTransactionsByBookingCode = (bookingCode: string) => {
   return useQuery<TransactionsType>({
     queryKey: ["transactions", "bookingCode", bookingCode],
     queryFn: async () => {
@@ -27,7 +25,6 @@ export const useTransactionsByBookingCode = () => {
           GET_TRANSACTIONS_BY_BOOKING_CODE,
           { bookingCode }
         );
-        //console.log("GraphQL response:", response);
 
         if (!response || !response.transactionsByBookingCode) {
           throw new Error("No transactions data in the response");
@@ -39,6 +36,6 @@ export const useTransactionsByBookingCode = () => {
         throw error;
       }
     },
-    enabled: !!bookingCode, // Mengaktifkan query hanya jika bookingCode ada
+    enabled: !!bookingCode,
   });
 };
