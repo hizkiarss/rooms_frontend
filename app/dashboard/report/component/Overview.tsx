@@ -7,47 +7,62 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
+import { useMonthlyTransactions } from "@/hooks/report/useMonthlyTransactions";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
+import { MonthlyTransactionsType } from "@/types/transactions/MonthlyTransactionsType";
 import React from "react";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
-type OverviewData = { month: string; desktop: number }[];
-const overviewData: OverviewData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "July", desktop: 209 },
-  { month: "August", desktop: 186 },
-  { month: "September", desktop: 305 },
-  { month: "October", desktop: 237 },
-  { month: "November", desktop: 73 },
-  { month: "December", desktop: 214 },
-];
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
+import LatestTransactionsCard from "./LatestTransactionsCard";
+
+const monthAbbreviations = {
+  JANUARY: "JAN",
+  FEBRUARY: "FEB",
+  MARCH: "MAR",
+  APRIL: "APR",
+  MAY: "MAY",
+  JUNE: "JUN",
+  JULY: "JUL",
+  AUGUST: "AUG",
+  SEPTEMBER: "SEP",
+  OCTOBER: "OCT",
+  NOVEMBER: "NOV",
+  DECEMBER: "DEC",
+};
+
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  transactions: {
+    label: "transactions",
     color: "#007989",
   },
 } satisfies ChartConfig;
-type RecentSale = {
-  name: string;
-  email: string;
-  amount: number;
-};
-const recentSales: RecentSale[] = [
-  { name: "Olivia Martin", email: "olivia.martin@email.com", amount: 1999.0 },
-  { name: "Jackson Lee", email: "jackson.lee@email.com", amount: 39.0 },
-  {
-    name: "Isabella Nguyen",
-    email: "isabella.nguyen@email.com",
-    amount: 299.0,
-  },
-  { name: "William Kim", email: "will@email.com", amount: 99.0 },
-  { name: "Sofia Davis", email: "sofia.davis@email.com", amount: 39.0 },
-];
-const Overview = () => {
+
+const Overview: React.FC = () => {
+  const { selectedProperty } = useSelectedProperty();
+  const { data: monthlyTransactions } = useMonthlyTransactions(
+    selectedProperty || ""
+  );
+
+  const fetchedData = monthlyTransactions?.map(
+    (monthlyTransaction: MonthlyTransactionsType) => {
+      const month = monthlyTransaction.month as keyof typeof monthAbbreviations;
+      return {
+        month:
+          monthAbbreviations[month] || monthlyTransaction.month.slice(0, 3),
+        transactions: monthlyTransaction.totalTransactions,
+      };
+    }
+  );
+
+  console.log(fetchedData);
+  console.log("ini monthlynya", monthlyTransactions);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Card>
@@ -56,20 +71,18 @@ const Overview = () => {
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
-            <BarChart accessibilityLayer data={overviewData}>
+            <BarChart accessibilityLayer data={fetchedData}>
               <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis allowDecimals={false} domain={[0, "dataMax"]} />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+              <Bar
+                dataKey="transactions"
+                fill="var(--color-transactions)"
+                radius={8}>
                 <LabelList
                   position="top"
                   offset={12}
@@ -81,35 +94,7 @@ const Overview = () => {
           </ChartContainer>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Bookings</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            You made 265 sales this month.
-          </p>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-8">
-            {recentSales.map((sale, index) => (
-              <div key={index} className="flex items-center">
-                <Avatar className="h-9 w-9">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                  <AvatarFallback>{sale.name[0]}</AvatarFallback>
-                </Avatar>
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {sale.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground">{sale.email}</p>
-                </div>
-                <div className="ml-auto font-medium">
-                  +${sale.amount.toFixed(2)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <LatestTransactionsCard />
     </div>
   );
 };

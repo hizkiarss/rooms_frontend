@@ -264,3 +264,47 @@ export const TOTAL_TRANSACTIONS_BY_PROPERTY_ID = gql`
     )
   }
 `;
+
+export const REPORT_ROOMS_BY_PROPERTY = gql`
+  query GetRoomsByPropertiesId($propertyId: ID!) {
+    getRoomsByPropertiesId(id: $propertyId) {
+      id
+      name
+      roomNumber
+      bookings {
+        id
+        startDate
+        endDate
+        users {
+          username
+          email
+          mobileNumber
+        }
+      }
+    }
+  }
+`;
+
+export const MONTHLY_TRANSACTIONS_BY_PROPERTY_ID = gql`
+  query MonthlyTransactionsByPropertyId($propertyId: ID!) {
+    monthlyTransactionsByPropertyId(propertyId: $propertyId) {
+      month
+      totalTransactions
+    }
+  }
+`;
+
+export const LATEST_TRANSACTIONS_BY_PROPERTY_ID = gql`
+  query LatestTransactionsByPropertyId($propertyId: ID!) {
+    latestTransactionsByPropertyId(propertyId: $propertyId) {
+      id
+      finalPrice
+      lastName
+      mobileNumber
+      firstName
+      users {
+        email
+      }
+    }
+  }
+`;

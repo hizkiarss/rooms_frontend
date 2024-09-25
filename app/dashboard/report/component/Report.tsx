@@ -9,6 +9,7 @@ import RevenueCard from "./RevenueCard";
 import TotalRoomsCard from "./TotalRoomsCard";
 import TotalTransactionsCard from "./TotalTransactionsCard";
 import OccupiedRoomsCard from "./OccupiedRoomsCard";
+import PropertyReport from "./PropertyReport";
 
 type TabName =
   | "Overview"
@@ -28,7 +29,11 @@ const Report = () => {
       case "Overview":
         return <Overview />;
       case "Property Report":
-        return <div>Property Report Content</div>;
+        return (
+          <div className="flex justify-center">
+            <PropertyReport />
+          </div>
+        );
       case "Sales Report":
         return <div>Sales Report Content</div>;
       default:

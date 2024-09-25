@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCurrentlyOccupiedRooms } from "@/hooks/report/useCurrentlyOccupiedRooms";
 import useSelectedProperty from "@/hooks/useSelectedProperty";
@@ -7,7 +8,7 @@ import { Activity } from "lucide-react";
 
 const OccupiedRoomsCard: React.FC = () => {
   const { selectedProperty } = useSelectedProperty();
-  const { data: occupiedRooms } = useCurrentlyOccupiedRooms(
+  const { data: occupiedRooms, isLoading } = useCurrentlyOccupiedRooms(
     selectedProperty || ""
   );
   return (
@@ -17,7 +18,11 @@ const OccupiedRoomsCard: React.FC = () => {
         <Activity className="w-4" />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{occupiedRooms || 0}</div>
+        {isLoading ? (
+          <LoadingAnimation />
+        ) : (
+          <div className="text-2xl font-bold">{occupiedRooms || 0}</div>
+        )}
       </CardContent>
     </Card>
   );
