@@ -164,3 +164,45 @@ query FindUserByEmail ($email: String!) {
     }
 }`;
 
+
+export const GET_FILTERED_PROPERTIES = gql`
+  query GetFilteredProperties( $city: String!, $page: Int!, $category: String!, $rating: Float, $startPrice: Float,
+    $endPrice: Float) {
+    getFilteredProperties( city: $city, page: $page, category: $category, rating: $rating, startPrice: $startPrice, 
+    endPrice: $endPrice
+    ) {
+      totalElements
+      totalPages
+      pageSize
+      properties {
+        price
+        isBreakfast
+        property {
+          id
+          name
+          description
+          checkInTime
+          checkOutTime
+          address
+          propertyCategories {
+            id
+            name
+          }
+          propertyFacilities {
+            id
+            facilities {
+              id
+              name
+            }
+          }
+          propertyPictures {
+            id
+            imgUrl
+          }
+        }
+      }
+    }
+  }
+`;
+
+

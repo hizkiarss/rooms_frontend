@@ -13,27 +13,12 @@ import BestDealsData from "@/public/DUMMY_DATA/bestHotelsDummyData/BestHotelsDum
 import Image from "next/image";
 import Buttons from "@/components/Buttons";
 import {Headset, Home, LockKeyhole} from "lucide-react";
+import {getRateLabel} from "@/utils/rateutils"
 
 
 const BestDeals = () => {
 
-    const getRateLabel = (rate: string) => {
-        const numericRate = parseFloat(rate);
 
-        if (numericRate >= 9.5 && numericRate <= 10) {
-            return "Exceptional";
-        } else if (numericRate >= 8.5 && numericRate < 9.5) {
-            return "Excellent";
-        } else if (numericRate >= 7.5 && numericRate < 8.5) {
-            return "Very Good";
-        } else if (numericRate >= 6.5 && numericRate < 7.5) {
-            return "Good";
-        } else if (numericRate >= 5.5 && numericRate < 6.5) {
-            return "Average";
-        } else {
-            return "Below Average";
-        }
-    };
     const getFinalPrice = (discountPercentage: string, originalPrice: string): string => {
         const finalPrice = parseFloat(originalPrice) * (1 - parseFloat(discountPercentage) / 100);
         return finalPrice.toFixed(2);
@@ -121,7 +106,7 @@ const BestDeals = () => {
                     <div className={"col-span-1 h-fit bg-greenr p-6 rounded-xl text-[#F5F5DC] flex gap-4 items-center"}>
                         <Headset className={"w-fit h-fit"} size={"100"}/>
                         <p className={""}>
-                            Get 24/7 support from a real person in about a minute.                        </p>
+                            Get 24/7 support from a real person in about a minute. </p>
                     </div>
                 </div>
             </div>

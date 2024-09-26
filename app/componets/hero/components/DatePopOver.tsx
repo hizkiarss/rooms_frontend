@@ -13,14 +13,20 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import {useSearchContext} from "@/context/useSearchContext";
 
 export function DatePickerWithRange({
                                         className,
                                     }: React.HTMLAttributes<HTMLDivElement>) {
-    const [date, setDate] = React.useState<DateRange | undefined>({
+    const [date, setDate] = React.useState<DateRange | null>({
         from: new Date(2022, 0, 20),
         to: addDays(new Date(2022, 0, 20), 20),
     })
+    const { dateRange, setDateRange } = useSearchContext();
+    console.log(date)
+    const handleDateRangeSelect = () => {
+        setDateRange(date);
+    }
 
     return (
         <div className={cn("grid gap-2", className)}>
