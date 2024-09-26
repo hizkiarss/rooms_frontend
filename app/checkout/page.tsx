@@ -58,9 +58,9 @@ const Page = () => {
         lastName: values.lastName,
         mobileNumber: values.mobileNumber,
         transactionDetailRequests: {
-          roomId: "1",
-          startDate: formatDate("2024-09-10"),
-          endDate: formatDate("2024-09-11"),
+          roomId: "10",
+          startDate: formatDate("2024-09-26"),
+          endDate: formatDate("2024-09-27"),
         },
       };
       createTransaction.mutate(transactionRequest, {
