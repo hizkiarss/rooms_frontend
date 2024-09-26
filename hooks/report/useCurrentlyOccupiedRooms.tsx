@@ -1,0 +1,37 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { graphqlClient } from "../graphQL/graphqlClient";
+import { CURRENTLY_OCCUPIED_ROOM_BY_PROPERTY_ID } from "../graphQL/queries";
+
+export const useCurrentlyOccupiedRooms = (propertyId: string) => {
+  return useQuery<number | null>({
+    queryKey: ["Occupied-rooms", "PropertyId", propertyId],
+    queryFn: async () => {
+      try {
+        const response = await graphqlClient.request(
+          CURRENTLY_OCCUPIED_ROOM_BY_PROPERTY_ID,
+          { propertyId }
+        );
+        if (!response || !response.occupiedRooms) {
+          throw new Error("No occupied room data in the response");
+        }
+        return response.occupiedRooms;
+      } catch (error) {
+        if (error instanceof Error) {
+          if (
+            (error as any).response?.errors?.[0]?.extensions?.classification ===
+            "NOT_FOUND"
+          ) {
+            return null;
+          }
+          console.error("Error fetching occupied room:", error);
+        } else {
+          console.error("Unexpected error:", error);
+        }
+        throw error;
+      }
+    },
+    enabled: !!propertyId,
+  });
+};

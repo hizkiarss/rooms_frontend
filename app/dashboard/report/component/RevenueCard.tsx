@@ -1,4 +1,5 @@
 "use client";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRevenueByPropertyId } from "@/hooks/report/useRevenueByPropertyId";
 import useSelectedDate from "@/hooks/useSelectedDate";
@@ -10,7 +11,7 @@ const RevenueCard: React.FC = () => {
   const { selectedDates } = useSelectedDate();
   const currentYear = new Date().getFullYear();
 
-  const { data: revenue } = useRevenueByPropertyId(
+  const { data: revenue, isLoading } = useRevenueByPropertyId(
     selectedProperty || "",
     selectedDates?.startDate
       ? new Date(selectedDates.startDate)
@@ -35,9 +36,13 @@ const RevenueCard: React.FC = () => {
         <DollarSign className="w-4" />
       </CardHeader>
       <CardContent className="break-words overflow-auto">
-        <div className="text-2xl font-bold">
-          {formattedRevenue(revenue || 0)}
-        </div>
+        {isLoading ? (
+          <LoadingAnimation />
+        ) : (
+          <div className="text-2xl font-bold">
+            {formattedRevenue(revenue || 0)}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
