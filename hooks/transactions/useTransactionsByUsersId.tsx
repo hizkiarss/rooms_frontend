@@ -27,10 +27,7 @@ export const useTransactionsByUsersId = () => {
           Authorization: `Bearer ${token}`,
         });
         const response = await graphqlClient.request(
-          GET_TRANSACTIONS_BY_USER_ID,
-          {
-            usersId: usersId,
-          }
+          GET_TRANSACTIONS_BY_USER_ID
         );
         console.log("GraphQL response:", response);
 

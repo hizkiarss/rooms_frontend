@@ -2,14 +2,20 @@
 
 import { RoomType } from "@/types/rooms/RoomsType";
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { graphqlClient } from "../graphQL/graphqlClient";
 import { REPORT_ROOMS_BY_PROPERTY } from "../graphQL/queries";
 
 export const usePropertyReportByPropertyId = (propertyId: string) => {
+  const { data: session } = useSession();
   return useQuery<RoomType[] | null>({
     queryKey: ["Property-report-room", "Property", propertyId],
     queryFn: async () => {
       try {
+        const token = session?.accessToken;
+        graphqlClient.setHeaders({
+          Authorization: `Bearer ${token}`,
+        });
         const response = await graphqlClient.request(REPORT_ROOMS_BY_PROPERTY, {
           propertyId: propertyId,
         });

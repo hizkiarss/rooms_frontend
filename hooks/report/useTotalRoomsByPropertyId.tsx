@@ -1,14 +1,20 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { graphqlClient } from "../graphQL/graphqlClient";
 import { TOTAL_ROOMS_BY_PROPERTY } from "../graphQL/queries";
 
 export const useTotalRoomsByPropertyId = (propertyId: string) => {
+  const { data: session } = useSession();
   return useQuery<number | null>({
     queryKey: ["TotalRooms", "PropertyId", propertyId],
     queryFn: async () => {
       try {
+        const token = session?.accessToken;
+        graphqlClient.setHeaders({
+          Authorization: `Bearer ${token}`,
+        });
         const response = await graphqlClient.request(TOTAL_ROOMS_BY_PROPERTY, {
           propertyId,
         });
