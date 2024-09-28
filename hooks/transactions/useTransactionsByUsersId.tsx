@@ -9,20 +9,25 @@ import {
 import { graphqlClient } from "../graphQL/graphqlClient";
 import { TransactionsType } from "@/types/transactions/TransactionsType";
 import useSelectedProperty from "../useSelectedProperty";
+import { useSession } from "next-auth/react";
+import { useFindUserbyEmail } from "../user/useFindUserbyEmail";
 
 export const useTransactionsByUsersId = () => {
-  const usersId = "1";
+  const { data: session } = useSession();
+  const { data: user } = useFindUserbyEmail(session?.user.email);
+  const usersId = user?.id;
 
   return useQuery<TransactionsType[]>({
     queryKey: ["transactions", "user", usersId],
     queryFn: async () => {
       try {
-        console.log("Fetching transactions for propertyId:", usersId);
+        console.log("Fetching transactions for usersId:", usersId);
+        const token = session?.accessToken;
+        graphqlClient.setHeaders({
+          Authorization: `Bearer ${token}`,
+        });
         const response = await graphqlClient.request(
-          GET_TRANSACTIONS_BY_USER_ID,
-          {
-            usersId: usersId,
-          }
+          GET_TRANSACTIONS_BY_USER_ID
         );
         console.log("GraphQL response:", response);
 

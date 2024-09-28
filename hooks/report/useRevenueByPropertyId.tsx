@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { graphqlClient } from "../graphQL/graphqlClient";
 import { REVENUE_BY_PROPERTY } from "../graphQL/queries";
 
@@ -9,14 +10,18 @@ export const useRevenueByPropertyId = (
   startDate: Date,
   endDate: Date
 ) => {
+  const { data: session } = useSession();
   return useQuery<number | null>({
     queryKey: ["Revenue", "property", propertyId, startDate, endDate],
     queryFn: async () => {
       try {
-        // Pastikan tanggal dikonversi dengan benar ke ISO string
-        const startDateISO = startDate.toISOString().split("T")[0]; // Hanya ambil tanggal
+        const startDateISO = startDate.toISOString().split("T")[0];
         const endDateISO = endDate.toISOString().split("T")[0];
-        // Lakukan request GraphQL
+
+        const token = session?.accessToken;
+        graphqlClient.setHeaders({
+          Authorization: `Bearer ${token}`,
+        });
         const response = await graphqlClient.request(REVENUE_BY_PROPERTY, {
           propertyId: propertyId,
           startDate: startDateISO,

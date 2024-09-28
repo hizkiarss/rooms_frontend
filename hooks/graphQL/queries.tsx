@@ -44,8 +44,8 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
 `;
 
 export const GET_TRANSACTIONS_BY_USER_ID = gql`
-  query TransactionsByUsersId($usersId: ID!) {
-    transactionsByUsersId(usersId: $usersId) {
+  query TransactionsByUsersId {
+    transactionsByUsersId {
       id
       bookingCode
       finalPrice

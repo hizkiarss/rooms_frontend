@@ -18,7 +18,7 @@ import { NavigationMenu, NavigationMenuList } from "./ui/navigation-menu";
 const DesktopNavMenu: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter();
-
+  console.log("ini isi nya", session?.user);
   const handleSignout = async () => {
     await signOut({
       redirect: false,
