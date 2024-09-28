@@ -10,8 +10,10 @@ import { graphqlClient } from "../graphQL/graphqlClient";
 import { TransactionsType } from "@/types/transactions/TransactionsType";
 import useSelectedProperty from "../useSelectedProperty";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export const useTransactionsByBookingCode = (bookingCode: string) => {
+  const { data: session } = useSession();
   return useQuery<TransactionsType>({
     queryKey: ["transactions", "bookingCode", bookingCode],
     queryFn: async () => {
@@ -21,6 +23,10 @@ export const useTransactionsByBookingCode = (bookingCode: string) => {
 
       try {
         console.log("Fetching transactions for booking code:", bookingCode);
+        const token = session?.accessToken;
+        graphqlClient.setHeaders({
+          Authorization: `Bearer ${token}`,
+        });
         const response = await graphqlClient.request(
           GET_TRANSACTIONS_BY_BOOKING_CODE,
           { bookingCode }
