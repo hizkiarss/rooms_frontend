@@ -20,11 +20,6 @@ const routes = [
     icon: "Handshake",
   },
   { label: "Review", href: "/dashboard/review", icon: "MessagesSquare" },
-  {
-    label: "Report",
-    href: "/dashboard/report",
-    icon: "FileChartColumnIncreasing",
-  },
 ];
 
 const SidebarRoutes = () => {

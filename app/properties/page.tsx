@@ -4,6 +4,7 @@ import Searchbar from "@/app/properties/components/searchbar";
 import Propertiesitems from "@/app/properties/components/PropertiesItems";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
+import LoginAds from "@/components/LoginAds";
 
 const Page = () => {
     const [isPageLoading, setIsPageLoading] = useState(true);
@@ -21,13 +22,14 @@ const Page = () => {
     }, [isPageLoading]);
 
 
-
     return (
         <div className="px-[150px]">
             {isPageError && <ErrorAnimation />}
             {!isPageError && (
                 <>
                     <Searchbar totalElements={totalProperties} />
+                    <LoginAds/>
+
                     <Propertiesitems setIsPageLoading={setIsPageLoading} setIsPageError={setIsPageError} setTotalProperty={setTotalProperties} />
                 </>
             )}

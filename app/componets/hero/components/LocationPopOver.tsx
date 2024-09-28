@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import {Check, ChevronsUpDown} from "lucide-react";
+import {cn} from "@/lib/utils";
+import {Button} from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -18,13 +18,14 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import useDebounce from "@/hooks/useDebounce";
-import { useFindCityByName } from "@/hooks/city/useFindCityByName";
+import {useFindCityByName} from "@/hooks/city/useFindCityByName";
 import {useSearchContext} from "@/context/useSearchContext";
+import useSearchInput from "@/hooks/useSearchInput";
+import {useEffect} from "react";
 
 interface City {
     id: string;
     name: string;
-    // Add other properties as needed
 }
 
 interface LocationPopOverProps {
@@ -36,21 +37,36 @@ export function LocationPopOver() {
     const [selectedCity, setSelectedCity] = React.useState<City | null>(null);
     const [searchTerm, setSearchTerm] = React.useState<string>("");
     const debouncedSearchTerm = useDebounce<string>(searchTerm, 400);
-    const { data: cityData, error } = useFindCityByName(debouncedSearchTerm);
-    const { location, setLocation } = useSearchContext();
+    const {data: cityData, error} = useFindCityByName(debouncedSearchTerm);
 
-    React.useEffect(() => {
-        if (debouncedSearchTerm) {
-            console.log("Searching for:", debouncedSearchTerm);
-        }
-    }, [debouncedSearchTerm]);
-
-    console.log(selectedCity);
     const handleCitySelect = (city: City) => {
         setSelectedCity(city);
         setOpen(false);
-        setLocation(selectedCity);
     };
+
+    const {searchInput, setSearchInput} = useSearchInput({
+        travellers: null,
+        dateRange: null,
+        location: null,
+        ready: false,
+        searchButtonHit: false,
+        setReady: () => {
+        },
+        setSearchButtonHit: () => {
+        },
+        setTravellers: () => {
+        },
+        setDateRange: () => {
+        },
+        setLocation: () => {
+        },
+    });
+
+    useEffect(() => {
+        if(selectedCity){
+            setSearchInput({...searchInput, location: selectedCity});
+        }
+    }, [selectedCity]);
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -69,7 +85,7 @@ export function LocationPopOver() {
                             <div className="flex text-[16px]">
                                 {selectedCity ? selectedCity.name : "Select location"}
                             </div>
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                         </div>
                     </div>
                 </Button>

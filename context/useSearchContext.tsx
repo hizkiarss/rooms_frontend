@@ -32,7 +32,6 @@ export const SearchProvider: React.FC<React.PropsWithChildren<{}>> = ({ children
     const [travellers, setTravellers] = useState<TravellersType | null>(null);
 
     const search = () => {
-        // Implement your search logic here
         console.log('Searching with:', { location, dateRange, travellers });
     };
 

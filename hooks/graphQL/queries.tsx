@@ -62,6 +62,18 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
         id
         imgUrl
       }
+      transactionDetails {
+        id
+        startDate
+        endDate
+      }
+      reviews {
+        id
+        feedback
+        rating
+        reply
+      }
+      createdAt
     }
   }
 `;
@@ -92,6 +104,23 @@ export const GET_PENDING_PAYMENT_PROOF_BY_PROPERTY_ID = gql`
         paymentMethod
         finalPrice
       }
+      createdAt
+    }
+  }
+`;
+
+export const GET_CHECK_PAYMENT_PROOF_BY_PROPERTY_ID = gql`
+  query CheckPaymentProofByPropertyId($propertyId: ID!) {
+    checkPaymentProofByPropertyId(propertyId: $propertyId) {
+      id
+      imgUrl
+      transaction {
+        id
+        status
+        paymentMethod
+        finalPrice
+      }
+      createdAt
     }
   }
 `;
@@ -124,6 +153,7 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
         profilePicture
         mobileNumber
       }
+      createdAt
     }
   }
 `;
@@ -143,33 +173,78 @@ export const GET_PAYMENT_BY_BOOKING_CODE = gql`
 `;
 
 export const FIND_CITY_BY_NAME = gql`
-query FindCityByName($name: String!) {
-findCityByName(name: $name) {
+  query FindCityByName($name: String!) {
+    findCityByName(name: $name) {
       id
       name
-      }
-}`
-
-export const FIND_USER_BY_EMAIL= gql`
-query FindUserByEmail ($email: String!) {
-    findUserByEmail(email: $email) {
-        id
-        email
-        username
-        profilePicture
-        role
-        mobileNumber
-        gender
-        dateOfBirth
     }
-}`;
+  }
+`;
 
+export const GET_UNREAD_REVIEW_BY_PROPERTY_ID = gql`
+  query UnReadReviewByPropertyId($propertyId: ID!) {
+    unReadReviewByPropertyId(propertyId: $propertyId) {
+      id
+      feedback
+      rating
+      reply
+      isRead
+      properties {
+        id
+        name
+      }
+      users {
+        username
+      }
+    }
+  }
+`;
+
+export const REVIEW_BY_PROPERTY_ID = gql`
+  query ReviewByPropertyId($propertyId: ID!) {
+    reviewByPropertyId(propertyId: $propertyId) {
+      id
+      feedback
+      rating
+      reply
+      users {
+        username
+      }
+      createdAt
+    }
+  }
+`;
+
+export const FIND_USER_BY_EMAIL = gql`
+  query FindUserByEmail($email: String!) {
+    findUserByEmail(email: $email) {
+      id
+      email
+      username
+      profilePicture
+      role
+      mobileNumber
+      gender
+      dateOfBirth
+    }
+  }
+`;
+
+export const REVENUE_BY_PROPERTY = gql`
+  query RevenueByProperty($propertyId: ID!, $startDate: Date, $endDate: Date) {
+    revenueByProperty(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`;
 
 export const GET_FILTERED_PROPERTIES = gql`
   query GetFilteredProperties( $city: String!, $page: Int!, $category: String!, $rating: Float, $startPrice: Float,
-    $endPrice: Float) {
+    $endPrice: Float, $sortBy: String) {
     getFilteredProperties( city: $city, page: $page, category: $category, rating: $rating, startPrice: $startPrice, 
-    endPrice: $endPrice
+    endPrice: $endPrice, sortBy: $sortBy
     ) {
       totalElements
       totalPages

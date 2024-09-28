@@ -13,7 +13,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import {useSearchContext} from "@/context/useSearchContext";
+import useSearchInput from "@/hooks/useSearchInput";
 
 export function DatePickerWithRange({
                                         className,
@@ -22,11 +22,34 @@ export function DatePickerWithRange({
         from: new Date(2022, 0, 20),
         to: addDays(new Date(2022, 0, 20), 20),
     })
-    const { dateRange, setDateRange } = useSearchContext();
-    console.log(date)
-    const handleDateRangeSelect = () => {
-        setDateRange(date);
+
+    const handleSelect = () => {
+        setDate(date)
+        setSearchInput({...searchInput, dateRange: date});
     }
+
+    const {searchInput, setSearchInput} = useSearchInput({
+        travellers: null,
+        dateRange: null,
+        location: null,
+        ready: false,
+        searchButtonHit: false,
+        setReady: () => {
+        },
+        setSearchButtonHit: () => {
+        },
+        setTravellers: () => {
+        },
+        setDateRange: () => {
+        },
+        setLocation: () => {
+        },
+    });
+
+    const handleDateSelect = () => {
+        setSearchInput({...searchInput, dateRange: date});
+    };
+
 
     return (
         <div className={cn("grid gap-2", className)}>
@@ -71,7 +94,7 @@ export function DatePickerWithRange({
                         mode="range"
                         defaultMonth={date?.from}
                         selected={date}
-                        onSelect={setDate}
+                        onSelect={handleSelect}
                         numberOfMonths={2}
                     />
                 </PopoverContent>

@@ -21,7 +21,11 @@ import Image from "next/image";
 import {getRateLabel} from "@/utils/rateutils";
 import {Car, Utensils} from "lucide-react";
 import {useGetFilteredProperties} from "@/hooks/properties/useGetFilteredProperties";
-import {useSearchContext} from "@/context/useSearchContext";
+import useSearchInput from "@/hooks/useSearchInput";
+import {boolean} from "yup";
+import {SearchVariables} from "@/types/properties/PropertiesSearchVariables";
+import {PagedPropertyResult} from "@/types/properties/PagedPropertyResult";
+import {length} from "axios";
 
 
 interface PropertiesItemsProps {
@@ -32,51 +36,81 @@ interface PropertiesItemsProps {
 
 const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsPageLoading, setTotalProperty}) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const {travellers, dateRange, location,} = useSearchContext();
+    const [searchVariables, setSearchVariables] = useState<SearchVariables>({city: ""})
+
+    const {searchInput, setSearchInput} = useSearchInput({
+        travellers: null,
+        dateRange: null,
+        location: null,
+        ready: false,
+        searchButtonHit: false,
+        totalProperties: null,
+        setTotalProperties: () => {
+        },
+        setReady: () => {
+        },
+        setSearchButtonHit: () => {
+        },
+        setTravellers: () => {
+        },
+        setDateRange: () => {
+        },
+        setLocation: () => {
+        },
+    });
 
     useEffect(() => {
-        console.log(travellers, dateRange, location);
-    }, [travellers, dateRange, location]);
+        console.log(searchInput.location, searchInput.travellers, searchInput.dateRange, searchInput.searchButtonHit, searchInput.ready);
+    }, [searchInput]);
 
-    const {data, error, isLoading} = useGetFilteredProperties({
-        city: location?.name,
-        page: currentPage, // Use the current page state
+    const {data, error, isLoading, refetch} = useGetFilteredProperties({
+        city: searchVariables.city || "Jakarta",
+        page: currentPage,
         category: "Hotel",
         rating: null,
         startPrice: null,
         endPrice: null,
     });
 
-    const [itemWidths, setItemWidths] = useState<number[]>([]);
-    const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+    useEffect(() => {
+        if (searchInput.ready) {
+            console.log("YEAHHH BOIII");
+            setSearchVariables({...searchVariables, city: searchInput.location?.name || "Unknown"})
+            refetch();
+        }
+    }, [searchInput.ready]);
+
 
     useEffect(() => {
         setIsPageLoading(isLoading);
         setIsPageError(!!error);
         if (data) {
-            setTotalProperty(data.totalElements)
+            setSearchInput({...searchInput, totalProperties: data && data.properties && data.totalElements})
         }
-    }, [isLoading, error, setIsPageLoading, setIsPageError]);
+        console.log(searchInput.totalProperties)
+    }, [isLoading, error, setIsPageLoading, setIsPageError, data]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
 
-    if (isLoading || !data) {
-        return null;
-    }
+    // if (isLoading) {
+    //     return <div>Loading...</div>;
+    // }
 
-    if (error) {
-        return <div>Error loading properties</div>;
+
+
+    if (!data || !data.properties) {
+        return <div></div>;
     }
 
 
     return (
         <div>
             <div className="grid grid-cols-2 gap-y-4 gap-x-4">
-                {data.properties.map((propertyItem: Property) => (
+                {data && data.properties && data.properties.map((propertyItem: Property) => (
                     <div key={propertyItem.property.id}
-                         className="grid grid-cols-3 rounded-xl border border-slate-500 h-64">
+                         className="grid grid-cols-3 rounded-xl  shadow-custom4 h-64">
                         <Carousel>
                             <CarouselPrevious className="left-2 z-10"/>
                             <CarouselContent>
@@ -129,30 +163,31 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
                             </div>
 
                             <Carousel className="border-t border-slate-500 pt-4 mt-4 text-[15px]">
-                                <CarouselPrevious className={"disabled:hidden left-1 mt-1 z-10"}/>
+                                <CarouselPrevious className={"disabled:hidden left-1  z-10 shadow-custom3 mt-2"}/>
                                 <CarouselContent>
                                     {propertyItem.property.propertyFacilities.map((facility) => (
                                         <CarouselItem key={facility.id}
-                                                      className="basis-auto font-semibold text-greenr h-auto overflow-hidden">
+                                                      className="basis-auto font-semibold text-greenr h-auto overflow-hidden text-sm">
                                             {facility.facilities.name}
                                         </CarouselItem>
                                     ))}
                                 </CarouselContent>
-                                <CarouselNext className={"right-1 mt-1 disabled:hidden"}/>
+
+                                <CarouselNext className={"right-1 mt-2 disabled:hidden shadow-custom2 "}/>
                             </Carousel>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <Pagination className={"mt-20"}>
+            <Pagination className={"my-20"}>
                 <PaginationContent>
                     <PaginationItem>
                         <PaginationPrevious
                             href="#"
                             onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                            aria-disabled={currentPage === data.totalPages}
-                            className={" font-semibold text-greenr "}
+                            aria-disabled={currentPage === 1}
+                            className={"disabled:hidden font-semibold text-greenr "}
                         />
                     </PaginationItem>
                     {Array.from({length: data.totalPages}, (_, index) => (
@@ -171,8 +206,8 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
                         <PaginationNext
                             href="#"
                             onClick={() => currentPage < data.totalPages && handlePageChange(currentPage + 1)}
-                            aria-disabled={currentPage === data.totalPages}
-                            className={"font-semibold text-greenr "}
+                            aria-disabled={currentPage === length}
+                            className={"disabled:hidden font-semibold text-greenr "}
                         />
                     </PaginationItem>
                 </PaginationContent>

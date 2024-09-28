@@ -23,12 +23,13 @@ const validationSchema = Yup.object({
 
 const page = () => {
   const router = useRouter();
+  const { payment: bookingCode } = useParams<{ payment: string }>();
 
   const {
     data: transaction,
     isLoading,
     error,
-  } = useTransactionsByBookingCode();
+  } = useTransactionsByBookingCode(bookingCode);
   const createVirtualAccountCode = useCreateVirtualAccountCode();
   const savePaymentInitial = useSavePaymentIntial();
 
@@ -98,11 +99,17 @@ const page = () => {
             <div className="md:w-7/12 lg:w-8/12 w-full space-y-4">
               {transaction.paymentMethod ===
                 PaymentMethodType.BANK_TRANSFER && (
-                <BankOptionsCard formik={formik} />
+                <BankOptionsCard
+                  createdAt={transaction.createdAt}
+                  formik={formik}
+                />
               )}
               {transaction.paymentMethod ===
                 PaymentMethodType.MANUAL_TRANSFER && (
-                <ManualTransfer totalPrice={transaction.finalPrice} />
+                <ManualTransfer
+                  createdAt={transaction.createdAt}
+                  totalPrice={transaction.finalPrice}
+                />
               )}
               <RoomDetailCard />
             </div>

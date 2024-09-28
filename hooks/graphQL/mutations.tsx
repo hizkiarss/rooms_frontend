@@ -82,6 +82,25 @@ export const SAVE_PAYMENT_INITIAL = gql`
   }
 `;
 
+
+export const CREATE_REVIEW = gql`
+  mutation CreateReview($input: ReviewRequest!) {
+    createReview(input: $input)
+  }
+`;
+
+export const REPLY_REVIEW = gql`
+  mutation ReplyReview($reviewId: ID!, $reply: String!) {
+    replyReview(reviewId: $reviewId, reply: $reply)
+  }
+`;
+
+export const SET_READ_REVIEW = gql`
+  mutation SetReadReview($reviewId: ID!) {
+    setReadReview(reviewId: $reviewId)
+  }
+`;
+
 export const UPLOAD_AVATAR = gql`
   mutation UploadAvatar($email: String!, $imgUrl: String!) {
     uploadAvatar(email: $email, imgUrl: $imgUrl) {
@@ -141,3 +160,4 @@ mutation AddPropertyFacilities($id: ID!, $facilitiesId: [ID!]!) {
         }
     }
 }`;
+

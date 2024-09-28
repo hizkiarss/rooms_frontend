@@ -20,6 +20,10 @@ const config = {
         extend: {
             boxShadow: {
                 custom: '0 3px 8px rgba(0, 0, 0, 0.05), 0 -3px 8px rgba(0, 0, 0, 0.05), 3px 0 8px rgba(0, 0, 0, 0.05), -3px 0 8px rgba(0, 0, 0, 0.05)',
+                custom2: '0 10px 10px rgba(255, 255, 255, 0.8), 0 -10px 10px rgba(255, 255, 255, 0.8), 10px 0 10px rgba(255, 255, 255, 0.8), -20px 0 10px rgba(255, 255, 255, 0.8)',
+                custom3: '0 10px 10px rgba(255, 255, 255, 0.8), 0 -10px 10px rgba(255, 255, 255, 0.8), 20px 0 10px rgba(255, 255, 255, 0.8), -10px 0 10px rgba(255, 255, 255, 0.8)',
+                custom4: '0 3px 8px rgba(0, 0, 0, 0.02), 0 -3px 8px rgba(0, 0, 0, 0.02), 3px 0 8px rgba(0, 0, 0, 0.02), -3px 0 8px rgba(0, 0, 0, 0.02)',
+
             },
             colors: {
                 greenr: "#007989",
