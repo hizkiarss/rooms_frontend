@@ -12,9 +12,11 @@ import { TransactionsType } from "@/types/transactions/TransactionsType";
 import useSelectedProperty from "../useSelectedProperty";
 import { useParams } from "next/navigation";
 import { PaymentType } from "@/types/payment/PaymentType";
+import { useSession } from "next-auth/react";
 
 export const usePaymentByBookingCode = () => {
   const { bookingCode: bookingCode } = useParams<{ bookingCode: string }>();
+  const { data: session } = useSession();
 
   return useQuery<PaymentType>({
     queryKey: ["paymentByBookingCode", bookingCode],
@@ -25,6 +27,10 @@ export const usePaymentByBookingCode = () => {
 
       try {
         console.log("Fetching payment for booking code:", bookingCode);
+        const token = session?.accessToken;
+        graphqlClient.setHeaders({
+          Authorization: `Bearer ${token}`,
+        });
         const response = await graphqlClient.request(
           GET_PAYMENT_BY_BOOKING_CODE,
           { bookingCode }
