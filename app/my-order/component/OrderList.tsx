@@ -1,4 +1,6 @@
 "use client";
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTransactionsByUsersId } from "@/hooks/transactions/useTransactionsByUsersId";
@@ -18,9 +20,10 @@ const OrderList = () => {
     return <LoadingStateAnimation />;
   }
 
-  if (error) {
-    return <p>Error loading transactions: {error.message}</p>;
-  }
+  // if (error) {
+  //   return <ErrorAnimation />;
+  // }
+
   const refreshTransactions = () => {
     refetch();
   };
@@ -33,11 +36,10 @@ const OrderList = () => {
         </CardHeader>
         <Separator className="mb-2" />
         <CardContent className="space-y-4">
-          {transactions &&
+          {transactions && transactions.length > 0 ? (
             transactions.map((transaction) => (
-              <div>
+              <div key={transaction.id}>
                 <OrderListItem
-                  key={transaction.id}
                   bookingCode={transaction.bookingCode}
                   imgUrl={"/img"}
                   totalPrice={transaction.finalPrice}
@@ -51,7 +53,14 @@ const OrderList = () => {
                   review={transaction.reviews}
                 />
               </div>
-            ))}
+            ))
+          ) : (
+            <EmptyDataAnimation
+              message="No transactions so far, but good things are coming!"
+              width={200}
+              height={200}
+            />
+          )}
         </CardContent>
       </Card>
     </div>
