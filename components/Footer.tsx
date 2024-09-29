@@ -26,12 +26,15 @@ const Footer = () => {
     "/register",
     "/forgot-password",
     "/reset-password",
-    "/dashboard",
+    "/dashboard/",
   ]; // Add other paths here
 
-  if (excludedPaths.includes(pathName)) {
+  const isExcluded = excludedPaths.some((path) => pathName.startsWith(path));
+
+  if (isExcluded) {
     return null;
   }
+
   return (
     <section>
       <div className="border-solid border-b-[1px] border-gray-300"></div>
