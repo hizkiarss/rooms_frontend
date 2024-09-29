@@ -1,7 +1,7 @@
-import {NextResponse} from "next/server";
-import type {NextRequest} from "next/server";
-import {auth} from "@/auth"; // Make sure this path is correct
-import {getToken} from "next-auth/jwt";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { auth } from "@/auth"; // Make sure this path is correct
+import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
   const session = await auth();
@@ -9,27 +9,28 @@ export async function middleware(request: NextRequest) {
   console.log("Session:", session); // Debugging statement
 
   // Protect dashboard routes
-  // if (request.nextUrl.pathname.startsWith("/dashboard")) {
-  //     if (!session) {
-  //         console.log("No session, redirecting to login");
-  //         return NextResponse.redirect(new URL("/login", request.url));
-  //     }
+  if (request.nextUrl.pathname.startsWith("/dashboard")) {
+    if (!session) {
+      console.log("No session, redirecting to login");
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
 
-  //     const userRoles = session.user?.roles;
-  //     console.log("User Roles:", userRoles); // Debugging statement
+    const userRoles = session.user?.roles;
+    console.log("User Roles:", userRoles); // Debugging statement
 
-  //     // Ensure that userRoles is treated as an array for consistency
-  //     const hasEventOrganizerRole = Array.isArray(userRoles)
-  //         ? userRoles.includes("ROLE_EVENT_ORGANIZER")
-  //         : userRoles === "ROLE_EVENT_ORGANIZER";
+    // Ensure that userRoles is treated as an array for consistency
+    // const hasEventOrganizerRole = Array.isArray(userRoles)
+    //     ? userRoles.includes("ROLE_EVENT_ORGANIZER")
+    //     : userRoles === "ROLE_EVENT_ORGANIZER";
+    const hasEventOrganizerRole = Array.isArray(userRoles)
+      ? userRoles.includes("TENANT")
+      : userRoles === "TENANT";
 
-  //     if (!hasEventOrganizerRole) {
-  //         console.log(
-  //             "User does not have the ROLE_EVENT_ORGANIZER, redirecting to unauthorized"
-  //         );
-  //         return NextResponse.redirect(new URL("/unauthorized", request.url));
-  //     }
-  // }
+    if (!hasEventOrganizerRole) {
+      console.log("User does not have the TENANT, redirecting to unauthorized");
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  }
 
   if (request.nextUrl.pathname.startsWith("/events")) {
     if (!session) {
@@ -79,6 +80,11 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-
-    matcher: ["/dashboard/:path*", "/login", "/register", "/user/:path*", "/events/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/login",
+    "/register",
+    "/user/:path*",
+    "/events/:path*",
+  ],
 };
