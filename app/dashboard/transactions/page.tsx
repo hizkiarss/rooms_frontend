@@ -7,8 +7,8 @@ const page = () => {
   return (
     <div className="px-5">
       <TransactionTable />
-      <TransactionForm />
-      <TestKirim />
+      {/* <TransactionForm />
+      <TestKirim /> */}
     </div>
   );
 };
