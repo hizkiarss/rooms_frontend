@@ -17,8 +17,8 @@ const Sidebar = () => {
   const { selectedProperty, setSelectedProperty } = useSelectedProperty();
 
   return (
-    <div className="w-full flex flex-col">
-      <div className="w-full px-5 ">
+    <div className="w-full flex flex-col h-full bg-white">
+      <div className="w-full px-5 pt-4">
         <Select
           value={selectedProperty}
           onValueChange={(value) => setSelectedProperty(value)}>
@@ -39,7 +39,7 @@ const Sidebar = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="mt-4 p-3">
+      <div className="mt-4 p-3 flex-grow">
         <SidebarRoutes />
       </div>
     </div>
