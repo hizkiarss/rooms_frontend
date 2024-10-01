@@ -19,7 +19,7 @@ const Footer = () => {
     "/register",
     "/forgot-password",
     "/reset-password",
-    "/dashboard/",
+    "/dashboard",
   ];
 
   const isExcluded = excludedPaths.some((path) => pathName.startsWith(path));
