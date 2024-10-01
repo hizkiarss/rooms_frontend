@@ -1,6 +1,7 @@
 import React from "react";
 import LatestTransactionsCard from "./LatestTransactionsCard";
 import MonthlyTransactionsCard from "./MonthlyTransactionsCard";
+import MostBookedRoomsCard from "./MostBookedRoomsCard";
 import UpcomingBookings from "./UpcomingBookings";
 
 const Overview: React.FC = () => {
@@ -9,6 +10,7 @@ const Overview: React.FC = () => {
       <MonthlyTransactionsCard />
       <UpcomingBookings />
       <LatestTransactionsCard />
+      <MostBookedRoomsCard />
     </div>
   );
 };

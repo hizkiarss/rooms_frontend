@@ -3,11 +3,7 @@ import Overview from "./report/component/Overview";
 import RevenueCard from "./report/component/RevenueCard";
 
 const page = () => {
-  return (
-    <div>
-      <Overview />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default page;

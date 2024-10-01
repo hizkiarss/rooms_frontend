@@ -334,3 +334,9 @@ export const UPCOMING_BOOKINGS_BY_PROPERTY_ID = gql`
     }
   }
 `;
+
+export const MOST_BOOKED_ROOMS = gql`
+  query MostBookedRoomNames($propertyId: ID!) {
+    mostBookedRoomNames(propertyId: $propertyId)
+  }
+`;
