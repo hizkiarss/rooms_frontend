@@ -308,3 +308,29 @@ export const LATEST_TRANSACTIONS_BY_PROPERTY_ID = gql`
     }
   }
 `;
+
+export const UPCOMING_BOOKINGS_BY_PROPERTY_ID = gql`
+  query UpcomingBookings($propertyId: ID!) {
+    upcomingBookings(propertyId: $propertyId) {
+      room {
+        id
+        name
+        roomNumber
+      }
+      users {
+        id
+        email
+      }
+      transactionDetail {
+        id
+        transaction {
+          bookingCode
+          lastName
+          firstName
+        }
+      }
+      startDate
+      endDate
+    }
+  }
+`;

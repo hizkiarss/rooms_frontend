@@ -216,10 +216,17 @@ const OrderListItem: React.FC<OrderListProps> = ({
               paymentProofs &&
               paymentProofs.length === 0 && (
                 <div className="flex flex-col md:flex-row sm:justify-between w-full  gap-2">
-                  <Button
+                  {/* <Button
                     onClick={() => setOpenUploadDialog(true)}
                     className="w-full rounded-lg py-3 text-center">
                     Upload Payment Proof
+                  </Button> */}
+                  <Button
+                    value="Finish Payment"
+                    type="submit"
+                    className="w-full rounded-lg py-3 text-center"
+                    onClick={handlePaymentGateway}>
+                    Finish Payment
                   </Button>
                   <Button
                     onClick={handleCancelClick}

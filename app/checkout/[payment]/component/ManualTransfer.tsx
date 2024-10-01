@@ -1,7 +1,14 @@
 "use client";
+import UploadPaymentProofForm from "@/app/dashboard/payment-confirmation/component/UploadPaymentProofForm";
 import TransactionExpired from "@/components/TransactionExpired";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Tooltip,
@@ -10,20 +17,25 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { AlertCircle, Copy, Info, Shield } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 interface ManualTransferProps {
   totalPrice: number;
   createdAt: string;
+  transactionId?: string;
 }
 
 const ManualTransfer: React.FC<ManualTransferProps> = ({
   totalPrice,
   createdAt,
+  transactionId,
 }) => {
   const accountNumber = "52 6032 2488";
   const formattedTotalPayment = totalPrice.toLocaleString("id-ID");
+  const [openUploadDialog, setOpenUploadDialog] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -57,9 +69,15 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
     navigator.clipboard.writeText(text);
   };
 
+  const handleDialogClose = () => {
+    console.log("Dialog has been closed.");
+
+    router.push("/my-order");
+  };
+
   return (
     <div>
-      <Card className="w-full max-w-3xl mx-auto">
+      <Card className="w-full  max-w-3xl mx-auto">
         <CardHeader className="bg-greenr text-white p-4">
           <CardTitle className="text-lg font-medium">
             {timeLeft == "00:00:00" ? (
@@ -164,6 +182,33 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
           )}
         </CardContent>
       </Card>
+      <Button
+        onClick={() => setOpenUploadDialog(true)}
+        className="w-full mt-5 rounded-lg py-3 text-center">
+        Upload Payment Proof
+      </Button>
+      <Dialog
+        open={openUploadDialog}
+        onOpenChange={(open) => {
+          if (!open) {
+            handleDialogClose();
+          }
+          setOpenUploadDialog(open);
+        }}>
+        <DialogTrigger asChild>
+          <Button className="hidden">Trigger Dialog</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle>
+            {" "}
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+              Upload Payment Proof
+            </h4>
+          </DialogTitle>
+
+          <UploadPaymentProofForm transactionId={transactionId || ""} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

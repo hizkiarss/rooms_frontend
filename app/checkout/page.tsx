@@ -79,7 +79,7 @@ const Page = () => {
   });
 
   return (
-    <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[130px]">
+    <div className="min-h-screen py-4 px-5 sm:px-10 md:px-20 lg:px-[130px]">
       <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl py-3">
         Secure booking — only takes 2 minutes!
       </h1>
