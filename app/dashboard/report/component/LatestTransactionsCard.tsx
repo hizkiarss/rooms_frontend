@@ -17,9 +17,9 @@ const LatestTransactionsCard: React.FC = () => {
     <Card>
       <CardHeader>
         <CardTitle>Recent Bookings</CardTitle>
-        <p className="text-sm text-muted-foreground">
+        {/* <p className="text-sm text-muted-foreground">
           You made 265 transactions this month.
-        </p>
+        </p> */}
       </CardHeader>
       <CardContent>
         <div className="space-y-8">

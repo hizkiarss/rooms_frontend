@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -8,6 +14,7 @@ import {
 import { useMonthlyTransactions } from "@/hooks/report/useMonthlyTransactions";
 import useSelectedProperty from "@/hooks/useSelectedProperty";
 import { MonthlyTransactionsType } from "@/types/transactions/MonthlyTransactionsType";
+import { TrendingDown, TrendingUp } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -58,6 +65,51 @@ const MonthlyTransactionsCard: React.FC = () => {
 
   console.log(fetchedData);
   console.log("ini monthlynya", monthlyTransactions);
+  const currentDate = new Date();
+  const currentMonthIndex = currentDate.getMonth();
+  const monthNames = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMBER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER",
+  ];
+
+  const currentMonthName = monthNames[currentMonthIndex];
+  const lastMonthIndex = currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
+  const lastMonthName = monthNames[lastMonthIndex];
+
+  const currentMonthTransaction =
+    monthlyTransactions?.find(
+      (transaction) => transaction.month === currentMonthName
+    )?.totalTransactions || 0;
+
+  const lastMonthTransaction =
+    monthlyTransactions?.find(
+      (transaction) => transaction.month === lastMonthName
+    )?.totalTransactions || 0;
+
+  const percentageChange = lastMonthTransaction
+    ? ((currentMonthTransaction - lastMonthTransaction) /
+        lastMonthTransaction) *
+      100
+    : 0;
+
+  const isTrendingUp = percentageChange >= 0;
+  const icon = isTrendingUp ? (
+    <TrendingUp className="h-4 w-4" />
+  ) : (
+    <TrendingDown className="h-4 w-4" />
+  );
+  const formattedPercentage = Math.abs(percentageChange).toFixed(0);
+
   return (
     <Card>
       <CardHeader>
@@ -87,6 +139,22 @@ const MonthlyTransactionsCard: React.FC = () => {
           </BarChart>
         </ChartContainer>
       </CardContent>
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="flex gap-2 font-medium leading-none">
+          {isTrendingUp ? (
+            <>
+              Trending up by {formattedPercentage}% {icon}
+            </>
+          ) : (
+            <>
+              Trending down by {formattedPercentage}% {icon}
+            </>
+          )}
+        </div>
+        <div className="leading-none text-muted-foreground">
+          Showing total transaction this year
+        </div>
+      </CardFooter>
     </Card>
   );
 };
