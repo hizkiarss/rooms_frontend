@@ -43,7 +43,9 @@ const Report = () => {
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-3xl font-bold w-1/2">Report</h1>
+      <h4 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
+        Report
+      </h4>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-wrap space-x-2">
