@@ -18,7 +18,9 @@ const Navbar: React.FC = () => {
     "/dashboard",
   ];
 
-  if (excludedPaths.includes(pathName)) {
+  const isExcluded = excludedPaths.some((path) => pathName.startsWith(path));
+
+  if (isExcluded) {
     return null;
   }
 

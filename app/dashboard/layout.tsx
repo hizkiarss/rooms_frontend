@@ -24,7 +24,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
         </Sheet>
       </div>
 
-      <div className="w-full flex relative">
+      <div className="w-full mt-16 flex relative">
         <div className="w-64 border-r border-[#CFCFCF] h-screen fixed hidden lg:block">
           <Sidebar />
         </div>
