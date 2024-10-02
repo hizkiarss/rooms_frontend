@@ -13,7 +13,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
       <div className="lg:hidden w-full border-b ">
         <Sheet>
           <SheetTrigger asChild>
-            <button className="w-full bg-transparent py-3 px-4 flex items-start text-greenr hover:bg-gray-100">
+            <button className="w-full mt-16 bg-transparent py-3 px-4 flex items-start text-greenr hover:bg-gray-100">
               <Menu size={24} />
               <span className="ml-2 font-medium">Menu</span>
             </button>
