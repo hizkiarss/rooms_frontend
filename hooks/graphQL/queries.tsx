@@ -66,6 +66,10 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
         id
         startDate
         endDate
+        rooms {
+          id
+          name
+        }
       }
       reviews {
         id
@@ -306,5 +310,37 @@ export const LATEST_TRANSACTIONS_BY_PROPERTY_ID = gql`
         email
       }
     }
+  }
+`;
+
+export const UPCOMING_BOOKINGS_BY_PROPERTY_ID = gql`
+  query UpcomingBookings($propertyId: ID!) {
+    upcomingBookings(propertyId: $propertyId) {
+      room {
+        id
+        name
+        roomNumber
+      }
+      users {
+        id
+        email
+      }
+      transactionDetail {
+        id
+        transaction {
+          bookingCode
+          lastName
+          firstName
+        }
+      }
+      startDate
+      endDate
+    }
+  }
+`;
+
+export const MOST_BOOKED_ROOMS = gql`
+  query MostBookedRoomNames($propertyId: ID!) {
+    mostBookedRoomNames(propertyId: $propertyId)
   }
 `;

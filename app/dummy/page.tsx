@@ -3,6 +3,7 @@ import { useReviewByPropertyId } from "@/hooks/Review/useReviewByPropertyId";
 import { useUnReadReviewByPropertyId } from "@/hooks/Review/useUnReadReviewByPropertyId";
 import React from "react";
 import UserReviewForm from "../my-order/component/UserReviewForm";
+import LocationDisplay from "./LocationDisplay";
 import LocationPicker from "./LocationPicker";
 import ReviewComponent from "./ReviewComponent";
 
@@ -112,8 +113,9 @@ const page = () => {
     <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[130px]">
       {/* <LocationPicker /> */}
       <ReviewComponent />
+      {/* <LocationDisplay latitude={-6.17511} longitude={106.865036} /> */}
       {/* <UserReviewForm bookingCode="XkAD9nRp" userId="1" propertyId="1" /> */}
-      <SubmitSuccessAnimation message="Review Submited" />
+      {/* <SubmitSuccessAnimation message="Review Submited" /> */}
     </div>
   );
 };

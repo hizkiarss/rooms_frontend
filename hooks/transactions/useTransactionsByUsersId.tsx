@@ -17,7 +17,7 @@ export const useTransactionsByUsersId = () => {
   const { data: user } = useFindUserbyEmail(session?.user.email);
   const usersId = user?.id;
 
-  return useQuery<TransactionsType[]>({
+  return useQuery<TransactionsType[] | null>({
     queryKey: ["transactions", "user", usersId],
     queryFn: async () => {
       try {
@@ -37,7 +37,17 @@ export const useTransactionsByUsersId = () => {
 
         return response.transactionsByUsersId;
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        if (error instanceof Error) {
+          if (
+            (error as any).response?.errors?.[0]?.extensions?.classification ===
+            "NOT_FOUND"
+          ) {
+            return null;
+          }
+          console.error("Error fetching transaction:", error);
+        } else {
+          console.error("Unexpected error:", error);
+        }
         throw error;
       }
     },

@@ -1,10 +1,11 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, User, BedDouble, Info } from "lucide-react";
+import { CalendarDays, User, BedDouble, Info, Moon } from "lucide-react";
 import Image from "next/image";
+import { Separator } from "@/components/ui/separator";
 
-interface ReservationDetailsProps {
+interface ReservationDetailsCardProps {
   orderId: string;
   checkIn: string;
   checkOut: string;
@@ -14,7 +15,7 @@ interface ReservationDetailsProps {
   specialRequests?: string;
 }
 
-const ReservationDetails: React.FC<ReservationDetailsProps> = ({
+const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
   orderId,
   checkIn,
   checkOut,
@@ -24,42 +25,28 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
   specialRequests,
 }) => {
   return (
-    <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[130px]">
+    <div>
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <span>Detail Reservasi</span>
-            <span className="text-sm font-normal">Order ID {orderId}</span>
+            <span>Reservation Details</span>
+            <span className="text-sm font-normal">Booking ID: {orderId}</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-lg flex items-center mb-2">
-            <div className="bg-pink-100 p-2 rounded-lg mr-2">
-              <Image
-                src="/path-to-your-icon.svg"
-                alt="Icon"
-                width={40}
-                height={40}
-              />
-            </div>
-            <div className="flex-col">
-              <div>Property Name</div>
-              <div className="flex gap-2">
-                <div>rating</div>
-                <div>-</div>
-                <div>alamat</div>
-              </div>
-            </div>
-          </div>
           <Card className="w-full">
             <CardContent>
-              <div className="flex justify-between mt-6 mb-6">
+              <div className="flex justify-between items-center mt-6 mb-6">
                 <div className="flex items-center">
                   <CalendarDays className="mr-2" />
                   <div>
                     <p className="font-semibold">Check-in</p>
                     <p>{checkIn}</p>
                   </div>
+                </div>
+                <div className="flex">
+                  <Moon />
+                  <div>2</div>
                 </div>
 
                 <div className="flex items-center">
@@ -70,10 +57,11 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
                   </div>
                 </div>
               </div>
+              <Separator />
 
-              <div className="flex flex-col md:flex-row items-start">
+              <div className="flex my-2 flex-col md:flex-row items-start">
                 <div className="w-full md:w-1/3 mb-4 md:mb-0">
-                  <h3 className="font-semibold mb-2">Detail Tamu</h3>
+                  <h3 className="font-semibold mb-2">Guest Details</h3>
                   <div className="flex items-center">
                     <User className="mr-2" />
                     <p>{guestName}</p>
@@ -81,7 +69,7 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
                 </div>
 
                 <div className="w-full md:w-1/3 mb-4 md:mb-0">
-                  <h3 className="font-semibold mb-2">Kamar</h3>
+                  <h3 className="font-semibold mb-2">Room</h3>
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <BedDouble className="mr-2" />
@@ -97,15 +85,16 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
                 </div>
 
                 <div className="w-full md:w-1/3">
-                  <h3 className="font-semibold mb-2">Fasilitas</h3>
+                  <h3 className="font-semibold mb-2">Facilities</h3>
                   <p>-</p>
                 </div>
               </div>
+              <Separator />
               <div className="flex items-center text-sm text-gray-500 mt-4">
                 <Info className="mr-2" size={16} />
                 <p>
-                  Lihat info lebih lanjut tentang fasilitas kamar di halaman
-                  Detail Kamar.
+                  Check out all the room features waiting for you on the
+                  Accommodation Details page!
                 </p>
               </div>
             </CardContent>
@@ -116,4 +105,4 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
   );
 };
 
-export default ReservationDetails;
+export default ReservationDetailsCard;

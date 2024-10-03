@@ -1,4 +1,6 @@
 "use client";
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTransactionsByUsersId } from "@/hooks/transactions/useTransactionsByUsersId";
@@ -19,41 +21,52 @@ const OrderList = () => {
   }
 
   if (error) {
-    return <p>Error loading transactions: {error.message}</p>;
+    return <ErrorAnimation />;
   }
+
   const refreshTransactions = () => {
     refetch();
   };
 
   return (
     <div className="">
-      <Card className="">
-        <CardHeader>
-          <CardTitle>My Order</CardTitle>
-        </CardHeader>
-        <Separator className="mb-2" />
-        <CardContent className="space-y-4">
-          {transactions &&
-            transactions.map((transaction) => (
-              <div>
-                <OrderListItem
-                  key={transaction.id}
-                  bookingCode={transaction.bookingCode}
-                  imgUrl={"/img"}
-                  totalPrice={transaction.finalPrice}
-                  propertyName={transaction.properties.name}
-                  status={transaction.status}
-                  paymentMethod={transaction.paymentMethod}
-                  transactionId={transaction.id}
-                  paymentProofs={transaction.paymentProofs}
-                  onRefresh={refreshTransactions}
-                  transactionDetails={transaction.transactionDetails[0]}
-                  review={transaction.reviews}
-                />
-              </div>
-            ))}
-        </CardContent>
-      </Card>
+      {transactions && (
+        <Card className="">
+          <CardHeader>
+            <CardTitle>My Order</CardTitle>
+          </CardHeader>
+          <Separator className="mb-2" />
+          <CardContent className="space-y-4">
+            {transactions && transactions.length > 0
+              ? transactions.map((transaction) => (
+                  <div key={transaction.id}>
+                    <OrderListItem
+                      bookingCode={transaction.bookingCode}
+                      imgUrl={"/img"}
+                      totalPrice={transaction.finalPrice}
+                      propertyName={transaction.properties.name}
+                      status={transaction.status}
+                      paymentMethod={transaction.paymentMethod}
+                      transactionId={transaction.id}
+                      paymentProofs={transaction.paymentProofs}
+                      onRefresh={refreshTransactions}
+                      transactionDetails={transaction.transactionDetails[0]}
+                      review={transaction.reviews}
+                      room={transaction.transactionDetails[0].rooms}
+                    />
+                  </div>
+                ))
+              : transactions &&
+                transactions.length === 0 && (
+                  <EmptyDataAnimation
+                    message="No transactions so far, but good things are coming!"
+                    width={200}
+                    height={200}
+                  />
+                )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

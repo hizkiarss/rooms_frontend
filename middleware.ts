@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "@/auth"; // Make sure this path is correct
-import { getToken } from "next-auth/jwt";
+import { auth } from "@/auth";
 
 export async function middleware(request: NextRequest) {
   const session = await auth();
 
-  console.log("Session:", session); // Debugging statement
+  console.log("Session:", session);
 
-  // Protect dashboard routes
   if (request.nextUrl.pathname.startsWith("/dashboard")) {
     if (!session) {
       console.log("No session, redirecting to login");
@@ -16,39 +14,32 @@ export async function middleware(request: NextRequest) {
     }
 
     const userRoles = session.user?.roles;
-    console.log("User Roles:", userRoles); // Debugging statement
-
-    // Ensure that userRoles is treated as an array for consistency
-    // const hasEventOrganizerRole = Array.isArray(userRoles)
-    //     ? userRoles.includes("ROLE_EVENT_ORGANIZER")
-    //     : userRoles === "ROLE_EVENT_ORGANIZER";
-    const hasEventOrganizerRole = Array.isArray(userRoles)
+    const hasTenantRole = Array.isArray(userRoles)
       ? userRoles.includes("TENANT")
       : userRoles === "TENANT";
 
-    if (!hasEventOrganizerRole) {
-      console.log("User does not have the TENANT, redirecting to unauthorized");
+    if (!hasTenantRole) {
+      console.log(
+        "User does not have the TENANT role, redirecting to unauthorized"
+      );
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
   }
 
-  if (request.nextUrl.pathname.startsWith("/events")) {
+  if (request.nextUrl.pathname.startsWith("/checkout")) {
     if (!session) {
       console.log("No session, redirecting to login");
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
     const userRoles = session.user?.roles;
-    console.log("User Roles:", userRoles); // Debugging statement
+    const hasUserRole = Array.isArray(userRoles)
+      ? userRoles.includes("USER")
+      : userRoles === "USER";
 
-    // Ensure that userRoles is treated as an array for consistency
-    const hasEventOrganizerRole = Array.isArray(userRoles)
-      ? userRoles.includes("ROLE_EVENT_ORGANIZER")
-      : userRoles === "ROLE_EVENT_ORGANIZER";
-
-    if (!hasEventOrganizerRole) {
+    if (!hasUserRole) {
       console.log(
-        "User does not have the ROLE_EVENT_ORGANIZER, redirecting to unauthorized"
+        "User does not have the USER role, redirecting to unauthorized"
       );
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
@@ -61,13 +52,9 @@ export async function middleware(request: NextRequest) {
     }
 
     const userRoles = session.user?.roles;
-    console.log("User Roles:", userRoles); // Debugging statement
-
-    // Ensure that userRoles is treated as an array for consistency
     const hasRequiredRole = Array.isArray(userRoles)
-      ? userRoles.includes("ROLE_EVENT_ORGANIZER") ||
-        userRoles.includes("ROLE_USER")
-      : userRoles === "ROLE_EVENT_ORGANIZER" || userRoles === "ROLE_USER";
+      ? userRoles.includes("USER") || userRoles.includes("TENANT")
+      : userRoles === "TENANT" || userRoles === "USER";
 
     if (!hasRequiredRole) {
       console.log(
@@ -82,9 +69,9 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/dashboard/:path*",
+    "/checkout/:path*",
     "/login",
     "/register",
     "/user/:path*",
-    "/events/:path*",
   ],
 };

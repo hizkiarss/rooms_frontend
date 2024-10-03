@@ -15,9 +15,12 @@ const Navbar: React.FC = () => {
     "/forgot-password",
     "/reset-password",
     "/delete-account",
+    "/dashboard",
   ];
 
-  if (excludedPaths.includes(pathName)) {
+  const isExcluded = excludedPaths.some((path) => pathName.startsWith(path));
+
+  if (isExcluded) {
     return null;
   }
 
