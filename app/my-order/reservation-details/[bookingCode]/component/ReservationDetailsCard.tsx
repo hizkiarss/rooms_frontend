@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarDays, User, BedDouble, Info } from "lucide-react";
 import Image from "next/image";
 
-interface ReservationDetailsProps {
+interface ReservationDetailsCardProps {
   orderId: string;
   checkIn: string;
   checkOut: string;
@@ -14,7 +14,7 @@ interface ReservationDetailsProps {
   specialRequests?: string;
 }
 
-const ReservationDetails: React.FC<ReservationDetailsProps> = ({
+const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
   orderId,
   checkIn,
   checkOut,
@@ -24,7 +24,7 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
   specialRequests,
 }) => {
   return (
-    <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[130px]">
+    <div>
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
@@ -116,4 +116,4 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
   );
 };
 
-export default ReservationDetails;
+export default ReservationDetailsCard;

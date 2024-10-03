@@ -1,10 +1,10 @@
 import React from "react";
-import ReservationDetails from "./component/ReservationDetails";
+import ReservationDetailsCard from "./component/ReservationDetailsCard";
 
 const page = () => {
   return (
-    <div>
-      <ReservationDetails
+    <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[130px]">
+      <ReservationDetailsCard
         orderId="orderID"
         checkIn="cekin"
         checkOut="cekot"

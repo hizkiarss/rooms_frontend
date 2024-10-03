@@ -66,6 +66,10 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
         id
         startDate
         endDate
+        rooms {
+          id
+          name
+        }
       }
       reviews {
         id
