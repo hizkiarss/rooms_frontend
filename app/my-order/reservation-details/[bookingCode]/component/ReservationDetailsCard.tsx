@@ -1,18 +1,20 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { CalendarDays, User, BedDouble, Info, Moon } from "lucide-react";
-import Image from "next/image";
+import { CalendarDays, User, BedDouble, Info, Moon, Hotel } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { PropertyFacility } from "@/types/property-facility/PropertyFacilityType";
 
 interface ReservationDetailsCardProps {
   orderId: string;
   checkIn: string;
   checkOut: string;
   guestName: string;
-  roomType: string;
+  bedType: string;
   guestCount: number;
   specialRequests?: string;
+  facility: PropertyFacility[];
+  night: number;
+  roomName: string;
 }
 
 const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
@@ -20,9 +22,11 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
   checkIn,
   checkOut,
   guestName,
-  roomType,
+  bedType,
   guestCount,
-  specialRequests,
+  facility,
+  night,
+  roomName,
 }) => {
   return (
     <div>
@@ -46,7 +50,7 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
                 </div>
                 <div className="flex">
                   <Moon />
-                  <div>2</div>
+                  <div>{night}</div>
                 </div>
 
                 <div className="flex items-center">
@@ -72,13 +76,17 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
                   <h3 className="font-semibold mb-2">Room</h3>
                   <div className="space-y-2">
                     <div className="flex items-center">
+                      <Hotel className="mr-2" />
+                      <p> 1 x {roomName}</p>
+                    </div>
+                    <div className="flex items-center">
                       <BedDouble className="mr-2" />
-                      <p>{roomType}</p>
+                      <p>{bedType}</p>
                     </div>
                     <div className="flex items-center">
                       <User className="mr-2" />
                       <p>
-                        {guestCount} tamu ({guestCount} dewasa)
+                        {guestCount} Guest ({guestCount} Adult)
                       </p>
                     </div>
                   </div>
@@ -86,7 +94,15 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
 
                 <div className="w-full md:w-1/3">
                   <h3 className="font-semibold mb-2">Facilities</h3>
-                  <p>-</p>
+                  {facility && facility.length > 0 ? (
+                    <ul>
+                      {facility.map((item, index) => (
+                        <li key={index}> {item.facilities.name}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>-</p>
+                  )}
                 </div>
               </div>
               <Separator />
