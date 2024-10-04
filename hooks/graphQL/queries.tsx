@@ -43,41 +43,86 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
   }
 `;
 
+// export const GET_TRANSACTIONS_BY_USER_ID = gql`
+//   query TransactionsByUsersId {
+//     transactionsByUsersId {
+//       id
+//       bookingCode
+//       finalPrice
+//       status
+//       paymentMethod
+//       firstName
+//       lastName
+//       mobileNumber
+//       properties {
+//         id
+//         name
+//       }
+//       paymentProofs {
+//         id
+//         imgUrl
+//       }
+//       transactionDetails {
+//         id
+//         startDate
+//         endDate
+//         rooms {
+//           id
+//           name
+//         }
+//       }
+//       reviews {
+//         id
+//         feedback
+//         rating
+//         reply
+//       }
+//       createdAt
+//     }
+//   }
+// `;
+
 export const GET_TRANSACTIONS_BY_USER_ID = gql`
-  query TransactionsByUsersId {
-    transactionsByUsersId {
-      id
-      bookingCode
-      finalPrice
-      status
-      paymentMethod
-      firstName
-      lastName
-      mobileNumber
-      properties {
+  query TransactionsByUsersId($page: Int!, $size: Int!) {
+    transactionsByUsersId(page: $page, size: $size) {
+      content {
         id
-        name
-      }
-      paymentProofs {
-        id
-        imgUrl
-      }
-      transactionDetails {
-        id
-        startDate
-        endDate
-        rooms {
+        bookingCode
+        finalPrice
+        status
+        paymentMethod
+        firstName
+        lastName
+        mobileNumber
+        properties {
           id
           name
         }
+        paymentProofs {
+          id
+          imgUrl
+        }
+        transactionDetails {
+          id
+          startDate
+          endDate
+          rooms {
+            id
+            name
+          }
+        }
+        reviews {
+          id
+          feedback
+          rating
+          reply
+        }
+        createdAt
       }
-      reviews {
-        id
-        feedback
-        rating
-        reply
-      }
-      createdAt
+      pageNumber
+      pageSize
+      totalElements
+      totalPages
     }
   }
 `;
@@ -140,27 +185,85 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
       firstName
       lastName
       mobileNumber
+      createdAt
+      users {
+        id
+        email
+        username
+        mobileNumber
+      }
       properties {
         id
         name
+        description
+        checkInTime
+        checkOutTime
+        address
+        propertyFacilities {
+          id
+          facilities {
+            id
+            name
+            logoUrl
+          }
+        }
+        propertyPictures {
+          id
+          imgUrl
+        }
       }
       transactionDetails {
         id
         price
         startDate
         endDate
+        rooms {
+          id
+          name
+          description
+          roomNumber
+          price
+          includeBreakfast
+          roomArea
+          bedTypes {
+            id
+            name
+          }
+        }
       }
-      users {
-        id
-        email
-        username
-        profilePicture
-        mobileNumber
-      }
-      createdAt
     }
   }
 `;
+// query TransactionsByBookingCode($bookingCode: String!) {
+//   transactionsByBookingCode(bookingCode: $bookingCode) {
+//     id
+//     bookingCode
+//     finalPrice
+//     status
+//     paymentMethod
+//     firstName
+//     lastName
+//     mobileNumber
+//     properties {
+//       id
+//       name
+//     }
+//     transactionDetails {
+//       id
+//       price
+//       startDate
+//       endDate
+//     }
+//     users {
+//       id
+//       email
+//       username
+//       profilePicture
+//       mobileNumber
+//     }
+//     createdAt
+//   }
+// }
 
 export const GET_PAYMENT_BY_BOOKING_CODE = gql`
   query PaymentByBookingCode($bookingCode: String!) {

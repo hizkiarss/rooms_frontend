@@ -1,21 +1,27 @@
-"use client";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Copy, Dot, Info } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
+import { Dot } from "lucide-react";
 import ManualTransferDetails from "./ManualTransferDetails";
+import VirtualAccountDetails from "./VirtualAccountDetails";
 
-const ReservationPaymentCard = () => {
-  const accountNumber = "52 6032 2488";
+interface ReservationPaymentCardProps {
+  propertyName: string;
+  roomName: string;
+  roomPrice: string;
+  totalPrice: string;
+  paymentMethod: string;
+  night: number;
+}
+
+const ReservationPaymentCard: React.FC<ReservationPaymentCardProps> = ({
+  propertyName,
+  roomName,
+  roomPrice,
+  totalPrice,
+  paymentMethod,
+  night,
+}) => {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -27,13 +33,13 @@ const ReservationPaymentCard = () => {
         <div className="flex justify-between">
           <div className="text-lg flex items-center mb-2">
             <div className="flex-col">
-              <div>Property Name</div>
+              <div>{propertyName}</div>
             </div>
           </div>
         </div>
         <Card className="w-full">
           <CardContent className="py-6 space-y-4">
-            <div>Room Name</div>
+            <div>{roomName}</div>
             <Separator />
             <div>Price</div>
             <div className="flex items-center justify-between mt-4">
@@ -41,23 +47,27 @@ const ReservationPaymentCard = () => {
                 <Dot />
                 <div>Night 1 x 1 Room</div>
               </div>
-              <div>IDR 21313</div>
+              <div>IDR {roomPrice}</div>
             </div>
             <div className="flex items-center justify-between mt-4">
               <div className="flex">
                 <Dot />
-                <div>Night 1 x 1 Room</div>
+                <div>Night {night} x 1 Room</div>
               </div>
-              <div>IDR 21313</div>
+              <div>IDR {totalPrice}</div>
             </div>
             <Separator />
             <div>Payment Method</div>
-            <ManualTransferDetails />
+            {paymentMethod === PaymentMethodType.BANK_TRANSFER ? (
+              <VirtualAccountDetails />
+            ) : (
+              <ManualTransferDetails />
+            )}
 
             <Separator />
             <div className="flex items-center justify-between mt-4">
               <div>Total</div>
-              <div>IDR 21313</div>
+              <div>IDR {totalPrice}</div>
             </div>
           </CardContent>
         </Card>
