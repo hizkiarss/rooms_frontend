@@ -15,6 +15,7 @@ interface ReservationDetailsCardProps {
   facility: PropertyFacility[];
   night: number;
   roomName: string;
+  status: string;
 }
 
 const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
@@ -27,6 +28,7 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
   facility,
   night,
   roomName,
+  status,
 }) => {
   return (
     <div>
@@ -34,7 +36,26 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <span>Reservation Details</span>
-            <span className="text-sm font-normal">Booking ID: {orderId}</span>
+            <div className="flex text-sm">
+              <div className="mr-2">
+                {status === "Pending" || status === "Check" ? (
+                  <span className="text-yellow-500 border border-yellow-500 rounded-lg p-1">
+                    {status}
+                  </span>
+                ) : status === "Success" ? (
+                  <span className="text-greenr border border-greenr rounded-lg p-1">
+                    {status}
+                  </span>
+                ) : status === "Cancelled" ||
+                  status === "Rejected" ||
+                  status === "Expired" ? (
+                  <span className="text-red-500 border border-red-500 rounded-lg p-1">
+                    {status}
+                  </span>
+                ) : null}
+              </div>
+              <span className="text-sm font-normal">Booking ID: {orderId}</span>
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>

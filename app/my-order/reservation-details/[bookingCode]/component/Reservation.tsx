@@ -87,6 +87,7 @@ const Reservation: React.FC = () => {
             facility={transaction.properties.propertyFacilities}
             night={dayDifference}
             roomName={transaction.transactionDetails[0].rooms.name}
+            status={transaction.status}
           />
           <ReservationPaymentCard
             propertyName={transaction.properties.name}

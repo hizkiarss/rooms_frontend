@@ -43,41 +43,86 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
   }
 `;
 
+// export const GET_TRANSACTIONS_BY_USER_ID = gql`
+//   query TransactionsByUsersId {
+//     transactionsByUsersId {
+//       id
+//       bookingCode
+//       finalPrice
+//       status
+//       paymentMethod
+//       firstName
+//       lastName
+//       mobileNumber
+//       properties {
+//         id
+//         name
+//       }
+//       paymentProofs {
+//         id
+//         imgUrl
+//       }
+//       transactionDetails {
+//         id
+//         startDate
+//         endDate
+//         rooms {
+//           id
+//           name
+//         }
+//       }
+//       reviews {
+//         id
+//         feedback
+//         rating
+//         reply
+//       }
+//       createdAt
+//     }
+//   }
+// `;
+
 export const GET_TRANSACTIONS_BY_USER_ID = gql`
-  query TransactionsByUsersId {
-    transactionsByUsersId {
-      id
-      bookingCode
-      finalPrice
-      status
-      paymentMethod
-      firstName
-      lastName
-      mobileNumber
-      properties {
+  query TransactionsByUsersId($page: Int!, $size: Int!) {
+    transactionsByUsersId(page: $page, size: $size) {
+      content {
         id
-        name
-      }
-      paymentProofs {
-        id
-        imgUrl
-      }
-      transactionDetails {
-        id
-        startDate
-        endDate
-        rooms {
+        bookingCode
+        finalPrice
+        status
+        paymentMethod
+        firstName
+        lastName
+        mobileNumber
+        properties {
           id
           name
         }
+        paymentProofs {
+          id
+          imgUrl
+        }
+        transactionDetails {
+          id
+          startDate
+          endDate
+          rooms {
+            id
+            name
+          }
+        }
+        reviews {
+          id
+          feedback
+          rating
+          reply
+        }
+        createdAt
       }
-      reviews {
-        id
-        feedback
-        rating
-        reply
-      }
-      createdAt
+      pageNumber
+      pageSize
+      totalElements
+      totalPages
     }
   }
 `;
