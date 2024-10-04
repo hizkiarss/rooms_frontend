@@ -203,7 +203,6 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
                     <div key={propertyItem.property.id}
                          className="grid grid-cols-3 rounded-xl border-[1.5px] border-slate-200 h-64 bg-white"
                          onClick={() => {
-                             console.log(searchInput.travellers, searchInput.dateRange, "KONTOLLLLLLLLL")
                              handleClick(propertyItem.property.slug);
                          }}>
                         <Carousel>

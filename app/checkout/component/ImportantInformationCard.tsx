@@ -19,7 +19,7 @@ const ImportantInformationCard = () => {
               property offers transfers from the ferry terminal (surcharges may
               apply). To arrange pick-up, guests must contact the property 72
               hours prior to arrival, using the contact information on the
-              booking confirmation. This property doesn't offer after-hours
+              booking confirmation. This property doesn&apos;t offer after-hours
               check-in. To make arrangements for check-in please contact the
               property at least 72 hours before arrival using the information on
               the booking confirmation. Guests must contact the property in
@@ -28,7 +28,7 @@ const ImportantInformationCard = () => {
               using the information on the booking confirmation.
             </li>
             <li>
-              This property hosts an optional New Year's Eve gala dinner for
+              This property hosts an optional New Year&apos;s Eve gala dinner for
               guests staying on December 31, 2024. Guests who wish to attend
               must book the gala dinner at least 7 days in advance. Fees are THB
               3,600 per adult and THB 1,800 per child ages 2-11, collected by

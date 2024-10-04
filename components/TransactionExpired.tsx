@@ -7,7 +7,7 @@ const TransactionExpired = () => {
       </p>
       <p className="mt-4 text-sm">
         Unfortunately, the payment window for this transaction has closed, and
-        the reserved price is no longer available. Don't worry, you can easily
+        the reserved price is no longer available. Don&apos;t worry, you can easily
         reinitiate your order by going back to the properties page!
       </p>
     </div>
