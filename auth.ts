@@ -41,30 +41,40 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                                     }
                                 }
                             `,
-              variables: {
-                email: credentials.email,
-                password: credentials.password,
-              },
-            },
-            {
-              headers: { "Content-Type": "application/json" },
-            }
-          );
-          console.log(response);
-          const { data } = response;
 
-          if (data.errors) {
-            console.log("error");
-            const errorMessage = data.errors[0]?.message;
-            switch (errorMessage) {
-              case "Unauthorized":
-                throw new Error("Invalid_Credentials");
-              case "User not found":
-                throw new Error("user_not_found");
-              default:
-                throw new Error("UNEXPECTED_ERROR");
-            }
-          }
+                            variables: {
+                                email: credentials.email,
+                                password: credentials.password,
+                            },
+                        },
+                        {
+                            headers: {"Content-Type": "application/json"},
+                        }
+                    );
+                    console.log(response)
+                    const {data} = response;
+
+
+                    if (data.errors) {
+                        console.log("error")
+                        const errorMessage = data.errors[0]?.message;
+                        return {
+                            error: errorMessage,
+                            id: "",
+                            email: "",
+                            roles: [],
+                            token: "",
+                        }
+                        // switch (errorMessage) {
+                        //     case "Unauthorized":
+                        //         throw new  Error("Invalid_Credentials");
+                        //     case "User not found":
+                        //         throw new Error("user_not_found");
+                        //     default:
+                        //         throw new Error("UNEXPECTED_ERROR");
+                        // }
+                    }
+
 
           const { token, role } = data.data.login;
 
@@ -126,21 +136,44 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           const { token, role } = data.data.googleLogin;
 
-          if (token) {
-            return {
-              id: token.email as string, // You might need to adjust this based on your data
-              email: token.email,
-              roles: [role],
-              token: token,
-            };
-          } else {
-            throw new Error("Invalid response from server");
-          }
-        } catch (error) {
-          console.error("Failed to authenticate with backend:", error);
+
+                    if (token) {
+                        return {
+                            id: token.email as string, // You might need to adjust this based on your data
+                            email: token.email,
+                            roles: [role],
+                            token: token,
+                        };
+                    } else {
+                        throw new Error("Invalid response from server");
+                    }
+                } catch (error) {
+                    console.error("Failed to authenticate with backend:", error);
+                }
+            }
+            return token;
+        },
+        async session({session, token}) {
+            if (session.user) {
+                session.user.id = token.id as string;
+                session.user.email = token.email as string;
+                session.user.roles = token.roles as string | string[];
+                session.accessToken = token.accessToken as string;
+            }
+            return session;
+        },
+
+        async signIn({user}) {
+            if (user.error?.length !== 0) {
+                return "/login?error=" + user.error
+            }
+            return true;
         }
-      }
-      return token;
+    },
+    pages: {
+        signIn: "/login",
+        error: "/login",
+
     },
     async session({ session, token }) {
       if (session.user) {

@@ -16,4 +16,5 @@ export type PropertiesType = {
   reviews: ReviewType[];
   propertyFacilities: PropertyFacility[];
   propertyPictures: PropertyPicturesType[];
+  slug: string
 };

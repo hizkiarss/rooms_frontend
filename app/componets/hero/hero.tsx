@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import hero from "../../../public/homepage/hero.png"
 import Image from "next/image";
 import Buttons from "@/components/Buttons";
@@ -8,7 +8,9 @@ import {CalendarSearch, LocateIcon, MapPin, UserRound} from "lucide-react";
 import TravellerPopOver from "@/app/componets/hero/components/TravellerPopOver";
 import {DatePickerWithRange} from "@/app/componets/hero/components/DatePopOver";
 import {LocationPopOver} from "@/app/componets/hero/components/LocationPopOver";
-
+import useSearchInput from "@/hooks/useSearchInput";
+import {useRouter} from "next/navigation";
+import * as sea from "node:sea";
 
 
 
@@ -23,12 +25,83 @@ const Hero = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const {searchInput, setSearchInput} = useSearchInput({
+        travellers: null,
+        dateRange: null,
+        location: null,
+        ready: false,
+        searchButtonHit: false,
+        totalProperties: null,
+        endPrice: null,
+        startPrice: null,
+        sortBy: null,
+        category: null,
+        includeBreakfast: null,
+        rating: null,
+        travellersParam: null,
+        cityParam: null,
+        dateRangeParam: null,
+        isHomepage: null,
+        setIsHomepage: () => {
+        },
+        setCityParam: () => {
+        },
+        setDateRangeParam: () => {
+        },
+        setTravellersParam: () => {
+        },
+        setRating: () => {
+        },
+        setIncludeBreakfast: () => {
+        },
+        setCategory: () => {
+        },
+        setEndPrice: () => {
+        },
+        setStartPrice: () => {
+        },
+        setSortBy: () => {
+        },
+        setTotalProperties: () => {
+        },
+        setReady: () => {
+        },
+        setSearchButtonHit: () => {
+        },
+        setTravellers: () => {
+        },
+        setDateRange: () => {
+        },
+        setLocation: () => {
+        },
+    });
+
+
+    useEffect(() => {
+        console.log(searchInput.cityParam);
+        console.log(searchInput.dateRangeParam);
+        console.log(searchInput.travellersParam);
+    }, [searchInput]);
+
+    const handleSearchClick = () => {
+
+        const queryParams = new URLSearchParams({
+            city: searchInput.cityParam || '',
+            from: searchInput.dateRangeParam?.from?.toString() || '',
+            to: searchInput.dateRangeParam?.to?.toString() || '',
+            adult: searchInput.travellersParam?.adults?.toString() || '',
+            children: searchInput.travellersParam?.children?.toString() || '',
+        }).toString();
+        window.location.href = `/properties?${queryParams}`;
+    };
     return (
         <div className={"w-full"}>
             <div
                 className="bg-[url('/homepage/hero.png')] bg-cover bg-bottom bg-black bg-blend-overlay bg-opacity-30 w-full h-[584px] flex flex-col gap-5 justify-center px-[130px]">
                 <h1 className={"font-semibold text-7xl text-white"}> Your stay, your way.</h1>
-                <div className={`w-[1440px] fixed top-[340px] flex gap-20 bg-white p-2 border rounded-2xl z-10 transition-transform ${isSticky ? '-translate-y-80' : 'translate-y-full'}`}>
+                <div
+                    className={`w-[1440px] fixed top-[340px] flex gap-20 bg-white p-2 border rounded-2xl z-10 transition-transform ${isSticky ? '-translate-y-80' : 'translate-y-full'}`}>
                     <div className={"grid grid-cols-10 gap-4 justify-center items-center py-[6px] px-4 w-full "}>
                         <div
                             className={"col-span-3 border border-black rounded-xl px-3 py-2 flex gap-2 items-center hover:bg-slate-100"}>
@@ -49,7 +122,7 @@ const Hero = () => {
                         </div>
 
                         <div className={"col-span-1 flex justify-center"}>
-                            <Buttons value={"Search"} className={"text-xl"}/>
+                            <Buttons value={"Search"} className={"text-xl"} onClick={handleSearchClick}/>
                         </div>
 
                     </div>

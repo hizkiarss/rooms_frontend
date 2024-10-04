@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { ReviewType } from "@/types/review/ReviewType";
 import { getRatingDescription } from "@/types/review/GetRatingDescription";
+import Buttons from "@/components/Buttons";
 interface ReviewCarouselProps {
   reviews: ReviewType[];
 }
@@ -39,7 +40,8 @@ const ReviewPopup: React.FC<ReviewCarouselProps> = ({ reviews }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">See all reviews</Button>
+        <Buttons className={"!text-greenr bg-white hover:!bg-greenr hover:!text-white"} value={"See all reviews"}/>
+        {/*<Button variant="outline">S</Button>*/}
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogHeader>

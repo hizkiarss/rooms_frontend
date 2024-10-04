@@ -1,25 +1,29 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
+
 import Image from "next/image";
 import circle_png from "@/public/login/circle.png";
 import google_logo from "@/public/login/google-logo.png";
 import logo from "@/public/logo.png";
-import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {signIn, useSession} from "next-auth/react";
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
 import LoginErrorPopUp from "@/app/login/components/LoginErrorPopUp";
 import Buttons from "@/components/Buttons";
 
 const Page = () => {
-  const router = useRouter();
-  const { data: session, status } = useSession();
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [openErrorPopUp, setOpenErrorPopUp] = useState(false);
 
-  const closeErrorPopUp = () => setOpenErrorPopUp(false);
+  
+    const router = useRouter();
+   const { data: session, status } = useSession();
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [openErrorPopUp, setOpenErrorPopUp] = useState(false);
+    const search = useSearchParams()
+    const closeErrorPopUp = () => setOpenErrorPopUp(false);
+
 
   const initialValues = {
     email: "",
@@ -63,24 +67,26 @@ const Page = () => {
     }
   };
 
-  const handleSubmitGoogle = async () => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      const result = await signIn("google", { redirect: false });
-      if (result?.error) {
-        setError("Login Failed. Please try again.");
-        console.error(result?.error);
-      } else if (result?.ok) {
-        router.push("/");
-      }
-    } catch (error) {
-      console.error("An unexpected error occurred:", error);
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
+    const handleSubmitGoogle = async () => {
+        setError(null);
+        setIsLoading(true);
+        try {
+            const result = await signIn("google", {redirect: false});
+            if (result?.error) {
+                setError("Login Failed. Please try again.");
+                console.error(result?.error);
+            } else if (result?.ok) {
+                router.push("/");
+            }
+        } catch (error) {
+            console.error("An unexpected error occurred:", error);
+            setError("An unexpected error occurred. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -186,6 +192,7 @@ const Page = () => {
               <Image src={circle_png} alt="circle.png" />
             </div>
           </div>
+
 
           <div className="hidden md:block absolute top-0 -left-10 w-[400px] h-[400px] overflow-hidden">
             <div className="absolute -top-52 -left-[250px] w-[400px] h-[400px]">

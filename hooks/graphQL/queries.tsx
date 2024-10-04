@@ -1,5 +1,5 @@
 "use client";
-import { gql } from "graphql-request";
+import {gql} from "graphql-request";
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions {
@@ -265,6 +265,7 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
 //   }
 // }
 
+
 export const GET_PAYMENT_BY_BOOKING_CODE = gql`
   query PaymentByBookingCode($bookingCode: String!) {
     paymentByBookingCode(bookingCode: $bookingCode) {
@@ -345,6 +346,7 @@ export const REVENUE_BY_PROPERTY = gql`
     )
   }
 `;
+
 
 export const TOTAL_ROOMS_BY_PROPERTY = gql`
   query TotalRoom($propertyId: ID!) {
@@ -447,3 +449,111 @@ export const MOST_BOOKED_ROOMS = gql`
     mostBookedRoomNames(propertyId: $propertyId)
   }
 `;
+
+export const GET_FILTERED_PROPERTIES = gql`
+  query GetFilteredProperties( $city: String!, $page: Int!, $category: String!, $rating: Float, $startPrice: Float,
+    $endPrice: Float, $sortBy: String) {
+    getFilteredProperties( city: $city, page: $page, category: $category, rating: $rating, startPrice: $startPrice, 
+    endPrice: $endPrice, sortBy: $sortBy
+    ) {
+      totalElements
+      totalPages
+      pageSize
+      properties {
+        price
+        isBreakfast
+        property {
+          id
+          name
+          description
+          checkInTime
+          checkOutTime
+          address
+          totalReview
+          averageRating
+          slug
+          propertyCategories {
+            id
+            name
+          }
+          propertyFacilities {
+            id
+            facilities {
+              id
+              name
+            }
+          }
+          propertyPictures {
+            id
+            imgUrl
+          }
+        }
+      }
+    }
+  }
+`;
+
+
+export const GET_PROPERTIES_BY_SLUG = gql`
+  query GetPropertiesBySlug($slug: String!) {
+    getPropertiesBySlug(slug: $slug) {
+      id
+      name
+      description
+      checkInTime
+      checkOutTime
+      address
+      totalReview
+      averageRating
+      propertyFacilities {
+        id
+        facilities {
+          id
+          name
+          logoUrl
+        }
+      }
+      propertyPictures {
+        id
+        imgUrl
+      }
+      propertyCategories {
+        id
+        name
+      }
+       city {
+            id
+            name
+        }
+    }
+  }
+`;
+
+export const GET_AVAILABLE_ROOMS = gql`
+  query GetAvailableRooms($checkinDate: Date!, $checkOutDate: Date!, $propertyId: ID!) {
+    getAvailableRooms(checkinDate: $checkinDate, checkOutDate: $checkOutDate, propertyId: $propertyId) {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+      bedTypes {
+        id
+        name
+      }
+      roomPictures {
+            id
+            imgUrl
+        }
+    }
+  }
+`;
+
+
+
+
