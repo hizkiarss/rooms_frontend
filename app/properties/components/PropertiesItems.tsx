@@ -24,7 +24,7 @@ import {useGetFilteredProperties} from "@/hooks/properties/useGetFilteredPropert
 import useSearchInput from "@/hooks/useSearchInput";
 import {boolean, date} from "yup";
 import {SearchVariables} from "@/types/properties/PropertiesSearchVariables";
-import {length} from "axios";
+// import {length} from "axios";
 import {useSearchParams} from "next/navigation";
 
 interface PropertiesItemsProps {
