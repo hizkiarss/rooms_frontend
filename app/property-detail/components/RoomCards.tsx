@@ -13,6 +13,7 @@ import {getAmenityLabel} from "@/utils/FacilityLogoUtils";
 import {BedDouble, Grid3X3, UsersRound, Utensils} from "lucide-react";
 import Buttons from "@/components/Buttons";
 import {RoomType} from "@/types/rooms/RoomsType";
+import {useSearchParams} from "next/navigation";
 
 
 const amenities = [
@@ -33,8 +34,24 @@ const RoomCards = ({data}: { data: RoomType }) => {
         console.log(data)
         console.log(data.name)
     }, []);
+
+    const params = useSearchParams()
+    const handleClick =(roomSlug :string)=>{
+        const queryParams = new URLSearchParams({
+            property: params.get("slugs") || '',
+            room: roomSlug,
+            from:  params.get("from")|| '',
+            to: params.get("to") || '',
+            adult: params.get("adult") || '',
+            children: params.get("children") || '',
+        }).toString();
+        window.location.href = `/checkout?${queryParams}`;
+    };
+
     return (
-        <div className={"rounded-lg border border-slate-300 h-fit "}>
+        <div className={"rounded-lg border border-slate-300 h-fit "}
+            onClick={()=> handleClick(data.slug)}
+        >
             <Carousel className={""}>
                 <CarouselContent className={"h-[200px]"}>
                     {data.roomPictures && data.roomPictures.length > 0 ? (
