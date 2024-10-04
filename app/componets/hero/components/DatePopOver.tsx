@@ -8,25 +8,15 @@ import {DateRange} from "react-day-picker"
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
 import {Calendar} from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import useSearchInput from "@/hooks/useSearchInput";
+import {useEffect, useState} from "react";
+import {useSearchParams} from "next/navigation";
 
 export function DatePickerWithRange({
                                         className,
                                     }: React.HTMLAttributes<HTMLDivElement>) {
-    const [date, setDate] = React.useState<DateRange | null>({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
-    })
-
-    const handleSelect = () => {
-        setDate(date)
-        setSearchInput({...searchInput, dateRange: date});
-    }
+    const [isHomepage, setIsHomepage] = useState<boolean>(false);
 
     const {searchInput, setSearchInput} = useSearchInput({
         travellers: null,
@@ -34,6 +24,39 @@ export function DatePickerWithRange({
         location: null,
         ready: false,
         searchButtonHit: false,
+        totalProperties: null,
+        endPrice: null,
+        startPrice: null,
+        sortBy: null,
+        category: null,
+        includeBreakfast: null,
+        rating: null,
+        travellersParam: null,
+        cityParam: null,
+        dateRangeParam: null,
+        isHomepage: null,
+        setIsHomepage: () => {
+        },
+        setCityParam: () => {
+        },
+        setDateRangeParam: () => {
+        },
+        setTravellersParam: () => {
+        },
+        setRating: () => {
+        },
+        setIncludeBreakfast: () => {
+        },
+        setCategory: () => {
+        },
+        setEndPrice: () => {
+        },
+        setStartPrice: () => {
+        },
+        setSortBy: () => {
+        },
+        setTotalProperties: () => {
+        },
         setReady: () => {
         },
         setSearchButtonHit: () => {
@@ -46,9 +69,24 @@ export function DatePickerWithRange({
         },
     });
 
-    const handleDateSelect = () => {
-        setSearchInput({...searchInput, dateRange: date});
+    const handleSelect = (selected: DateRange | undefined) => {
+        setDate(selected || null);
+        setSearchInput({...searchInput, dateRangeParam: selected || null});
     };
+
+    const [date, setDate] = React.useState<DateRange | null>(() => {
+        if (searchInput.dateRangeParam?.from || searchInput.dateRangeParam?.to) {
+            console.log("uhuyyyyy")
+            return searchInput.dateRangeParam;
+        }
+        // Default to today and tomorrow
+        return {
+            from: new Date(),
+            to: addDays(new Date(), 1),
+        };
+    });
+
+
 
 
     return (
@@ -67,7 +105,16 @@ export function DatePickerWithRange({
                             <CalendarIcon className="mr-2 h-6 w-6"/>
                             <div className="flex flex-col items-start">
                                 <p>Pick a date</p>
-                                {date?.from ? (
+                                {searchInput.dateRangeParam?.from ? (
+                                    searchInput.dateRangeParam.to ? (
+                                        <>
+                                            {format(searchInput.dateRangeParam.from, "LLL dd, y")} -{" "}
+                                            {format(searchInput.dateRangeParam.to, "LLL dd, y")}
+                                        </>
+                                    ) : (
+                                        format(searchInput.dateRangeParam.from, "LLL dd, y")
+                                    )
+                                ) : date?.from ? (
                                     date.to ? (
                                         <>
                                             {format(date.from, "LLL dd, y")} -{" "}
@@ -76,16 +123,11 @@ export function DatePickerWithRange({
                                     ) : (
                                         format(date.from, "LLL dd, y")
                                     )
-
-                                    //     : (
-                                    //     <span>Pick a date</span>
-                                    // )
-                                ) : ("")}
-
+                                ) : (
+                                    ""
+                                )}
                             </div>
                         </div>
-
-
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -94,11 +136,11 @@ export function DatePickerWithRange({
                         mode="range"
                         defaultMonth={date?.from}
                         selected={date}
-                        onSelect={handleSelect}
+                        onSelect={handleSelect} // Pass selected date to handleSelect
                         numberOfMonths={2}
                     />
                 </PopoverContent>
             </Popover>
         </div>
-    )
+    );
 }

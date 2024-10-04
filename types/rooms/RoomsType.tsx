@@ -1,5 +1,6 @@
 import { BedTypesType } from "../bed-types/BedTypesType";
 import { PropertiesType } from "../properties/PropertiesType";
+import {RoomPictureType} from "@/types/room-picture/RoomPictureType";
 
 export type RoomType = {
   id: string;
@@ -14,4 +15,6 @@ export type RoomType = {
   includeBreakfast: Boolean;
   bedTypes: BedTypesType;
   roomArea: number;
+  roomPictures: RoomPictureType[];
+  slug: string;
 };

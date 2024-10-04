@@ -10,6 +10,8 @@ interface GetFilteredPropertiesVariables {
     rating?: number | null;
     startPrice?: number | null;
     endPrice?: number | null;
+    isBreakfast?: boolean | null;
+    sortBy?: string | null;
 }
 
 export function useGetFilteredProperties(variables: GetFilteredPropertiesVariables) {

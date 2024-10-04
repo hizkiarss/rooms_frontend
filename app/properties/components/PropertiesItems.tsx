@@ -22,11 +22,10 @@ import {getRateLabel} from "@/utils/rateutils";
 import {Car, Utensils} from "lucide-react";
 import {useGetFilteredProperties} from "@/hooks/properties/useGetFilteredProperties";
 import useSearchInput from "@/hooks/useSearchInput";
-import {boolean} from "yup";
+import {boolean, date} from "yup";
 import {SearchVariables} from "@/types/properties/PropertiesSearchVariables";
-import {PagedPropertyResult} from "@/types/properties/PagedPropertyResult";
 import {length} from "axios";
-
+import {useSearchParams} from "next/navigation";
 
 interface PropertiesItemsProps {
     setIsPageLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,6 +44,39 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
+        endPrice: null,
+        startPrice: null,
+        sortBy: null,
+        category: null,
+        includeBreakfast: null,
+        rating: null,
+        cityParam: null,
+        dateRangeParam: null,
+        travellersParam: null,
+        isHomepage: null,
+        closed: null,
+        setClosed: () => {
+        },
+        setIsHomepage: () => {
+        },
+        setCityParam: () => {
+        },
+        setTravellersParam: () => {
+        },
+        setDateRangeParam: () => {
+        },
+        setRating: () => {
+        },
+        setIncludeBreakfast: () => {
+        },
+        setCategory: () => {
+        },
+        setEndPrice: () => {
+        },
+        setStartPrice: () => {
+        },
+        setSortBy: () => {
+        },
         setTotalProperties: () => {
         },
         setReady: () => {
@@ -59,26 +91,68 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         },
     });
 
-    useEffect(() => {
-        console.log(searchInput.location, searchInput.travellers, searchInput.dateRange, searchInput.searchButtonHit, searchInput.ready);
-    }, [searchInput]);
 
-    const {data, error, isLoading, refetch} = useGetFilteredProperties({
-        city: searchVariables.city || "Jakarta",
+    const params = useSearchParams();
+    const cityParam = params.get('city');
+    const ratingParam = params.get('rating');
+    const categoryParam = params.get('category');
+    const startPriceParam = params.get('startPrice');
+    const endPriceParam = params.get('endPrice');
+    const isBreakfastParam = params.get('includeBreakfast');
+    const sortByParam = params.get('sortBy')
+    const rating = ratingParam ? parseFloat(ratingParam) : null;
+    const startPrice = startPriceParam ? parseFloat(startPriceParam) : null;
+    const endPrice = endPriceParam ? parseFloat(endPriceParam) : null;
+
+    const {data, error, isLoading} = useGetFilteredProperties({
+        city: cityParam || "Jakarta",
         page: currentPage,
-        category: "Hotel",
-        rating: null,
-        startPrice: null,
-        endPrice: null,
+        category: categoryParam || "Hotel",
+        rating: rating || null,
+        startPrice: startPrice || null,
+        endPrice: endPrice || null,
+        isBreakfast: isBreakfastParam ? true : null,
+        sortBy: sortByParam || null
     });
 
+
     useEffect(() => {
-        if (searchInput.ready) {
-            console.log("YEAHHH BOIII");
-            setSearchVariables({...searchVariables, city: searchInput.location?.name || "Unknown"})
-            refetch();
+        if (searchInput.searchButtonHit) {
+            const queryParams = new URLSearchParams(
+                {
+                    city: searchInput.cityParam || '',
+                    from: searchInput.dateRangeParam?.from?.toString() || '',
+                    to: searchInput.dateRangeParam?.to?.toString() || '',
+                    adult: searchInput.travellersParam?.adults?.toString() || '',
+                    children: searchInput.travellersParam?.children?.toString() || '',
+                });
+            if (searchInput.startPrice) {
+                queryParams.append('startPrice', searchInput.startPrice.toString())
+            }
+            if (searchInput.endPrice) {
+                queryParams.append('endPrice', searchInput.endPrice.toString());
+            }
+            if (searchInput.category) {
+                console.log("category")
+                queryParams.append('category', searchInput.category)
+            }
+            if (searchInput.includeBreakfast) {
+                queryParams.append('includeBreakfast', 'true')
+            }
+            if (searchInput.rating) {
+                queryParams.append('rating', searchInput.rating.toString())
+            }
+            if (searchInput.sortBy) {
+                queryParams.append('sortBy', searchInput.sortBy)
+            }
+
+            const queryString = queryParams.toString();
+            window.location.href = `/properties?${queryString}`;
+
         }
-    }, [searchInput.ready]);
+        setSearchInput({...searchInput, searchButtonHit: false});
+
+    }, [searchInput.searchButtonHit]);
 
 
     useEffect(() => {
@@ -94,23 +168,44 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         setCurrentPage(page);
     };
 
-    // if (isLoading) {
-    //     return <div>Loading...</div>;
-    // }
-
-
-
     if (!data || !data.properties) {
         return <div></div>;
     }
 
+    console.log(data.properties)
+
+    const handleClick = (slug: string) => {
+
+        const fromString = params.get("from");
+        const toString = params.get("to");
+        const adult = params.get("adult");
+        const children = params.get("children");
+        const slugs = slug;
+
+        const queryObject: Record<string, string> = {};
+
+        if (fromString) queryObject.from = fromString;
+        if (toString) queryObject.to = toString;
+        if (adult) queryObject.adult = adult;
+        if (children) queryObject.children = children;
+        queryObject.slugs = slugs;
+
+        const queryParams = new URLSearchParams(queryObject);
+
+// Use the queryParams as needed
+        window.location.href = `/property-detail?${queryParams.toString()}`;
+    }
 
     return (
-        <div>
-            <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+        <div className={"px-[150px] pb-[60px] pt-8 bg-[#F3F8FA]"}>
+            <div className="grid grid-cols-2 gap-y-4 gap-x-4 ">
                 {data && data.properties && data.properties.map((propertyItem: Property) => (
                     <div key={propertyItem.property.id}
-                         className="grid grid-cols-3 rounded-xl  shadow-custom4 h-64">
+                         className="grid grid-cols-3 rounded-xl border-[1.5px] border-slate-200 h-64 bg-white"
+                         onClick={() => {
+                             console.log(searchInput.travellers, searchInput.dateRange, "KONTOLLLLLLLLL")
+                             handleClick(propertyItem.property.slug);
+                         }}>
                         <Carousel>
                             <CarouselPrevious className="left-2 z-10"/>
                             <CarouselContent>
@@ -180,7 +275,7 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
                 ))}
             </div>
 
-            <Pagination className={"my-20"}>
+            <Pagination className={"mt-16"}>
                 <PaginationContent>
                     <PaginationItem>
                         <PaginationPrevious

@@ -1,5 +1,5 @@
 "use client";
-import { gql } from "graphql-request";
+import {gql} from "graphql-request";
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions {
@@ -259,6 +259,9 @@ export const GET_FILTERED_PROPERTIES = gql`
           checkInTime
           checkOutTime
           address
+          totalReview
+          averageRating
+          slug
           propertyCategories {
             id
             name
@@ -279,5 +282,67 @@ export const GET_FILTERED_PROPERTIES = gql`
     }
   }
 `;
+
+
+export const GET_PROPERTIES_BY_SLUG = gql`
+  query GetPropertiesBySlug($slug: String!) {
+    getPropertiesBySlug(slug: $slug) {
+      id
+      name
+      description
+      checkInTime
+      checkOutTime
+      address
+      totalReview
+      averageRating
+      propertyFacilities {
+        id
+        facilities {
+          id
+          name
+          logoUrl
+        }
+      }
+      propertyPictures {
+        id
+        imgUrl
+      }
+      propertyCategories {
+        id
+        name
+      }
+       city {
+            id
+            name
+        }
+    }
+  }
+`;
+
+export const GET_AVAILABLE_ROOMS = gql`
+  query GetAvailableRooms($checkinDate: Date!, $checkOutDate: Date!, $propertyId: ID!) {
+    getAvailableRooms(checkinDate: $checkinDate, checkOutDate: $checkOutDate, propertyId: $propertyId) {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+      bedTypes {
+        id
+        name
+      }
+      roomPictures {
+            id
+            imgUrl
+        }
+    }
+  }
+`;
+
 
 

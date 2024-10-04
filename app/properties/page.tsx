@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Searchbar from "@/app/properties/components/searchbar";
 import Propertiesitems from "@/app/properties/components/PropertiesItems";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
@@ -9,7 +9,7 @@ import LoginAds from "@/components/LoginAds";
 const Page = () => {
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [isPageError, setIsPageError] = useState(false);
-    const[totalProperties, setTotalProperties] = useState(0);
+    const [totalProperties, setTotalProperties] = useState(0);
 
     useEffect(() => {
         if (isPageError) {
@@ -23,17 +23,18 @@ const Page = () => {
 
 
     return (
-        <div className="px-[150px]">
-            {isPageError && <ErrorAnimation />}
+        <div className="">
+            {isPageError && <ErrorAnimation/>}
             {!isPageError && (
                 <>
-                    <Searchbar totalElements={totalProperties} />
-                    <LoginAds/>
+                    <Searchbar totalElements={totalProperties}/>
 
-                    <Propertiesitems setIsPageLoading={setIsPageLoading} setIsPageError={setIsPageError} setTotalProperty={setTotalProperties} />
+                    {isPageLoading ? null : <LoginAds/>}
+                    <Propertiesitems setIsPageLoading={setIsPageLoading} setIsPageError={setIsPageError}
+                                     setTotalProperty={setTotalProperties}/>
                 </>
             )}
-            {isPageLoading && <LoadingStateAnimation />}
+            {isPageLoading && <LoadingStateAnimation/>}
 
         </div>
     );

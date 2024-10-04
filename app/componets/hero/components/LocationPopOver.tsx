@@ -21,7 +21,10 @@ import useDebounce from "@/hooks/useDebounce";
 import {useFindCityByName} from "@/hooks/city/useFindCityByName";
 import {useSearchContext} from "@/context/useSearchContext";
 import useSearchInput from "@/hooks/useSearchInput";
-import {useEffect} from "react";
+import {useEffect, useRef, useState} from "react";
+import {useRouter} from "next/router";
+import {useParams} from "next/navigation";
+import * as sea from "node:sea";
 
 interface City {
     id: string;
@@ -44,12 +47,46 @@ export function LocationPopOver() {
         setOpen(false);
     };
 
+
     const {searchInput, setSearchInput} = useSearchInput({
         travellers: null,
         dateRange: null,
         location: null,
         ready: false,
         searchButtonHit: false,
+        totalProperties: null,
+        endPrice: null,
+        startPrice: null,
+        sortBy: null,
+        category: null,
+        includeBreakfast: null,
+        rating: null,
+        travellersParam: null,
+        cityParam: null,
+        dateRangeParam: null,
+        isHomepage: null,
+        setIsHomepage: () => {
+        },
+        setCityParam: () => {
+        },
+        setDateRangeParam: () => {
+        },
+        setTravellersParam: () => {
+        },
+        setRating: () => {
+        },
+        setIncludeBreakfast: () => {
+        },
+        setCategory: () => {
+        },
+        setEndPrice: () => {
+        },
+        setStartPrice: () => {
+        },
+        setSortBy: () => {
+        },
+        setTotalProperties: () => {
+        },
         setReady: () => {
         },
         setSearchButtonHit: () => {
@@ -63,10 +100,11 @@ export function LocationPopOver() {
     });
 
     useEffect(() => {
-        if(selectedCity){
-            setSearchInput({...searchInput, location: selectedCity});
+        if (selectedCity) {
+            setSearchInput({...searchInput, cityParam: selectedCity.name});
         }
     }, [selectedCity]);
+
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -83,7 +121,7 @@ export function LocationPopOver() {
                         Where to?
                         <div className="flex justify-between w-full">
                             <div className="flex text-[16px]">
-                                {selectedCity ? selectedCity.name : "Select location"}
+                                {searchInput.cityParam || selectedCity?.name || "Select city"}
                             </div>
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                         </div>

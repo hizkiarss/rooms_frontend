@@ -28,6 +28,7 @@ const config = {
             colors: {
                 greenr: "#007989",
                 earth: "#F5F5DC",
+                brightGray: "#F0F7F8",
                 greensecondary: "#339999",
                 border: "#007989",
                 input: "#007989",
