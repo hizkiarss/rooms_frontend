@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import useSelectedDate from "@/hooks/useSelectedDate";
-import { format } from "date-fns";
+import { endOfMonth, format, startOfMonth } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import React, { useState } from "react";
 import { DateRange as DayPickerDateRange } from "react-day-picker";
@@ -19,12 +19,15 @@ interface DateRange {
 
 const DateRangePicker: React.FC = () => {
   const { selectedDates, setSelectedDates } = useSelectedDate();
-
+  const startOfThisMonth = startOfMonth(new Date());
+  const endOfThisMonth = endOfMonth(new Date());
   const [date, setDate] = useState<DateRange>({
     from: selectedDates?.startDate
       ? new Date(selectedDates.startDate)
-      : undefined,
-    to: selectedDates?.endDate ? new Date(selectedDates.endDate) : undefined,
+      : startOfThisMonth,
+    to: selectedDates?.endDate
+      ? new Date(selectedDates.endDate)
+      : endOfThisMonth,
   });
 
   const handleDateChange = (range: DayPickerDateRange | undefined) => {
@@ -52,7 +55,7 @@ const DateRangePicker: React.FC = () => {
         <Button
           id="date"
           variant={"outline"}
-          className="w-[300px] justify-start text-left font-normal">
+          className="w-full justify-center text-center font-normal">
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date?.from ? (
             date.to ? (

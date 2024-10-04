@@ -34,6 +34,8 @@ import { columns } from "./TransactionColums";
 import { TransactionFilter } from "./TransactionFilter";
 import { useTransactions } from "@/hooks/transactions/useTransactions";
 import { useTransactionsByPropertyId } from "@/hooks/transactions/useTransactionsByPropertyId";
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
 const TransactionTable = () => {
   //const { data, isLoading, error } = useTransactions();
@@ -44,6 +46,7 @@ const TransactionTable = () => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -72,11 +75,11 @@ const TransactionTable = () => {
   });
 
   if (isLoading) {
-    return <div>Loading transactions...</div>;
+    return <LoadingStateAnimation />;
   }
 
   if (error) {
-    return <div>Error loading transactions: {error.message}</div>;
+    return <ErrorAnimation />;
   }
 
   return (
