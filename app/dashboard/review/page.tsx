@@ -6,7 +6,7 @@ import UnReadReviewList from "./component/UnReadReviewList";
 
 const page = () => {
   return (
-    <div className="px-5 sm:px-10 md:px-20 lg:px-[100px] space-y-5">
+    <div className="p-4">
       <UnReadReviewList />
       <ReviewList />
     </div>

@@ -12,7 +12,7 @@ import {
 import { usePaymentByBookingCode } from "@/hooks/payment/usePaymentByBookingCode";
 import { useTransactionsByBookingCode } from "@/hooks/transactions/useTransactionsByBookingCode";
 import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
-import { AlertCircle, Copy, Info, Shield } from "lucide-react";
+import { Copy, Info } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import NoDataFoundAnimation from "./animations/DataNotFoundAnimation";
@@ -20,12 +20,6 @@ import ErrorAnimation from "./animations/ErrorAnimation";
 import LoadingStateAnimation from "./animations/LoadingStateAnimation";
 import BankAccordion from "./BankAccordion";
 import TransactionExpired from "./TransactionExpired";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "./ui/accordion";
 
 const bankInfo = {
   bca: {
@@ -44,13 +38,13 @@ const bankInfo = {
     name: "BRI Virtual Account",
   },
 };
+
 const FinishPayment = () => {
   const { bookingCode } = useParams<{ bookingCode: string }>();
   const payment = usePaymentByBookingCode();
   const transaction = useTransactionsByBookingCode(bookingCode);
-
-  // Initializing hooks outside any conditional logic
-  const [timeLeft, setTimeLeft] = useState("");
+  const [timeLeft, setTimeLeft] = useState<string | null>(null);
+  const [isExpired, setIsExpired] = useState<boolean>(false);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -68,28 +62,21 @@ const FinishPayment = () => {
             .toString()
             .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
         );
+        setIsExpired(false);
       } else {
         setTimeLeft("00:00:00");
+        setIsExpired(true);
       }
     };
 
-    calculateTimeLeft();
-
-    const interval = setInterval(calculateTimeLeft, 1000);
-
-    return () => clearInterval(interval);
+    if (transaction.data?.createdAt) {
+      calculateTimeLeft();
+      const interval = setInterval(calculateTimeLeft, 1000);
+      return () => clearInterval(interval);
+    }
   }, [transaction.data?.createdAt]);
 
-  if (transaction.data?.paymentMethod !== PaymentMethodType.BANK_TRANSFER) {
-    return (
-      <ManualTransfer
-        totalPrice={transaction.data?.finalPrice ?? 0}
-        createdAt={transaction.data?.createdAt ?? ""}
-      />
-    );
-  }
-
-  if (payment.isLoading) {
+  if (payment.isLoading || transaction.isLoading || timeLeft === null) {
     return (
       <div>
         <LoadingStateAnimation />
@@ -97,7 +84,17 @@ const FinishPayment = () => {
     );
   }
 
-  if (payment.error) {
+  if (transaction.data?.paymentMethod !== PaymentMethodType.BANK_TRANSFER) {
+    return (
+      <ManualTransfer
+        totalPrice={transaction.data?.finalPrice ?? 0}
+        createdAt={transaction.data?.createdAt ?? ""}
+        transactionId={transaction.data?.id}
+      />
+    );
+  }
+
+  if (payment.error || transaction.error) {
     return (
       <div>
         <ErrorAnimation />
@@ -129,21 +126,14 @@ const FinishPayment = () => {
       <Card className="w-full max-w-3xl mx-auto">
         <CardHeader className="bg-greenr text-white p-4">
           <CardTitle className="text-lg font-medium">
-            {timeLeft == "00:00:00" ? (
-              "Oops! Your payment window has expired."
-            ) : (
-              <>
-                Nearly there! Finish up your payment in {timeLeft} and start the
-                good times!
-              </>
-            )}
+            {isExpired
+              ? "Oops! Your payment window has expired."
+              : `Nearly there! Finish up your payment in ${timeLeft} and start the good times!`}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          {timeLeft == "00:00:00" ? (
-            <>
-              <TransactionExpired />
-            </>
+          {isExpired ? (
+            <TransactionExpired />
           ) : (
             <>
               <h3 className="font-semibold mb-2">Make a Transfer to :</h3>
