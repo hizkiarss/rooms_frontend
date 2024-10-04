@@ -54,18 +54,24 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
                     const {data} = response;
 
 
-
                     if (data.errors) {
                         console.log("error")
                         const errorMessage = data.errors[0]?.message;
-                        switch (errorMessage) {
-                            case "Unauthorized":
-                                throw new  Error("Invalid_Credentials");
-                            case "User not found":
-                                throw new Error("user_not_found");
-                            default:
-                                throw new Error("UNEXPECTED_ERROR");
+                        return {
+                            error: errorMessage,
+                            id: "",
+                            email: "",
+                            roles: [],
+                            token: "",
                         }
+                        // switch (errorMessage) {
+                        //     case "Unauthorized":
+                        //         throw new  Error("Invalid_Credentials");
+                        //     case "User not found":
+                        //         throw new Error("user_not_found");
+                        //     default:
+                        //         throw new Error("UNEXPECTED_ERROR");
+                        // }
                     }
 
                     const {token, role} = data.data.login;
@@ -157,6 +163,13 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
             }
             return session;
         },
+
+        async signIn({user}) {
+            if (user.error?.length !== 0) {
+                return "/login?error=" + user.error
+            }
+            return true;
+        }
     },
     pages: {
         signIn: "/login",

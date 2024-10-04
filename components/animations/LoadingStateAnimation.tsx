@@ -9,13 +9,16 @@ import animationData from "../../public/animations/loading-meditation.json";
 
 const LoadingStateAnimation = () => {
   return (
-    <div className="flex items-center justify-center">
-      <LottieAnimation
-        animationData={animationData}
-        loop={true}
-        autoplay={true}
-        style={{ width: 300, height: 300 }}
-      />
+    <div className="h-screen flex items-center justify-center">
+        <div className={"h-1/2"}>
+            <LottieAnimation
+                animationData={animationData}
+                loop={true}
+                autoplay={true}
+                style={{ width: 300, height: 300 }}
+            />
+        </div>
+
     </div>
   );
 };

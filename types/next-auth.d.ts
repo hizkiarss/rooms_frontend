@@ -12,6 +12,7 @@ declare module "next-auth" {
         profilePicture?: string;
         referralCode?: string;
         token: string;
+        error?: string;
     }
 
     interface Session {

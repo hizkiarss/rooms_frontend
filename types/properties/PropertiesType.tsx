@@ -10,4 +10,5 @@ export type PropertiesType = {
   checkInTime?: string;
   checkOutTime?: string;
   address: string;
+  slug: string
 };

@@ -27,7 +27,7 @@ const ErrorPopUp: React.FC<Props> = ({errorMessage, isOpen, onClose}) => {
 
     useEffect(() => {
         switch (errorMessage) {
-            case "Configuration":
+            case "USER_NOT_FOUND":
                 setErrorTitle("Invalid E-mail or password");
                 setContent("Invalid E-mail or password. Please close this message and try again.");
                 break;
