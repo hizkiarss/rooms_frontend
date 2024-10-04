@@ -1,5 +1,5 @@
 "use client";
-import {gql} from "graphql-request";
+import { gql } from "graphql-request";
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions {
@@ -82,9 +82,64 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
 //   }
 // `;
 
+// export const GET_TRANSACTIONS_BY_USER_ID = gql`
+//   query TransactionsByUsersId($page: Int!, $size: Int!) {
+//     transactionsByUsersId(page: $page, size: $size) {
+//       content {
+//         id
+//         bookingCode
+//         finalPrice
+//         status
+//         paymentMethod
+//         firstName
+//         lastName
+//         mobileNumber
+//         properties {
+//           id
+//           name
+//         }
+//         paymentProofs {
+//           id
+//           imgUrl
+//         }
+//         transactionDetails {
+//           id
+//           startDate
+//           endDate
+//           rooms {
+//             id
+//             name
+//           }
+//         }
+//         reviews {
+//           id
+//           feedback
+//           rating
+//           reply
+//         }
+//         createdAt
+//       }
+//       pageNumber
+//       pageSize
+//       totalElements
+//       totalPages
+//     }
+//   }
+// `;
+
 export const GET_TRANSACTIONS_BY_USER_ID = gql`
-  query TransactionsByUsersId($page: Int!, $size: Int!) {
-    transactionsByUsersId(page: $page, size: $size) {
+  query TransactionsByUsersId(
+    $page: Int!
+    $size: Int!
+    $status: String
+    $sort: String
+  ) {
+    transactionsByUsersId(
+      page: $page
+      size: $size
+      status: $status
+      sort: $sort
+    ) {
       content {
         id
         bookingCode
@@ -94,10 +149,7 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
         firstName
         lastName
         mobileNumber
-        properties {
-          id
-          name
-        }
+
         paymentProofs {
           id
           imgUrl
@@ -265,7 +317,6 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
 //   }
 // }
 
-
 export const GET_PAYMENT_BY_BOOKING_CODE = gql`
   query PaymentByBookingCode($bookingCode: String!) {
     paymentByBookingCode(bookingCode: $bookingCode) {
@@ -346,7 +397,6 @@ export const REVENUE_BY_PROPERTY = gql`
     )
   }
 `;
-
 
 export const TOTAL_ROOMS_BY_PROPERTY = gql`
   query TotalRoom($propertyId: ID!) {
@@ -451,10 +501,23 @@ export const MOST_BOOKED_ROOMS = gql`
 `;
 
 export const GET_FILTERED_PROPERTIES = gql`
-  query GetFilteredProperties( $city: String!, $page: Int!, $category: String!, $rating: Float, $startPrice: Float,
-    $endPrice: Float, $sortBy: String) {
-    getFilteredProperties( city: $city, page: $page, category: $category, rating: $rating, startPrice: $startPrice, 
-    endPrice: $endPrice, sortBy: $sortBy
+  query GetFilteredProperties(
+    $city: String!
+    $page: Int!
+    $category: String!
+    $rating: Float
+    $startPrice: Float
+    $endPrice: Float
+    $sortBy: String
+  ) {
+    getFilteredProperties(
+      city: $city
+      page: $page
+      category: $category
+      rating: $rating
+      startPrice: $startPrice
+      endPrice: $endPrice
+      sortBy: $sortBy
     ) {
       totalElements
       totalPages
@@ -493,7 +556,6 @@ export const GET_FILTERED_PROPERTIES = gql`
   }
 `;
 
-
 export const GET_PROPERTIES_BY_SLUG = gql`
   query GetPropertiesBySlug($slug: String!) {
     getPropertiesBySlug(slug: $slug) {
@@ -521,17 +583,25 @@ export const GET_PROPERTIES_BY_SLUG = gql`
         id
         name
       }
-       city {
-            id
-            name
-        }
+      city {
+        id
+        name
+      }
     }
   }
 `;
 
 export const GET_AVAILABLE_ROOMS = gql`
-  query GetAvailableRooms($checkinDate: Date!, $checkOutDate: Date!, $propertyId: ID!) {
-    getAvailableRooms(checkinDate: $checkinDate, checkOutDate: $checkOutDate, propertyId: $propertyId) {
+  query GetAvailableRooms(
+    $checkinDate: Date!
+    $checkOutDate: Date!
+    $propertyId: ID!
+  ) {
+    getAvailableRooms(
+      checkinDate: $checkinDate
+      checkOutDate: $checkOutDate
+      propertyId: $propertyId
+    ) {
       id
       name
       description
@@ -547,13 +617,9 @@ export const GET_AVAILABLE_ROOMS = gql`
         name
       }
       roomPictures {
-            id
-            imgUrl
-        }
+        id
+        imgUrl
+      }
     }
   }
 `;
-
-
-
-
