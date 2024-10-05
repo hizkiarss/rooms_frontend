@@ -1,3 +1,4 @@
+
 import type {Metadata} from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar";
@@ -24,7 +25,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         <ReactQueryProvider>
-            <Suspense fallback={<LoadingStateAnimation/>}>
+            {/*<Suspense fallback={<LoadingStateAnimation/>}>*/}
                 <body className={"max-w-[1440px]]"}>
                 <div className={""}>
                     <div>
@@ -37,7 +38,7 @@ export default function RootLayout({
                 </div>
                 <ReactQueryDevtools initialIsOpen={false}/>
                 </body>
-            </Suspense>
+            {/*</Suspense>*/}
         </ReactQueryProvider>
 
         </html>

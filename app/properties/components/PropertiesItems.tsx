@@ -17,7 +17,6 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-import Image from "next/image";
 import {getRateLabel} from "@/utils/rateutils";
 import {Car, Utensils} from "lucide-react";
 import {useGetFilteredProperties} from "@/hooks/properties/useGetFilteredProperties";
@@ -25,6 +24,7 @@ import useSearchInput from "@/hooks/useSearchInput";
 import {useSearchParams} from "next/navigation";
 import {PagedPropertyResult} from "@/types/properties/PagedPropertyResult";
 import {PropertyProjection} from "@/types/properties/PropertiesProjection";
+// import {useRouter} from "next/router";
 
 interface PropertiesItemsProps {
     setIsPageLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -80,7 +80,18 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         setSearchButtonHit: () => {
         },
     });
-
+    // const router = useRouter();
+    // const { query } = router;
+    // const cityParam = query.city as string;
+    // const ratingParam = query.rating as string;
+    // const categoryParam = query.category as string;
+    // const startPriceParam = query.startPrice as string;
+    // const endPriceParam = query.endPrice as string;
+    // const isBreakfastParam = query.includeBreakfast as string;
+    // const sortByParam = query.sortBy as string
+    // const rating = ratingParam ? parseFloat(ratingParam) : null;
+    // const startPrice = startPriceParam ? parseFloat(startPriceParam) : null;
+    // const endPrice = endPriceParam ? parseFloat(endPriceParam) : null;
 
     const params = useSearchParams();
     const cityParam = params.get('city');
@@ -106,8 +117,6 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
     });
 
     const pagedData = data as PagedPropertyResult | undefined;
-
-
 
     useEffect(() => {
         if (searchInput.searchButtonHit) {
@@ -173,6 +182,10 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         const toString = params.get("to");
         const adult = params.get("adult");
         const children = params.get("children");
+        // const fromString = query.from as string;
+        // const toString = query.to as string;
+        // const adult = query.adult as string;
+        // const children = query.children as string;
         const slugs = slug;
 
         const queryObject: Record<string, string> = {};
@@ -185,7 +198,6 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
 
         const queryParams = new URLSearchParams(queryObject);
 
-// Use the queryParams as needed
         window.location.href = `/property-detail?${queryParams.toString()}`;
     }
 

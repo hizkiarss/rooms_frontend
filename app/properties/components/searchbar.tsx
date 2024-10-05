@@ -4,15 +4,12 @@ import {LocationPopOver} from '@/app/componets/hero/components/LocationPopOver';
 import {DatePickerWithRange} from '@/app/componets/hero/components/DatePopOver';
 import TravellerPopOver from '@/app/componets/hero/components/TravellerPopOver';
 import Buttons from '@/components/Buttons';
-import {useSearchContext} from "@/context/useSearchContext";
 import useSearchInput from "@/hooks/useSearchInput";
-import {date} from "yup";
-import LoginAds from "@/components/LoginAds";
 import FilterPopup from "@/app/properties/components/FilterPopup";
 import SortPopUp from "@/app/properties/components/SortPopUp";
 import {useSearchParams} from "next/navigation";
 import OnAnimation from "@/components/animations/OnAnimation";
-import * as sea from "node:sea";
+// import {useRouter} from "next/router";
 
 interface SearchbarProps {
     totalElements?: number;
@@ -97,6 +94,20 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
         }
     }, [searchInput.sortBy]);
 
+
+    // const router = useRouter();
+    // const { query } = router;
+    // const cityParam = query.city as string;
+    // const ratingParam = query.rating as string;
+    // const categoryParam = query.category as string;
+    // const startPriceParam = query.startPrice as string;
+    // const endPriceParam = query.endPrice as string;
+    // const isBreakfastParam = query.includeBreakfast as string;
+    // const sortByParam = query.sortBy as string
+    // const rating = ratingParam ? parseFloat(ratingParam) : null;
+    // const startPrice = startPriceParam ? parseFloat(startPriceParam) : null;
+    // const endPrice = endPriceParam ? parseFloat(endPriceParam) : null;
+
     const param = useSearchParams()
     useEffect(() => {
         const cityInitialValue = param.get('city')
@@ -106,6 +117,15 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
         const toDateParam = param.get('to');
         const fromDate = fromDateParam ? new Date(fromDateParam) : undefined;
         const toDate = toDateParam ? new Date(toDateParam) : undefined;
+
+
+        // const cityInitialValue = query.city as string;
+        // const adultInitialValue = query.adult as string;
+        // const childrenInitialValue = query.children as string;
+        // const fromDateParam = query.from as string;
+        // const toDateParam = query.to as string;
+        // const fromDate = fromDateParam ? new Date(fromDateParam) : undefined;
+        // const toDate = toDateParam ? new Date(toDateParam) : undefined;
         setSearchInput({
             ...searchInput,
             dateRangeParam: {from: fromDate, to: toDate},

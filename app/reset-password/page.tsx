@@ -6,13 +6,9 @@ import * as Yup from 'yup';
 import Buttons from "@/components/Buttons";
 import Image from "next/image";
 import logopng from "@/public/logo.png";
-import {useSearchParams} from "next/navigation";
 import {useResetPassword} from '@/hooks/user/useResetPassword';
-import data from "@react-google-maps/api/src/components/drawing/Data";
 import ResetPasswordSuccess from "@/app/reset-password/components/ResetPasswordSuccess";
-import {Simulate} from "react-dom/test-utils";
 import ErrorHandler from "@/app/reset-password/components/ErrorHandler";
-import LoadingAnimation from "@/components/animations/LoadingAnimation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 
 interface FormValues {
@@ -31,13 +27,25 @@ const validationSchema = Yup.object().shape({
 });
 
 const ResetPassword: React.FC = () => {
-    const searchParams = useSearchParams();
-    const email = searchParams.get('email');
     const {error, mutate: resetPasswordMutation, isSuccess, isPending, isError} = useResetPassword();
     const [showErrorPopUp, setShowErrorPopUp] = React.useState<boolean>(false);
     const handleCloseErrorPopup = () => {
         setShowErrorPopUp(false);
     };
+    const [email,setEmail] = useState<string | null>(null);
+
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const queryParams = new URLSearchParams(window.location.search);
+            const emailParam = queryParams.get("email");
+
+            if (emailParam) {
+                setEmail(emailParam);
+                setShowErrorPopUp(true);
+            }
+        }
+    }, []);
 
     React.useEffect(() => {
         if (isError) {
@@ -61,7 +69,6 @@ const ResetPassword: React.FC = () => {
 
 
     return (
-
         <div>
             <Suspense fallback={<LoadingStateAnimation/>}>
                 <div
