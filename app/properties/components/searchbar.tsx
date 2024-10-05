@@ -35,9 +35,6 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
     }, []);
 
     const {searchInput, setSearchInput} = useSearchInput({
-        travellers: null,
-        dateRange: null,
-        location: null,
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -47,6 +44,20 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
         category: null,
         includeBreakfast: null,
         rating: null,
+        travellersParam: null,
+        cityParam: null,
+        dateRangeParam: null,
+        isHomepage: null,
+        closed: null,
+        setClosed: () => {},
+        setIsHomepage: () => {
+        },
+        setCityParam: () => {
+        },
+        setDateRangeParam: () => {
+        },
+        setTravellersParam: () => {
+        },
         setRating: () => {
         },
         setIncludeBreakfast: () => {
@@ -64,12 +75,6 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
         setReady: () => {
         },
         setSearchButtonHit: () => {
-        },
-        setTravellers: () => {
-        },
-        setDateRange: () => {
-        },
-        setLocation: () => {
         },
     });
 

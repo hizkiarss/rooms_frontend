@@ -151,6 +151,10 @@ export const columns: ColumnDef<TransactionsType>[] = [
       //     );
       // };
 
+      const handleViewCustomer =( )=>{
+        console.log("hiya");
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -149,12 +149,12 @@ const OrderList: React.FC = () => {
                   onChange={handlePageChange}
                 /> */}
 
-                <Pagination
-                  className="mt-4"
-                  count={transactionPage.totalPages} // Jika menggunakan 'count'
-                  page={page + 1} // Jika menggunakan 'page' untuk halaman aktif
-                  onChange={handlePageChange} // Jika menggunakan 'onChange' sesuai tipe event
-                />
+                {/*<Pagination*/}
+                {/*  className="mt-4"*/}
+                {/*  count={transactionPage.totalPages} // Jika menggunakan 'count'*/}
+                {/*  page={page + 1} // Jika menggunakan 'page' untuk halaman aktif*/}
+                {/*  onChange={handlePageChange}*/}
+                {/*/>*/}
               </div>
             </>
           ) : (

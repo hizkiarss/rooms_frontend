@@ -12,13 +12,15 @@ import Description from "./components/description";
 import { useGetPropertyBySlug } from "@/hooks/properties/useGetPropertyBySlug";
 import { useGetAvailableRooms } from "@/hooks/rooms/useGetAvailableRooms";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
+import {RoomType} from "@/types/rooms/RoomsType";
 
 const Page = () => {
     const param = useSearchParams();
     const slugParam = param.get("slugs");
     const slug = slugParam || "";
 
-    const { data, isLoading, error } = useGetPropertyBySlug(slug);
+    const { data, isLoading, error } = useGetPropertyBySlug(slug) as { data: PropertyDetailType | null; isLoading: boolean; error: Error | null; };
 
     const RoomsSearchInput = {
         checkinDate: new Date("2024-10-10"),
@@ -26,7 +28,9 @@ const Page = () => {
         propertyId: "9"
     };
 
-    const { data: availableRoomsData, isLoading: roomsLoading, error: roomsError } = useGetAvailableRooms(RoomsSearchInput);
+    const { data: availableRoomsData, isLoading: roomsLoading, error: roomsError } = useGetAvailableRooms(RoomsSearchInput) as { data: RoomType[] | null; isLoading: boolean; error: Error | null; };
+
+
 
     useEffect(() => {
         if (data) {
@@ -55,12 +59,12 @@ const Page = () => {
     return (
         <div className={"px-[180px]"}>
             <div className={"min-h-screen"}>
-                <Breadcrumbs data={data} />
+                <Breadcrumbs data={data as PropertyDetailType} />
                 <PictureLayout data={data} />
                 <LoginAdsPropertyDetail />
                 <Navigation />
                 <Overview data={data} />
-                <Rooms data={availableRoomsData} />
+                <Rooms data={availableRoomsData as RoomType[]} />
                 <Review />
                 <Description data={data} />
             </div>

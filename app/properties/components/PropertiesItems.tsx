@@ -22,10 +22,9 @@ import {getRateLabel} from "@/utils/rateutils";
 import {Car, Utensils} from "lucide-react";
 import {useGetFilteredProperties} from "@/hooks/properties/useGetFilteredProperties";
 import useSearchInput from "@/hooks/useSearchInput";
-import {boolean, date} from "yup";
-import {SearchVariables} from "@/types/properties/PropertiesSearchVariables";
-// import {length} from "axios";
 import {useSearchParams} from "next/navigation";
+import {PagedPropertyResult} from "@/types/properties/PagedPropertyResult";
+import {PropertyProjection} from "@/types/properties/PropertiesProjection";
 
 interface PropertiesItemsProps {
     setIsPageLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,12 +34,9 @@ interface PropertiesItemsProps {
 
 const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsPageLoading, setTotalProperty}) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchVariables, setSearchVariables] = useState<SearchVariables>({city: ""})
+    // const [searchVariables, setSearchVariables] = useState<SearchVariables>({city: ""})
 
     const {searchInput, setSearchInput} = useSearchInput({
-        travellers: null,
-        dateRange: null,
-        location: null,
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -83,12 +79,6 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         },
         setSearchButtonHit: () => {
         },
-        setTravellers: () => {
-        },
-        setDateRange: () => {
-        },
-        setLocation: () => {
-        },
     });
 
 
@@ -114,6 +104,9 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         isBreakfast: isBreakfastParam ? true : null,
         sortBy: sortByParam || null
     });
+
+    const pagedData = data as PagedPropertyResult | undefined;
+
 
 
     useEffect(() => {
@@ -159,7 +152,7 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         setIsPageLoading(isLoading);
         setIsPageError(!!error);
         if (data) {
-            setSearchInput({...searchInput, totalProperties: data && data.properties && data.totalElements})
+            setSearchInput({...searchInput, totalProperties: data && pagedData && pagedData.totalElements})
         }
         console.log(searchInput.totalProperties)
     }, [isLoading, error, setIsPageLoading, setIsPageError, data]);
@@ -168,11 +161,11 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         setCurrentPage(page);
     };
 
-    if (!data || !data.properties) {
+    if (!data) {
         return <div></div>;
     }
 
-    console.log(data.properties)
+    console.log(data)
 
     const handleClick = (slug: string) => {
 
@@ -199,7 +192,7 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
     return (
         <div className={"px-[150px] pb-[60px] pt-8 bg-[#F3F8FA]"}>
             <div className="grid grid-cols-2 gap-y-4 gap-x-4 ">
-                {data && data.properties && data.properties.map((propertyItem: Property) => (
+                {data && pagedData?.properties && pagedData.properties.map((propertyItem: PropertyProjection) => (
                     <div key={propertyItem.property.id}
                          className="grid grid-cols-3 rounded-xl border-[1.5px] border-slate-200 h-64 bg-white"
                          onClick={() => {
@@ -284,7 +277,7 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
                             className={"disabled:hidden font-semibold text-greenr "}
                         />
                     </PaginationItem>
-                    {Array.from({length: data.totalPages}, (_, index) => (
+                    {Array.from({length: pagedData?.totalPages || 0}, (_, index) => (
                         <PaginationItem key={index} className={""}>
                             <PaginationLink
                                 href="#"
@@ -299,7 +292,7 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
                     <PaginationItem>
                         <PaginationNext
                             href="#"
-                            onClick={() => currentPage < data.totalPages && handlePageChange(currentPage + 1)}
+                            onClick={() => currentPage < (pagedData?.totalPages || 0) && handlePageChange(currentPage + 1)}
                             aria-disabled={currentPage === length}
                             className={"disabled:hidden font-semibold text-greenr "}
                         />
