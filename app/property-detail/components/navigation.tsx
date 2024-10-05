@@ -12,7 +12,7 @@ const Navigation = () => {
             threshold: 0.9,
         };
 
-        const observerCallback = (entries) => {
+        const observerCallback = (entries:  IntersectionObserverEntry[]) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     setActiveSection(entry.target.id);
@@ -30,7 +30,7 @@ const Navigation = () => {
         return () => observer.disconnect();
     }, []);
 
-    const handleClick = (section) => {
+    const handleClick = (section: string) => {
         setActiveSection(section);
         const element = document.getElementById(section);
         if (element) {

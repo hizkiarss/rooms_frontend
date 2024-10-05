@@ -86,13 +86,13 @@ const BestDeals = () => {
 
 
             <div className={"bg-[#F5F5DC] w-full px-12 py-12 rounded-xl mb-20 grid grid-cols-4 gap-4 items-center"}>
-                <h2 className={"col-span-1 font-semibold text-2xl text-greenr tracking-tight"}>Relax, we've got it <br/>
+                <h2 className={"col-span-1 font-semibold text-2xl text-greenr tracking-tight"}>Relax, we&apos;ve got it <br/>
                     <span className={"tracking-normal text-[50px]"}>covered.</span></h2>
                 <div className={"col-span-3 grid grid-cols-3 gap-4"}>
                     <div className={"col-span-1 h-fit bg-greenr p-6 rounded-xl text-[#F5F5DC] flex gap-4 items-center"}>
                         <Home className={"w-fit h-fit"} size={"100"}/>
                         <p className={""}>
-                            Host-free stays, so it's just you and your people.
+                            Host-free stays, so it&apos;s just you and your people.
                         </p>
                     </div>
 

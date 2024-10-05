@@ -84,7 +84,7 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
               "Oops! Your payment window has expired."
             ) : (
               <>
-                We're holding this price for you! Let's complete your payment in{" "}
+                We&apos;re holding this price for you! Let&apos;s complete your payment in{" "}
                 {timeLeft}
               </>
             )}

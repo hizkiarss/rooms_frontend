@@ -11,56 +11,49 @@ const TravellerPopOver: React.FC = () => {
         const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
 
-        const {searchInput, setSearchInput} = useSearchInput({
-            travellers: null,
-            dateRange: null,
-            location: null,
-            ready: false,
-            searchButtonHit: false,
-            totalProperties: null,
-            endPrice: null,
-            startPrice: null,
-            sortBy: null,
-            category: null,
-            includeBreakfast: null,
-            rating: null,
-            travellersParam: null,
-            cityParam: null,
-            dateRangeParam: null,
-            isHomepage: null,
-            setIsHomepage: () => {
-            },
-            setCityParam: () => {
-            },
-            setDateRangeParam: () => {
-            },
-            setTravellersParam: () => {
-            },
-            setRating: () => {
-            },
-            setIncludeBreakfast: () => {
-            },
-            setCategory: () => {
-            },
-            setEndPrice: () => {
-            },
-            setStartPrice: () => {
-            },
-            setSortBy: () => {
-            },
-            setTotalProperties: () => {
-            },
-            setReady: () => {
-            },
-            setSearchButtonHit: () => {
-            },
-            setTravellers: () => {
-            },
-            setDateRange: () => {
-            },
-            setLocation: () => {
-            },
-        });
+    const {searchInput, setSearchInput} = useSearchInput({
+        ready: false,
+        searchButtonHit: false,
+        totalProperties: null,
+        endPrice: null,
+        startPrice: null,
+        sortBy: null,
+        category: null,
+        includeBreakfast: null,
+        rating: null,
+        travellersParam: null,
+        cityParam: null,
+        dateRangeParam: null,
+        isHomepage: null,
+        closed: null,
+        setClosed: () => {},
+        setIsHomepage: () => {
+        },
+        setCityParam: () => {
+        },
+        setDateRangeParam: () => {
+        },
+        setTravellersParam: () => {
+        },
+        setRating: () => {
+        },
+        setIncludeBreakfast: () => {
+        },
+        setCategory: () => {
+        },
+        setEndPrice: () => {
+        },
+        setStartPrice: () => {
+        },
+        setSortBy: () => {
+        },
+        setTotalProperties: () => {
+        },
+        setReady: () => {
+        },
+        setSearchButtonHit: () => {
+        },
+    });
 
 
         useEffect(() => {

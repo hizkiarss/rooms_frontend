@@ -16,11 +16,12 @@ export function useGetPropertyBySlug(slug: string) {
             );
             return response.getPropertiesBySlug;
         },
+        meta:{
         onSuccess: (data: PropertyDetailType) => {
             console.log("Property details fetched successfully", data);
         },
         onError: (error: Error) => {
             console.error("Failed to fetch property details:", error);
         },
-    });
+    }});
 }

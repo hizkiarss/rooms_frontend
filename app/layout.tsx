@@ -1,3 +1,4 @@
+
 import type {Metadata} from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar";
@@ -8,7 +9,8 @@ import {SessionProvider} from "next-auth/react";
 import {QueryClient} from "@tanstack/react-query";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import Footer from "@/components/Footer";
-import {SearchProvider} from "@/context/useSearchContext";
+import {Suspense} from "react";
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -23,7 +25,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         <ReactQueryProvider>
-            <SearchProvider>
+            {/*<Suspense fallback={<LoadingStateAnimation/>}>*/}
                 <body className={"max-w-[1440px]]"}>
                 <div className={""}>
                     <div>
@@ -36,7 +38,7 @@ export default function RootLayout({
                 </div>
                 <ReactQueryDevtools initialIsOpen={false}/>
                 </body>
-            </SearchProvider>
+            {/*</Suspense>*/}
         </ReactQueryProvider>
 
         </html>

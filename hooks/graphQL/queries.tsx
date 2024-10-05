@@ -1,5 +1,4 @@
-"use client";
-import {gql} from "graphql-request";
+import { gql } from './gql-tag';
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions {

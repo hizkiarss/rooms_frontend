@@ -87,7 +87,7 @@ const BankOptionsCard: React.FC<BankOptionProps> = ({ formik, createdAt }) => {
         <CardTitle className="text-lg font-medium">
           {timeLeft !== "00:00:00" ? (
             <>
-              We're holding this price for you! Let's complete your payment in{" "}
+              We&apos;re holding this price for you! Let&apos;s complete your payment in{" "}
               {timeLeft}
             </>
           ) : (

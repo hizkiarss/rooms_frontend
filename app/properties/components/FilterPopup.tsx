@@ -51,9 +51,6 @@ const FilterPopup: React.FC<Props> = ({isOpen, onClose}) => {
     }
 
     const {searchInput, setSearchInput} = useSearchInput({
-        travellers: null,
-        dateRange: null,
-        location: null,
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -66,8 +63,10 @@ const FilterPopup: React.FC<Props> = ({isOpen, onClose}) => {
         travellersParam: null,
         cityParam: null,
         dateRangeParam: null,
+        isHomepage: null,
         closed: null,
-        setClosed: () => {
+        setClosed: () => {},
+        setIsHomepage: () => {
         },
         setCityParam: () => {
         },
@@ -92,12 +91,6 @@ const FilterPopup: React.FC<Props> = ({isOpen, onClose}) => {
         setReady: () => {
         },
         setSearchButtonHit: () => {
-        },
-        setTravellers: () => {
-        },
-        setDateRange: () => {
-        },
-        setLocation: () => {
         },
     });
 

@@ -85,7 +85,7 @@ const FormCheckoutCard: React.FC<FormCheckoutCardProps> = ({ formik }) => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Who's checking in?</CardTitle>
+        <CardTitle>Who&apos;s checking in?</CardTitle>
         <div className="text-sm text-muted-foreground">
           <div className="mb-2">
             <span className="font-semibold text-black">Room 1:</span> 2 Adults,
