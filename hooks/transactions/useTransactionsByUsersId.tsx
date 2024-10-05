@@ -102,7 +102,7 @@ export const useTransactionsByUsersId = (
   page: number,
   size: number,
   sort: string | null, /// Ini akan digunakan sebagai 'sort' di query
-  status: string // Ini akan digunakan sebagai 'status' di query
+  status: string | null // Ini akan digunakan sebagai 'status' di query
 ) => {
   const { data: session } = useSession();
   const { data: user } = useFindUserbyEmail(session?.user.email);
