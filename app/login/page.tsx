@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 
 import Image from "next/image";
 import circle_png from "@/public/login/circle.png";
@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import LoginErrorPopUp from "@/app/login/components/LoginErrorPopUp";
 import Buttons from "@/components/Buttons";
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 
 const Page = () => {
 
@@ -99,7 +100,9 @@ const Page = () => {
   }, [status, router]);
 
   return (
+
     <div className="min-h-screen overflow-hidden flex md:block justify-center items-center bg-[url('/login/login-bg.jpg')] bg-cover bg-right-top md:bg-none text-greenr">
+        <Suspense fallback={<LoadingStateAnimation/>}>
       <LoginErrorPopUp
         errorMessage={error || ""}
         isOpen={openErrorPopUp}
@@ -207,6 +210,7 @@ const Page = () => {
           </div>
         </div>
       </div>
+        </Suspense>
     </div>
   );
 };
