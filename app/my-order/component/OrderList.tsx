@@ -114,7 +114,6 @@ const OrderList: React.FC = () => {
   //   setPage(newPage - 1);
   // }
   return (
-    <div className="">
       <Card className="">
         <CardHeader>
           <CardTitle>My Order</CardTitle>
@@ -166,7 +165,6 @@ const OrderList: React.FC = () => {
           )}
         </CardContent>
       </Card>
-    </div>
   );
 };
 
