@@ -142,7 +142,7 @@ const UnReadReviewItem: React.FC<UnReadReviewProps> = ({
           </DialogTitle>
           <p>
             Whoa, hold on! Marking this as read means no more replies and the
-            conversation ends. Sure you're good?
+            conversation ends. Sure you&apos;re good?
           </p>
           <DialogFooter>
             <Button

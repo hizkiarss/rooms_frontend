@@ -8,7 +8,7 @@ const Description = ({data}: { data: PropertyDetailType }) => {
         return text.match(/[^.!?]+[.!?]+/g) || [];
     };
 
-    const groupIntoParagraphs = (sentences, sentencesPerParagraph = 3) => {
+    const groupIntoParagraphs = (sentences: string[], sentencesPerParagraph = 3) => {
         const paragraphs = [];
         for (let i = 0; i < sentences.length; i += sentencesPerParagraph) {
             paragraphs.push(sentences.slice(i, i + sentencesPerParagraph).join(' '));

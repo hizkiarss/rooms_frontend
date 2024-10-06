@@ -26,6 +26,7 @@ export function useGetFilteredProperties(variables: GetFilteredPropertiesVariabl
             );
             return response.getFilteredProperties;
         },
+        meta:{
         onSuccess: (data: PagedPropertyResult) => {  // Ensure the type here matches the return type
             queryClient.invalidateQueries({queryKey: ["propertyFacilities"]});
             console.log("Filtered properties fetched successfully", data);
@@ -33,5 +34,5 @@ export function useGetFilteredProperties(variables: GetFilteredPropertiesVariabl
         onError: (error: Error) => {
             console.error("Failed to fetch filtered properties:", error);
         },
-    });
+    }});
 }

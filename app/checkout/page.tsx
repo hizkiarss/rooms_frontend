@@ -85,7 +85,7 @@ const Page = () => {
       </h1>
       <div className="flex items-center text-green-700 py-3">
         <Check className="w-5 h-5 mr-2" />
-        <span>You've picked a winner! This hotel is rated 8.8/10.</span>
+        <span>You&apos;ve picked a winner! This hotel is rated 8.8/10.</span>
       </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col md:flex-row gap-3">

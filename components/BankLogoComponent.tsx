@@ -1,6 +1,11 @@
 import React from "react";
+import {BankType} from "@/types/bank/BankType";
 
-const BankLogoComponent = ({ selectedBank }) => {
+interface BankLogoComponentProps {
+  selectedBank: BankType; // Use the defined type for selectedBank
+}
+
+const BankLogoComponent: React.FC<BankLogoComponentProps> = ({ selectedBank }) => {
   const bankInfo = {
     bca: {
       logo: "/bankLogo/bcaLogo.png",
@@ -22,10 +27,10 @@ const BankLogoComponent = ({ selectedBank }) => {
   const bank = bankInfo[selectedBank] || bankInfo.bca;
 
   return (
-    <div className="flex items-center mb-4">
-      <img src={bank.logo} alt={bank.alt} className="w-20 h-8 mr-2" />
-      <h4 className="font-semibold">{bank.name}</h4>
-    </div>
+      <div className="flex items-center mb-4">
+        <img src={bank.logo} alt={bank.alt} className="w-20 h-8 mr-2" />
+        <h4 className="font-semibold">{bank.name}</h4>
+      </div>
   );
 };
 

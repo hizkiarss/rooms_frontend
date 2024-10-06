@@ -18,7 +18,7 @@ export function useDeleteAccount() {
                     {email, password}
                 )
             ;
-            return response.resetPassword;
+            return response.deleteAccount;
         },
         onSuccess: (data) => {
             console.log(Response + "Account deleted successfully");

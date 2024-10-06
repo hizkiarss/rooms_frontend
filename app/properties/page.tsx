@@ -1,5 +1,5 @@
 "use client"
-import React, {useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import Searchbar from "@/app/properties/components/searchbar";
 import Propertiesitems from "@/app/properties/components/PropertiesItems";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
@@ -24,6 +24,7 @@ const Page = () => {
 
     return (
         <div className="">
+            <Suspense fallback={<LoadingStateAnimation/>}>
             {isPageError && <ErrorAnimation/>}
             {!isPageError && (
                 <>
@@ -35,7 +36,7 @@ const Page = () => {
                 </>
             )}
             {isPageLoading && <LoadingStateAnimation/>}
-
+            </Suspense>
         </div>
     );
 };

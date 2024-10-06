@@ -62,10 +62,10 @@ const ReviewComponent: React.FC = () => {
                         </PopoverTrigger>
                         <PopoverContent className="w-80">
                             <div>
-                                Real stays, real stories every review here is from guests who've
-                                actually been there, done that. Only folks who've booked with us
+                                Real stays, real stories every review here is from guests who&apos;ve
+                                actually been there, done that. Only folks who&apos;ve booked with us
                                 can leave a review. We give each one a look, and we post them all
-                                whether it's thumbs up or a little more room service next time!
+                                whether it&apos;s thumbs up or a little more room service next time!
                             </div>
                         </PopoverContent>
                     </Popover>

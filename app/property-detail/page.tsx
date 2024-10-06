@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
+import { useSearchParams } from "next/navigation";
 import PictureLayout from "@/app/property-detail/components/pictureLayout";
 import Breadcrumbs from "@/app/property-detail/components/breadcrumbs";
 import Navigation from "@/app/property-detail/components/navigation";
@@ -11,20 +12,24 @@ import Description from "./components/description";
 import { useGetPropertyBySlug } from "@/hooks/properties/useGetPropertyBySlug";
 import { useGetAvailableRooms } from "@/hooks/rooms/useGetAvailableRooms";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
-import {useSearchParams} from "next/navigation";
+import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
+import {RoomType} from "@/types/rooms/RoomsType";
 
 const Page = () => {
-    const param = useSearchParams();
-    const slugParam: string | null = param.get("slugs");
+    const [slug,setSlug] = useState<string | null>(null);
 
-    const slug = slugParam || ""; // Use an empty string as a fallback
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const queryParams = new URLSearchParams(window.location.search);
+            const slugParam = queryParams.get("slug");
 
-    const { data, isLoading, error } = useGetPropertyBySlug(slug);
+            if (slugParam) {
+                setSlug(slugParam);
+            }
+        }
+    }, []);
 
-    if (!slug) {
-        console.error("Slug parameter is missing");
-        return <div>No slug provided.</div>;
-    }
+    const { data, isLoading, error } = useGetPropertyBySlug(slug?? "") as { data: PropertyDetailType | null; isLoading: boolean; error: Error | null; };
 
     const RoomsSearchInput = {
         checkinDate: new Date("2024-10-10"),
@@ -32,7 +37,7 @@ const Page = () => {
         propertyId: "9"
     };
 
-    const { data: availableRoomsData, isLoading: roomsLoading, error: roomsError } = useGetAvailableRooms(RoomsSearchInput);
+    const { data: availableRoomsData, isLoading: roomsLoading, error: roomsError } = useGetAvailableRooms(RoomsSearchInput) as { data: RoomType[] | null; isLoading: boolean; error: Error | null; };
 
     useEffect(() => {
         if (data) {
@@ -49,6 +54,10 @@ const Page = () => {
         }
     }, [availableRoomsData, roomsLoading, roomsError]);
 
+    if (!slug) {
+        return <div>No slug provided.</div>;
+    }
+
     if (isLoading || roomsLoading) return <div className={""}><LoadingStateAnimation/></div>;
     if (error) return <div>Error: {error.message}</div>;
     if (roomsError) return <div>Error: {roomsError.message}</div>;
@@ -57,12 +66,12 @@ const Page = () => {
     return (
         <div className={"px-[180px]"}>
             <div className={"min-h-screen"}>
-                <Breadcrumbs data={data} />
+                <Breadcrumbs data={data as PropertyDetailType} />
                 <PictureLayout data={data} />
                 <LoginAdsPropertyDetail />
                 <Navigation />
                 <Overview data={data} />
-                <Rooms data={   availableRoomsData} />
+                <Rooms data={availableRoomsData as RoomType[]} />
                 <Review />
                 <Description data={data} />
             </div>

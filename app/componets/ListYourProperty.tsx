@@ -35,7 +35,7 @@ const ListYourProperty = () => {
                 <h2 className={"text-3xl font-semibold mb-4"}>Perfect Rental with Rooms
 
                 </h2>
-                <p>Whether you're planning a family getaway with your pet, a relaxing weekend escape, or an adventurous
+                <p>Whether you&apos;re planning a family getaway with your pet, a relaxing weekend escape, or an adventurous
                     trip, Rooms has the perfect vacation rental for you. Discover everything from cozy mountain cabins
                     and lakeside lodges to stunning city apartments and luxurious homes, all equipped with features to
                     enhance your comfort and convenience. Enjoy amenities like extra bedrooms and fully-equipped

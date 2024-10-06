@@ -1,4 +1,5 @@
-import {gql} from "graphql-request";
+import { gql } from './gql-tag';
+
 
 export const CREATE_TRANSACTION = gql`
   mutation CreateTransaction($input: TransactionRequest!) {

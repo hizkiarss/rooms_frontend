@@ -49,9 +49,6 @@ export function LocationPopOver() {
 
 
     const {searchInput, setSearchInput} = useSearchInput({
-        travellers: null,
-        dateRange: null,
-        location: null,
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -65,6 +62,8 @@ export function LocationPopOver() {
         cityParam: null,
         dateRangeParam: null,
         isHomepage: null,
+        closed: null,
+        setClosed: () => {},
         setIsHomepage: () => {
         },
         setCityParam: () => {
@@ -90,12 +89,6 @@ export function LocationPopOver() {
         setReady: () => {
         },
         setSearchButtonHit: () => {
-        },
-        setTravellers: () => {
-        },
-        setDateRange: () => {
-        },
-        setLocation: () => {
         },
     });
 

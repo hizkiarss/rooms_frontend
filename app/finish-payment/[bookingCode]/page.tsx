@@ -8,7 +8,7 @@ import VirtualAccountPayment from "@/components/FinishPayment";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const handleBtn = () => {
     router.push(`/my-order`);
@@ -25,4 +25,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

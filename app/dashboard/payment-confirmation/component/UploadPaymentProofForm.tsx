@@ -72,7 +72,7 @@ const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
                 <div className="mt-6">
                   Almost there! Upload your payment proof to finish. Only PNG
                   and JPG files under 1MB are allowed. Heads up! You can only
-                  upload once, so make sure it's the right one. Thanks for being
+                  upload once, so make sure it&apos;s the right one. Thanks for being
                   awesome!
                 </div>
                 <div>
@@ -154,7 +154,7 @@ const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
 
                 {isSubmitted ? (
                   <p className="text-green-500">
-                    Photo uploaded! You're good to go!
+                    Photo uploaded! You&apos;re good to go!
                   </p>
                 ) : (
                   <Button

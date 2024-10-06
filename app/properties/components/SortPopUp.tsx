@@ -20,13 +20,9 @@ interface Props {
     onClose: () => void;
 }
 
-
 const SortPopUp: React.FC<Props> = ({isOpen, onClose}) => {
     const [sort, setSort] = React.useState<string>("");
     const {searchInput, setSearchInput} = useSearchInput({
-        travellers: null,
-        dateRange: null,
-        location: null,
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -36,6 +32,20 @@ const SortPopUp: React.FC<Props> = ({isOpen, onClose}) => {
         category: null,
         includeBreakfast: null,
         rating: null,
+        travellersParam: null,
+        cityParam: null,
+        dateRangeParam: null,
+        isHomepage: null,
+        closed: null,
+        setClosed: () => {},
+        setIsHomepage: () => {
+        },
+        setCityParam: () => {
+        },
+        setDateRangeParam: () => {
+        },
+        setTravellersParam: () => {
+        },
         setRating: () => {
         },
         setIncludeBreakfast: () => {
@@ -54,13 +64,9 @@ const SortPopUp: React.FC<Props> = ({isOpen, onClose}) => {
         },
         setSearchButtonHit: () => {
         },
-        setTravellers: () => {
-        },
-        setDateRange: () => {
-        },
-        setLocation: () => {
-        },
     });
+
+
     const handleClick = (sort: string) => {
         setSort(sort)
         setSearchInput({...searchInput, sortBy: sort, searchButtonHit: true})
