@@ -2,11 +2,12 @@
 import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import PaginationControl from "@/components/PaginationControl";
+import SortAndFilter from "@/components/SortAndFIlter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Pagination } from "@/components/ui/pagination";
 import { useTransactionsByUsersId } from "@/hooks/transactions/useTransactionsByUsersId";
 import { Separator } from "@radix-ui/react-select";
-import React, { ChangeEvent, FormEventHandler, useState } from "react";
+import React, { useState } from "react";
 import OrderListItem from "./OrderListItem";
 
 // const OrderList = () => {
@@ -72,100 +73,106 @@ import OrderListItem from "./OrderListItem";
 //   );
 // };
 
-// export default OrderList;
 const OrderList: React.FC = () => {
-  const [page, setPage] = useState(0);
-  const pageSize = 10;
+    // const [page, setPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [sort, setSort] = useState<string | null>(null);
+    const [status, setStatus] = useState<string | null>(null);
+    const pageSize = 5;
 
-  const {
-    data: transactionPage,
-    error,
-    isLoading,
-    refetch,
-  } = useTransactionsByUsersId(page, pageSize);
+    const {
+        data: transactionPage,
+        error,
+        isLoading,
+        refetch,
+    } = useTransactionsByUsersId(currentPage, pageSize, sort, status);
 
-  if (isLoading) {
-    return <LoadingStateAnimation />;
-  }
+    const handleSortChange = (value: string | null) => {
+        setSort(value || null); // Jika string kosong, set ke null
+        refetch();
+    };
 
-  if (error) {
-    return <ErrorAnimation />;
-  }
+    const handleStatusFilterChange = (status: string | null) => {
+        setStatus(status || null);
+        refetch(); // Refresh data after status change
+    };
 
-  const refreshTransactions = () => {
-    refetch();
-  };
+    if (isLoading) {
+        return <LoadingStateAnimation />;
+    }
 
-  // const handlePageChange = (
-  //   _event: React.ChangeEvent<unknown>,
-  //   newPage: number
-  // ) => {
-  //   setPage(newPage - 1);
-  // };
+    if (error) {
+        return <ErrorAnimation />;
+    }
 
-  // const handlePageChange = (newPage: number) => {
-  //   setPage(newPage - 1);
-  // };
+    const refreshTransactions = () => {
+        refetch();
+    };
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage - 1);
-  };
-  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setPage(newPage - 1);
-  // }
-  return (
-      <Card className="">
-        <CardHeader>
-          <CardTitle>My Order</CardTitle>
-        </CardHeader>
-        <Separator className="mb-2" />
-        <CardContent className="space-y-4">
-          {transactionPage?.content && transactionPage.content.length > 0 ? (
-            <>
-              {transactionPage.content.map((transaction) => (
-                <div key={transaction.id}>
-                  <OrderListItem
-                    bookingCode={transaction.bookingCode}
-                    imgUrl="/img"
-                    totalPrice={transaction.finalPrice}
-                    propertyName={transaction.properties.name}
-                    status={transaction.status}
-                    paymentMethod={transaction.paymentMethod}
-                    transactionId={transaction.id}
-                    paymentProofs={transaction.paymentProofs}
-                    onRefresh={refreshTransactions}
-                    transactionDetails={transaction.transactionDetails[0]}
-                    review={transaction.reviews}
-                    room={transaction.transactionDetails[0].rooms}
-                  />
-                </div>
-              ))}
-              <div className="mt-4 flex justify-center">
-                {/* <Pagination
-                  className="mt-4"
-                  count={transactionPage.totalPages}
-                  page={page + 1}
-                  onChange={handlePageChange}
-                /> */}
+    const handlePageChange = (page: number) => {
+        // Sesuaikan page yang dikirim ke backend (backend mulai dari 0)
+        if (transactionPage && page > 0 && page <= transactionPage.totalPages) {
+            setCurrentPage(page - 1); // Mengurangi 1 agar cocok dengan backend
+        }
+    };
 
-                {/*<Pagination*/}
-                {/*  className="mt-4"*/}
-                {/*  count={transactionPage.totalPages} // Jika menggunakan 'count'*/}
-                {/*  page={page + 1} // Jika menggunakan 'page' untuk halaman aktif*/}
-                {/*  onChange={handlePageChange}*/}
-                {/*/>*/}
-              </div>
-            </>
-          ) : (
-            <EmptyDataAnimation
-              message="No transactions so far, but good things are coming!"
-              width={200}
-              height={200}
-            />
-          )}
-        </CardContent>
-      </Card>
-  );
+    return (
+        <>
+            {transactionPage && (
+                <>
+                    <Card className="">
+                        <CardHeader>
+                            <CardTitle>My Order</CardTitle>
+                        </CardHeader>
+                        <Separator className="mb-2" />
+                        <CardContent className="space-y-4">
+                            <SortAndFilter
+                                sort={sort}
+                                status={status}
+                                onSortChange={handleSortChange}
+                                onStatusChange={handleStatusFilterChange}
+                            />
+                            {transactionPage?.content &&
+                            transactionPage.content.length > 0 ? (
+                                <>
+                                    {transactionPage.content.map((transaction) => (
+                                        <div key={transaction.id}>
+                                            <OrderListItem
+                                                bookingCode={transaction.bookingCode}
+                                                imgUrl="/img"
+                                                totalPrice={transaction.finalPrice}
+                                                propertyName={""}
+                                                status={transaction.status}
+                                                paymentMethod={transaction.paymentMethod}
+                                                transactionId={transaction.id}
+                                                paymentProofs={transaction.paymentProofs}
+                                                onRefresh={refreshTransactions}
+                                                transactionDetails={transaction.transactionDetails[0]}
+                                                review={transaction.reviews}
+                                                room={transaction.transactionDetails[0].rooms}
+                                            />
+                                        </div>
+                                    ))}
+
+                                    <PaginationControl
+                                        currentPage={currentPage}
+                                        totalPages={transactionPage?.totalPages || 0}
+                                        onPageChange={handlePageChange}
+                                    />
+                                </>
+                            ) : (
+                                <EmptyDataAnimation
+                                    message="No transactions so far, but good things are coming!"
+                                    width={200}
+                                    height={200}
+                                />
+                            )}
+                        </CardContent>
+                    </Card>
+                </>
+            )}
+        </>
+    );
 };
 
 export default OrderList;
