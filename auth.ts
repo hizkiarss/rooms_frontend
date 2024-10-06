@@ -1,11 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import jwt from "jsonwebtoken";
 import axios from "axios";
 import GoogleProvider from "next-auth/providers/google";
 
-
-export const {handlers, auth, signIn, signOut} = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -21,12 +19,14 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: {label: "email", type: "text"},
-                password: {label: "password", type: "password"},
+                email: { label: "email", type: "text" },
+                password: { label: "password", type: "password" },
             },
-            async authorize(credentials) {
+            async authorize(credentials):Promise<any> {
                 if (!credentials?.email || !credentials?.password) {
-                    throw new Error("Email and password are required");
+                    return {
+                        error: "Email and password are required",
+                    };
                 }
 
                 try {
@@ -34,71 +34,60 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
                         `http://localhost:8080/graphql`,
                         {
                             query: `
-                                mutation Login($email: String!, $password: String!) {
-                                    login(email: $email, password: $password) {
-                                        token
-                                        role
-                                    }
-                                }
-                            `,
+                mutation Login($email: String!, $password: String!) {
+                  login(email: $email, password: $password) {
+                    token
+                    role
+                  }
+                }
+              `,
                             variables: {
                                 email: credentials.email,
                                 password: credentials.password,
                             },
                         },
                         {
-                            headers: {"Content-Type": "application/json"},
+                            headers: { "Content-Type": "application/json" },
                         }
                     );
-                    console.log(response)
-                    const {data} = response;
 
+                    console.log("Full response:", JSON.stringify(response.data, null, 2));
+
+                    const { data } = response;
 
                     if (data.errors) {
-                        console.log("error")
-                        const errorMessage = data.errors[0]?.message;
+                        console.log("GraphQL Error:", data.errors);
                         return {
-                            error: errorMessage,
-                            id: "",
-                            email: "",
-                            roles: [],
-                            token: "",
-                        }
-                        // switch (errorMessage) {
-                        //     case "Unauthorized":
-                        //         throw new  Error("Invalid_Credentials");
-                        //     case "User not found":
-                        //         throw new Error("user_not_found");
-                        //     default:
-                        //         throw new Error("UNEXPECTED_ERROR");
-                        // }
+                            error: data.errors[0]?.message || "Authentication failed",
+                        };
                     }
 
-                    const {token, role} = data.data.login;
-
-                    if (token) {
+                    if (data?.data?.login?.token) {
+                        console.log("Successful login. Token:", data.data.login.token, "Role:", data.data.login.role);
+                        const { token, role } = data.data.login;
                         return {
-                            id: credentials.email as string, // You might need to adjust this based on your data
-                            email: credentials.email as string,
+                            id: credentials.email,
+                            email: credentials.email,
                             roles: [role],
                             token: token,
                         };
                     } else {
-                        throw new Error("Invalid response from server");
+                        console.error("Unexpected response structure:", data);
+                        return {
+                            error: "Invalid response structure from server",
+                        };
                     }
                 } catch (error) {
                     console.error("Login error:", error);
-                    throw new Error(
-                        error instanceof Error
-                            ? error.message
-                            : "An unexpected error occurred"
-                    );
+                    return {
+                        error: error instanceof Error ? error.message : "An unexpected error occurred",
+                    };
                 }
             },
         }),
     ],
     callbacks: {
-        async jwt({token, user, account}) {
+        async jwt({ token, user, account }):Promise<any> {
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
@@ -106,67 +95,70 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
                 token.accessToken = user.token;
             }
             if (account?.provider === "google") {
-                console.log("bisa ges")
+                console.log("Google authentication");
                 try {
                     const response = await axios.post(
                         'http://localhost:8080/graphql',
                         {
-                            query:
-                                `mutation GoogleLogin($idToken: String!) {
-                            googleLogin(idToken: $idToken) {
-                                token
-                                role
-                            }
-                        }`,
+                            query: `
+                mutation GoogleLogin($idToken: String!) {
+                  googleLogin(idToken: $idToken) {
+                    token
+                    role
+                  }
+                }
+              `,
                             variables: {
                                 idToken: account.id_token
                             },
-                            headers: {"Content-Type": "application/json"},
-
+                        },
+                        {
+                            headers: { "Content-Type": "application/json" },
                         }
                     );
-                    const {data} = response;
-                    console.log("Login success", data);
+                    const { data } = response;
+                    console.log("Google login response:", data);
 
                     if (data.errors) {
-                        const errorMessage = data.errors[0]?.message || "Error during Google authentication";
-                        throw new Error(errorMessage);
-                        // throw new Error(
-                        //     data.errors[0]?.message || "Invalid email or password"
-                        // );
+                        console.error("Google login error:", data.errors);
+                        return { ...token, error: data.errors[0]?.message || "Error during Google authentication" };
                     }
 
-                    const {token, role} = data.data.googleLogin;
+                    const { token: authToken, role } = data.data.googleLogin;
 
-                    if (token) {
+                    if (authToken) {
                         return {
-                            id: token.email as string, // You might need to adjust this based on your data
+                            id: token.email,
                             email: token.email,
                             roles: [role],
-                            token: token,
+                            token: authToken,
                         };
                     } else {
-                        throw new Error("Invalid response from server");
+                        console.error("Invalid response from server during Google login");
+                        return { ...token, error: "Invalid response from server" };
                     }
                 } catch (error) {
                     console.error("Failed to authenticate with backend:", error);
+                    return { ...token, error: "Failed to authenticate with backend" };
                 }
             }
             return token;
         },
-        async session({session, token}) {
+        async session({ session, token }) {
             if (session.user) {
                 session.user.id = token.id as string;
                 session.user.email = token.email as string;
                 session.user.roles = token.roles as string | string[];
                 session.accessToken = token.accessToken as string;
+                if (token.error) {
+                    session.error = token.error as string;
+                }
             }
             return session;
         },
-
-        async signIn({user}) {
-            if (user.error?.length !== 0) {
-                return "/login?error=" + user.error
+        async signIn({ user }) {
+            if (user.error) {
+                return `/login?error=${encodeURIComponent(user.error)}`;
             }
             return true;
         }
