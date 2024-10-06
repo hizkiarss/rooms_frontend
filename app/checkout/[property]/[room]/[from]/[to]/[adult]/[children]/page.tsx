@@ -4,19 +4,18 @@ import * as Yup from "yup";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Buttons from "@/components/Buttons";
-import BookCta from "./component/BookCta";
-import FormCheckoutCard from "./component/FormCheckoutCard";
-import PaymentMethodCard from "./component/PaymentMethodCard";
-import CancelationCard from "./component/CancelationCard";
-import ImportantInformationCard from "./component/ImportantInformationCard";
-import RoomDetailCard from "./component/RoomDetailCard";
-import PriceDetailsCard from "./component/PriceDetailsCard";
 import { useCreateTransaction } from "@/hooks/transactions/useCreateTransaction";
 import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
 import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
 import { useParams, useRouter } from "next/navigation";
-import CekResponse from "./[payment]/component/CekResponse";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import FormCheckoutCard from "@/app/checkout/component/FormCheckoutCard";
+import PaymentMethodCard from "@/app/checkout/component/PaymentMethodCard";
+import CancelationCard from "@/app/checkout/component/CancelationCard";
+import ImportantInformationCard from "@/app/checkout/component/ImportantInformationCard";
+import RoomDetailCard from "@/app/checkout/component/RoomDetailCard";
+import BookCta from "@/app/checkout/component/BookCta";
+import PriceDetailsCard from "@/app/checkout/component/PriceDetailsCard";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -35,6 +34,21 @@ const Page = () => {
   const formatDate = (date: string | Date) => {
     return new Date(date).toISOString().split("T")[0];
   };
+  const { property, room, from, to, adult, children } = useParams<{
+    property: string;
+    room: string;
+    from: string;
+    to: string;
+    adult: string;
+    children: string;
+  }>();
+  console.log("ini property nya: ", property);
+  console.log("ini room nya: ", room);
+  console.log("ini from nya: ", from);
+  console.log("ini to nya: ", to);
+  console.log("ini adult nya: ", adult);
+  console.log("ini children nya: ", children);
+
   const formik = useFormik({
     initialValues: {
       travelerName: "",
@@ -66,7 +80,6 @@ const Page = () => {
       createTransaction.mutate(transactionRequest, {
         onSuccess: (randomString) => {
           console.log("ini on success");
-          //alert("Transaction created successfully!");
           setSubmitting(false);
           router.push(`/checkout/${randomString}`);
         },
@@ -81,7 +94,7 @@ const Page = () => {
   return (
     <div className="min-h-screen py-4 px-5 sm:px-10 md:px-20 lg:px-[130px]">
       <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl py-3">
-        Secure booking — only takes 2 minutes!
+        Secure booking — only takes 2 minutes! oioi
       </h1>
       <div className="flex items-center text-green-700 py-3">
         <Check className="w-5 h-5 mr-2" />
