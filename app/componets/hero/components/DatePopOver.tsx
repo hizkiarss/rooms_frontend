@@ -19,9 +19,6 @@ export function DatePickerWithRange({
     const [isHomepage, setIsHomepage] = useState<boolean>(false);
 
     const {searchInput, setSearchInput} = useSearchInput({
-        travellers: null,
-        dateRange: null,
-        location: null,
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -35,6 +32,8 @@ export function DatePickerWithRange({
         cityParam: null,
         dateRangeParam: null,
         isHomepage: null,
+        closed: null,
+        setClosed: () => {},
         setIsHomepage: () => {
         },
         setCityParam: () => {
@@ -61,33 +60,25 @@ export function DatePickerWithRange({
         },
         setSearchButtonHit: () => {
         },
-        setTravellers: () => {
-        },
-        setDateRange: () => {
-        },
-        setLocation: () => {
-        },
     });
 
-    const handleSelect = (selected: DateRange | undefined) => {
-        setDate(selected || null);
-        setSearchInput({...searchInput, dateRangeParam: selected || null});
-    };
-
-    const [date, setDate] = React.useState<DateRange | null>(() => {
-        if (searchInput.dateRangeParam?.from || searchInput.dateRangeParam?.to) {
-            console.log("uhuyyyyy")
-            return searchInput.dateRangeParam;
+    const [date, setDate] = React.useState<DateRange | undefined>(() => {
+        if (searchInput.dateRangeParam?.from && searchInput.dateRangeParam?.to) {
+            return {
+                from: searchInput.dateRangeParam.from,
+                to: searchInput.dateRangeParam.to,
+            };
         }
-        // Default to today and tomorrow
         return {
             from: new Date(),
             to: addDays(new Date(), 1),
         };
     });
 
-
-
+    const handleSelect = (selected: DateRange | undefined) => {
+        setDate(selected);
+        setSearchInput({ ...searchInput, dateRangeParam: selected });
+    };
 
     return (
         <div className={cn("grid gap-2", className)}>

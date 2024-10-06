@@ -19,7 +19,8 @@ import {
 import { TransactionsType } from "@/types/transactions/TransactionsType";
 
 export const columns: ColumnDef<TransactionsType>[] = [
-  {
+
+    {
     accessorKey: "firstName",
     header: ({ column }) => {
       return (
@@ -141,14 +142,18 @@ export const columns: ColumnDef<TransactionsType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
-      const router = useRouter();
+      // const router = useRouter();
+      //
+      // const handleViewCustomer = () => {
+      //   const email = payment.users?.email;
+      //     router.push(
+      //       `/dashboard/transactions/user-detail/${encodeURIComponent(email)}`
+      //     );
+      // };
 
-      const handleViewCustomer = () => {
-        const email = payment.users?.email;
-        //   router.push(
-        //     `/dashboard/transactions/user-detail/${encodeURIComponent(email)}`
-        //   );
-      };
+      const handleViewCustomer =( )=>{
+        console.log("hiya");
+      }
 
       return (
         <DropdownMenu>

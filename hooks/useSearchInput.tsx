@@ -8,9 +8,9 @@ type TravellersType = {
 }
 
 type SearchInputProps = {
-    travellers: TravellersType | null;
-    dateRange: DateRange | null;
-    location: { id: string; name: string } | null;
+    // travellers: TravellersType | null;
+    // dateRange: DateRange | null;
+    // location: { id: string; name: string } | null;
     searchButtonHit: boolean;
     ready: boolean
     totalProperties: number | null;
@@ -39,9 +39,9 @@ type SearchInputProps = {
     setSearchButtonHit: (hit: boolean) => void;
     setTotalProperties: (totalProperties: number) => void;
     setReady: (ready: boolean) => void;
-    setTravellers: (travellers: TravellersType) => void;
-    setDateRange: (dateRange: DateRange | null) => void;
-    setLocation: (location: { id: string; name: string }) => void;
+    // setTravellers: (travellers: TravellersType) => void;
+    // setDateRange: (dateRange: DateRange | null) => void;
+    // setLocation: (location: { id: string; name: string }) => void;
 
 }
 
@@ -63,8 +63,6 @@ const useSearchInput = (defaultSearchInput: SearchInputProps) => {
         const updatedSearchInput = {
             ...data,
             ...input,
-            ready: input.travellers != null && input.location != null && input.dateRange != null && input.searchButtonHit
-
         };
 
         const searchInputString = JSON.stringify(updatedSearchInput);

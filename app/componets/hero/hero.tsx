@@ -27,9 +27,6 @@ const Hero = () => {
     }, []);
 
     const {searchInput, setSearchInput} = useSearchInput({
-        travellers: null,
-        dateRange: null,
-        location: null,
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -43,6 +40,8 @@ const Hero = () => {
         cityParam: null,
         dateRangeParam: null,
         isHomepage: null,
+        closed: null,
+        setClosed: () => {},
         setIsHomepage: () => {
         },
         setCityParam: () => {
@@ -68,12 +67,6 @@ const Hero = () => {
         setReady: () => {
         },
         setSearchButtonHit: () => {
-        },
-        setTravellers: () => {
-        },
-        setDateRange: () => {
-        },
-        setLocation: () => {
         },
     });
 

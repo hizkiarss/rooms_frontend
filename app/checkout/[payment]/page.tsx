@@ -21,7 +21,7 @@ const validationSchema = Yup.object({
   bank: Yup.string().required("Bank is required"),
 });
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const { payment: bookingCode } = useParams<{ payment: string }>();
 
@@ -143,4 +143,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

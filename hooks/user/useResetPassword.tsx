@@ -15,7 +15,7 @@ export function useResetPassword() {
 
     return useMutation<String, Error, ResetPasswordVariables>({
         mutationFn: async ({email, input}) => {
-            const response = await graphqlClient.request<{ sendResetPasswordLink: String }>(
+            const response = await graphqlClient.request<{ resetPassword: String }>(
                     RESET_PASSWORD,
                     {email, input}
                 )

@@ -26,11 +26,12 @@ export function useGetAvailableRooms(input: GetAvailableRoomsInput) {
             );
             return response.getAvailableRooms;
         },
+        meta:{
         onSuccess: (roomData: RoomType[]) => {
             console.log("Available rooms fetched successfully", roomData);
         },
         onError: (error: Error) => {
             console.error("Failed to fetch available rooms:", error);
         },
-    });
+    }});
 }

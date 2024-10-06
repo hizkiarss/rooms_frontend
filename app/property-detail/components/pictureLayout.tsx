@@ -16,7 +16,7 @@ const PictureLayout = ({ data }: { data: PropertyDetailType }) => {
     const [isOpen, setIsOpen] = useState(false);
     const images = data.propertyPictures;
 
-    const handleOpenChange = (open) => {
+    const handleOpenChange = (open: boolean) => {
         setIsOpen(open);
     };
 

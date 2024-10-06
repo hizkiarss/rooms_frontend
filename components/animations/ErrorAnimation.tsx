@@ -18,7 +18,7 @@ const ErrorAnimation = () => {
       />
       <h4 className="scroll-m-20 text-lg tracking-tight w-[320px] text-pretty text-center">
         <p className={"font-semibold text-2xl mb-4"}>Well, this is awkward...</p>
-          <p>but don't worry, our code wizards currently are casting a
+          <p>but don&apos;t worry, our code wizards currently are casting a
               fix spell!</p>
       </h4>
     </div>

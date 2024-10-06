@@ -159,18 +159,34 @@ const OrderList: React.FC = () => {
                     totalPages={transactionPage?.totalPages || 0}
                     onPageChange={handlePageChange}
                   />
-                </>
-              ) : (
-                <EmptyDataAnimation
-                  message="No transactions so far, but good things are coming!"
-                  width={200}
-                  height={200}
-                />
-              )}
-            </CardContent>
-          </Card>
-        </>
-      )}
+
+                </div>
+              ))}
+              <div className="mt-4 flex justify-center">
+                {/* <Pagination
+                  className="mt-4"
+                  count={transactionPage.totalPages}
+                  page={page + 1}
+                  onChange={handlePageChange}
+                /> */}
+
+                {/*<Pagination*/}
+                {/*  className="mt-4"*/}
+                {/*  count={transactionPage.totalPages} // Jika menggunakan 'count'*/}
+                {/*  page={page + 1} // Jika menggunakan 'page' untuk halaman aktif*/}
+                {/*  onChange={handlePageChange}*/}
+                {/*/>*/}
+              </div>
+            </>
+          ) : (
+            <EmptyDataAnimation
+              message="No transactions so far, but good things are coming!"
+              width={200}
+              height={200}
+            />
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
