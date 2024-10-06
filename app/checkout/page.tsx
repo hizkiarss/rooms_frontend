@@ -14,9 +14,12 @@ import PriceDetailsCard from "./component/PriceDetailsCard";
 import { useCreateTransaction } from "@/hooks/transactions/useCreateTransaction";
 import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
 import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import CekResponse from "./[payment]/component/CekResponse";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import { useGetPropertyBySlug } from "@/hooks/properties/useGetPropertyBySlug";
+import NotFound from "../not-found";
+import { useRoomBySlug } from "@/hooks/rooms/useRoomBySlug";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -35,6 +38,29 @@ const Page = () => {
   const formatDate = (date: string | Date) => {
     return new Date(date).toISOString().split("T")[0];
   };
+  const searchParams = useSearchParams();
+
+  const propertySlug = searchParams.get("property");
+  const roomSlug = searchParams.get("room");
+  const fromSlug = searchParams.get("from");
+  const toSlug = searchParams.get("to");
+  const adultSlug = searchParams.get("adult");
+  const childrenSlug = searchParams.get("children");
+  console.log("ini property nya: ", propertySlug);
+  console.log("ini room nya: ", roomSlug);
+  console.log("ini from nya: ", fromSlug);
+  console.log("ini to nya: ", toSlug);
+  console.log("ini adult nya: ", adultSlug);
+  console.log("ini children nya: ", childrenSlug);
+
+  const { data: properties, isLoading: propertyLoading } = useGetPropertyBySlug(
+    propertySlug || ""
+  );
+
+  const { data: room, isLoading: roomLoading } = useRoomBySlug(roomSlug || "");
+
+  console.log("ini propertynya", properties);
+
   const formik = useFormik({
     initialValues: {
       travelerName: "",
@@ -77,6 +103,16 @@ const Page = () => {
       });
     },
   });
+
+  if (propertyLoading) return <LoadingStateAnimation />;
+  if (roomLoading) return <LoadingStateAnimation />;
+
+  if (!room) return <NotFound />;
+  if (!properties) return <NotFound />;
+  if (!adultSlug) return <NotFound />;
+  if (!childrenSlug) return <NotFound />;
+  if (!fromSlug) return <NotFound />;
+  if (!toSlug) return <NotFound />;
 
   return (
     <div className="min-h-screen py-4 px-5 sm:px-10 md:px-20 lg:px-[130px]">

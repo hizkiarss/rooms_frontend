@@ -1,5 +1,4 @@
-import { gql } from './gql-tag';
-
+import { gql } from "./gql-tag";
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions {
@@ -602,6 +601,31 @@ export const GET_AVAILABLE_ROOMS = gql`
       checkOutDate: $checkOutDate
       propertyId: $propertyId
     ) {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+      bedTypes {
+        id
+        name
+      }
+      roomPictures {
+        id
+        imgUrl
+      }
+    }
+  }
+`;
+
+export const GET_ROOM_BY_SLUG = gql`
+  query RoomBySlug($slug: String!) {
+    roomBySlug(slug: $slug) {
       id
       name
       description
