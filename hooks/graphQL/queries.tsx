@@ -647,3 +647,9 @@ export const GET_ROOM_BY_SLUG = gql`
     }
   }
 `;
+
+export const GET_ROOM_PRICE = gql`
+  query RoomPrice($slug: String!, $propertyId: ID!, $checkInDate: Date!) {
+    roomPrice(slug: $slug, propertyId: $propertyId, checkInDate: $checkInDate)
+  }
+`;
