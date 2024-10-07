@@ -17,6 +17,9 @@ export const GET_TRANSACTIONS = gql`
         profilePicture
         mobileNumber
       }
+      tax
+      adult
+      children
     }
   }
 `;
@@ -38,6 +41,9 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
         profilePicture
         mobileNumber
       }
+      tax
+      adult
+      children
     }
   }
 `;
@@ -169,6 +175,9 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
           reply
         }
         createdAt
+        tax
+        adult
+        children
       }
       pageNumber
       pageSize
@@ -237,6 +246,9 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
       lastName
       mobileNumber
       createdAt
+      tax
+      adult
+      children
       users {
         id
         email
@@ -250,6 +262,9 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
         checkInTime
         checkOutTime
         address
+        slug
+        averageRating
+        totalReview
         propertyFacilities {
           id
           facilities {

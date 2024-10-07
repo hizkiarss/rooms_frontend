@@ -16,19 +16,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { PaymentProofType } from "@/types/payment-proof/PaymentProofType";
 import { AlertCircle, Copy, Info, Shield } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
 interface ManualTransferProps {
   totalPrice: number;
   createdAt: string;
   transactionId?: string;
+  paymentProof: PaymentProofType[];
 }
 
 const ManualTransfer: React.FC<ManualTransferProps> = ({
   totalPrice,
   createdAt,
   transactionId,
+  paymentProof,
 }) => {
   const accountNumber = "52 6032 2488";
   const formattedTotalPayment = totalPrice.toLocaleString("id-ID");
@@ -84,8 +88,8 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
               "Oops! Your payment window has expired."
             ) : (
               <>
-                We&apos;re holding this price for you! Let&apos;s complete your payment in{" "}
-                {timeLeft}
+                We&apos;re holding this price for you! Let&apos;s complete your
+                payment in {timeLeft}
               </>
             )}
           </CardTitle>
@@ -182,11 +186,14 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
           )}
         </CardContent>
       </Card>
-      <Button
-        onClick={() => setOpenUploadDialog(true)}
-        className="w-full mt-5 rounded-lg py-3 text-center">
-        Upload Payment Proof
-      </Button>
+      {paymentProof && paymentProof.length === 0 && (
+        <Button
+          onClick={() => setOpenUploadDialog(true)}
+          className="w-full mt-5 rounded-lg py-3 text-center">
+          Upload Payment Proof
+        </Button>
+      )}
+
       <Dialog
         open={openUploadDialog}
         onOpenChange={(open) => {

@@ -12,6 +12,8 @@ interface ReservationPaymentCardProps {
   totalPrice: string;
   paymentMethod: string;
   night: number;
+  tax: string;
+  subTotal: string;
 }
 
 const ReservationPaymentCard: React.FC<ReservationPaymentCardProps> = ({
@@ -21,6 +23,8 @@ const ReservationPaymentCard: React.FC<ReservationPaymentCardProps> = ({
   totalPrice,
   paymentMethod,
   night,
+  tax,
+  subTotal,
 }) => {
   return (
     <Card className="w-full">
@@ -54,7 +58,14 @@ const ReservationPaymentCard: React.FC<ReservationPaymentCardProps> = ({
                 <Dot />
                 <div>Night {night} x 1 Room</div>
               </div>
-              <div>IDR {totalPrice}</div>
+              <div>IDR {subTotal}</div>
+            </div>
+            <div className="flex items-center justify-between mt-4">
+              <div className="flex">
+                <Dot />
+                <div>Tax</div>
+              </div>
+              <div>IDR {tax}</div>
             </div>
             <Separator />
             <div>Payment Method</div>
