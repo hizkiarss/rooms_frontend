@@ -43,7 +43,6 @@ const PropertyReport = () => {
         subtitle: booking.users.mobileNumber || "", // Optional subtitle
         description: booking.users.email || "", // Optional description
         bgColor: "#007989", // Set a default color or dynamic color
-        occupancy : 0
       })),
     })) || [];
 

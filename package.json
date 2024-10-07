@@ -43,7 +43,7 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-autoplay": "^8.2.0",
-    "embla-carousel-react": "^8.2.0",
+    "embla-carousel-react": "^8.3.0",
     "formik": "^2.4.6",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",

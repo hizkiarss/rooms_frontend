@@ -412,6 +412,30 @@ export const REVENUE_BY_PROPERTY = gql`
   }
 `;
 
+export const TAX_BY_PROPERTY = gql`
+  query TaxByProperty($propertyId: ID!, $startDate: Date, $endDate: Date) {
+    taxByProperty(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`;
+
+export const REVENUE_WITH_TAX_BY_PROPERTY = gql`
+  query RevenueWithTaxByProperty(
+    $propertyId: ID!
+    $startDate: Date
+    $endDate: Date
+  ) {
+    revenueWithTaxByProperty(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`;
+
 export const TOTAL_ROOMS_BY_PROPERTY = gql`
   query TotalRoom($propertyId: ID!) {
     totalRoom(propertyId: $propertyId)
@@ -438,12 +462,38 @@ export const TOTAL_TRANSACTIONS_BY_PROPERTY_ID = gql`
   }
 `;
 
+// export const REPORT_ROOMS_BY_PROPERTY = gql`
+//   query GetRoomsByPropertiesId($propertyId: ID!) {
+//     getRoomsByPropertiesId(id: $propertyId) {
+//       id
+//       name
+//       roomNumber
+//       bookings {
+//         id
+//         startDate
+//         endDate
+//         users {
+//           username
+//           email
+//           mobileNumber
+//         }
+//       }
+//     }
+//   }
+// `;
 export const REPORT_ROOMS_BY_PROPERTY = gql`
   query GetRoomsByPropertiesId($propertyId: ID!) {
     getRoomsByPropertiesId(id: $propertyId) {
       id
       name
+      description
+      capacity
+      isAvailable
       roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
       bookings {
         id
         startDate
