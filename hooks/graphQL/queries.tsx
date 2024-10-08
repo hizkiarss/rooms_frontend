@@ -262,6 +262,8 @@ export const GET_CHECK_PAYMENT_PROOF_BY_PROPERTY_ID = gql`
         status
         paymentMethod
         finalPrice
+        firstName
+        lastName
       }
       createdAt
     }

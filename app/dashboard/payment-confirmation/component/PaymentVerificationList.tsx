@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import { Check, X } from "lucide-react";
+import { Banknote, Check, X } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -82,16 +82,14 @@ const PaymentVerificationList = () => {
                 <div className="flex flex-col sm:flex-row items-center">
                   <div className="flex-1 p-4 sm:p-6 space-y-1 sm:space-y-2 w-full sm:w-auto">
                     <div className="flex items-center space-x-4">
-                      <div className="bg-pink-100 p-2 rounded-lg">
-                        <Image
-                          src="/path-to-your-icon.svg"
-                          alt="Icon"
-                          width={24}
-                          height={24}
-                        />
+                      <div className="bg-white p-2 rounded-lg">
+                        <Banknote className="text-greenr" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">{proof.id}</h3>
+                        <h3 className="font-semibold">
+                          {proof.transaction.firstName}{" "}
+                          {proof.transaction.lastName}
+                        </h3>
                         <div className="sm:hidden flex justify-between text-sm text-gray-500 mt-1 w-full">
                           <span className="text-left mr-2">
                             {proof.transaction.finalPrice.toLocaleString(
@@ -99,6 +97,8 @@ const PaymentVerificationList = () => {
                               {
                                 style: "currency",
                                 currency: "IDR",
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
                               }
                             )}
                           </span>
@@ -116,6 +116,8 @@ const PaymentVerificationList = () => {
                       {proof.transaction.finalPrice.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
                       })}
                     </p>
                   </div>
@@ -145,6 +147,8 @@ const PaymentVerificationList = () => {
                                 {
                                   style: "currency",
                                   currency: "IDR",
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
                                 }
                               )}
                             </div>
