@@ -30,11 +30,18 @@ import usePendingPaymentProofByPropertyId from "@/hooks/payment-proof/usePending
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import useCheckPaymentProofByPropertyId from "@/hooks/payment-proof/useCheckPaymentProofByPropertyId";
 import NoDataFoundAnimation from "@/components/animations/DataNotFoundAnimation";
-const PaymentVerificationList = () => {
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
+
+const PaymentVerificationList: React.FC = () => {
   const [selectedProof, setSelectedProof] = useState<PaymentProofType | null>(
     null
   );
-  const { data: paymentProofs, isLoading } = useCheckPaymentProofByPropertyId();
+  const {
+    data: paymentProofs,
+    isLoading,
+    isError,
+  } = useCheckPaymentProofByPropertyId();
   const { mutate: acceptPaymentProof } = useAcceptPaymentProof();
   const { mutate: rejectPaymentProof } = useRejectPaymentProof();
 
@@ -46,13 +53,8 @@ const PaymentVerificationList = () => {
     rejectPaymentProof({ transactionId: id });
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        <LoadingStateAnimation />
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingStateAnimation />;
+  if (isError) return <ErrorAnimation />;
 
   return (
     <div className="space-y-4">
@@ -61,8 +63,11 @@ const PaymentVerificationList = () => {
       </h4>
 
       {!paymentProofs || paymentProofs.length === 0 ? (
-        // <div className="text-center text-gray-500">Data not found</div>
-        <NoDataFoundAnimation />
+        <EmptyDataAnimation
+          message="No transactions so far, but good things are coming!"
+          width={300}
+          height={300}
+        />
       ) : (
         paymentProofs.map((proof) => {
           const formattedDate = new Date(proof.createdAt).toLocaleDateString(
