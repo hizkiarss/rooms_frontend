@@ -24,9 +24,41 @@ export const GET_TRANSACTIONS = gql`
   }
 `;
 
+// export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
+//   query TransactionsByPropertyId($propertyId: ID!) {
+//     transactionsByPropertyId(propertyId: $propertyId) {
+//       id
+//       finalPrice
+//       status
+//       paymentMethod
+//       firstName
+//       lastName
+//       mobileNumber
+//       users {
+//         id
+//         email
+//         username
+//         profilePicture
+//         mobileNumber
+//       }
+//       tax
+//       adult
+//       children
+//     }
+//   }
+// `;
+
 export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
-  query TransactionsByPropertyId($propertyId: ID!) {
-    transactionsByPropertyId(propertyId: $propertyId) {
+  query TransactionsByPropertyId(
+    $propertyId: ID!
+    $startDate: String
+    $endDate: String
+  ) {
+    transactionsByPropertyId(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       id
       finalPrice
       status
@@ -34,6 +66,8 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
       firstName
       lastName
       mobileNumber
+      createdAt
+      bookingCode
       users {
         id
         email
