@@ -372,17 +372,45 @@ export const GET_UNREAD_REVIEW_BY_PROPERTY_ID = gql`
   }
 `;
 
+// export const REVIEW_BY_PROPERTY_ID = gql`
+//   query ReviewByPropertyId($propertyId: ID!) {
+//     reviewByPropertyId(propertyId: $propertyId) {
+//       id
+//       feedback
+//       rating
+//       reply
+//       users {
+//         username
+//       }
+//       createdAt
+//     }
+//   }
+// `;
 export const REVIEW_BY_PROPERTY_ID = gql`
-  query ReviewByPropertyId($propertyId: ID!) {
-    reviewByPropertyId(propertyId: $propertyId) {
-      id
-      feedback
-      rating
-      reply
-      users {
-        username
+  query ReviewByPropertyId(
+    $propertyId: ID!
+    $page: Int!
+    $size: Int!
+    $sortBy: String!
+  ) {
+    reviewByPropertyId(
+      propertyId: $propertyId
+      page: $page
+      size: $size
+      sortBy: $sortBy
+    ) {
+      totalPages
+      totalItems
+      content {
+        id
+        feedback
+        rating
+        reply
+        users {
+          username
+        }
+        createdAt
       }
-      createdAt
     }
   }
 `;

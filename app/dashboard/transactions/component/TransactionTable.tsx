@@ -84,7 +84,10 @@ const TransactionTable = () => {
 
   return (
     <div>
-      <div className="w-full">
+      <div className="w-full p-4 space-y-4">
+        <h4 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
+          Transactions
+        </h4>
         <div className="flex items-center py-4">
           <Input
             placeholder="Search"
