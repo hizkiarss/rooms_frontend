@@ -18,7 +18,7 @@ const SmallSearchInput: React.FC<SmallSearchInputProps> = ({
     <>
       <div className="border rounded-2xl py-2 px-4 ">
         <div className="flex justify-between items-center">
-          <div className="flex flex-col w-2/4">
+          <div className="flex flex-col w-3/4">
             <div className="font-semibold">{cityName}</div>
             <div className="flex  w-full justify-between">
               <div>{date}</div>
