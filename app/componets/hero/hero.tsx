@@ -1,20 +1,16 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
-import hero from "../../../public/homepage/hero.png";
-import Image from "next/image";
+
 import Buttons from "@/components/Buttons";
-import { CalendarSearch, LocateIcon, MapPin, UserRound, X } from "lucide-react";
+import { MapPin, UserRound, X } from "lucide-react";
 import TravellerPopOver from "@/app/componets/hero/components/TravellerPopOver";
 import { DatePickerWithRange } from "@/app/componets/hero/components/DatePopOver";
 import { LocationPopOver } from "@/app/componets/hero/components/LocationPopOver";
 import useSearchInput from "@/hooks/useSearchInput";
-import { useRouter } from "next/navigation";
-import * as sea from "node:sea";
 import SmallSearchInput from "../SmallSerchInput";
 import { City } from "@/types/city/City";
 import { DateRange } from "react-day-picker";
-import { addDays, formatDate } from "date-fns";
+import { addDays } from "date-fns";
 
 const Hero = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -24,7 +20,7 @@ const Hero = () => {
   const [selectedCity, setSelectedCity] = React.useState<City | null>(null);
 
   const handleScroll = () => {
-    setIsSticky(window.scrollY > 100); // Adjust this value as needed
+    setIsSticky(window.scrollY > 100);
   };
 
   useEffect(() => {
@@ -135,7 +131,6 @@ const Hero = () => {
           className={`w-11/12 fixed left-1/2 -translate-x-1/2 top-[340px] flex flex-col bg-white p-2 md:p-4 border rounded-2xl z-10 transition-transform ${
             isSticky ? "-translate-y-80" : "translate-y-full"
           }`}>
-          {/* Large Screen Search Form */}
           <div className="hidden xl:block">
             <div className="grid grid-cols-4 gap-4">
               <div className="border border-black rounded-xl p-2 flex items-center hover:bg-slate-100 overflow-hidden">
@@ -168,7 +163,6 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Small Screen Search Form */}
           <div className="xl:hidden">
             {isExpanded ? (
               <div className="relative">
