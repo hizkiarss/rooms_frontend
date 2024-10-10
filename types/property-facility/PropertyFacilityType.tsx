@@ -3,10 +3,10 @@ import {PropertiesType} from "@/types/properties/PropertiesType";
 
 export type PropertyFacility = {
     id: string;
-    name: string;
+    // name: string;
     facilities: FacilitiesType;
-    properties: PropertiesType;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt?: string;
+    // properties: PropertiesType;
+    // createdAt: string;
+    // updatedAt: string;
+    // deletedAt?: string;
 };

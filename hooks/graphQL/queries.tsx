@@ -567,6 +567,9 @@ export const GET_PROPERTIES_BY_SLUG = gql`
       address
       totalReview
       averageRating
+      phoneNumber
+      star
+      averageRating
       propertyFacilities {
         id
         facilities {
@@ -623,3 +626,113 @@ export const GET_AVAILABLE_ROOMS = gql`
     }
   }
 `;
+
+
+
+export const GET_CALENDAR_PRICE = gql`
+  query GetCalendarPrice($year: Int!, $month: Int!, $propertyId: ID!) {
+    getCalendarPrice(year: $year, month: $month, propertyId: $propertyId) {
+      date
+      price
+    }
+  }
+`;
+
+
+
+export const GET_PROPERTIES_BY_OWNER_EMAIL = gql`
+  query GetPropertiesByOwnerEmail($email: String!) {
+    getPropertiesByOwnerEmail(email: $email) {
+      id
+      name
+      description
+      checkInTime
+      checkOutTime
+      address
+      totalReview
+      averageRating
+      slug
+      propertyFacilities {
+        id
+        facilities {
+          id
+          name
+        }
+      }
+      propertyPictures {
+        id
+        imgUrl
+      }
+      city {
+        id
+        name
+      }
+      propertyCategories {
+        id
+        name
+      }
+      users {
+        id
+        email
+      }
+    }
+  }
+`;
+
+
+export const GET_FILTERED_ROOMS_BY_PROPERTY_SLUG = gql`
+  query GetFilteredRoomsByPropertySlug(
+    $propertySlug: String!
+    $isAvailable: Boolean
+    $roomName: String
+    $pageSize: Int!
+    $pageNumber: Int!
+  ) {
+    getFilteredRoomsByPropertySlug(
+      propertySlug: $propertySlug
+      isAvailable: $isAvailable
+      roomName: $roomName
+      pageSize: $pageSize
+      pageNumber: $pageNumber
+    ) {
+       totalElements
+        totalPages
+        currentPage
+        pageSize
+        rooms {
+            id
+            name
+            description
+            capacity
+            isAvailable
+            roomNumber
+            price
+            includeBreakfast
+            roomArea
+            slug
+            bedTypes {
+                id
+                name
+            }
+            roomPictures {
+                id
+                imgUrl
+            }
+        }
+    }
+}
+`;
+
+export const GET_ROOMS_TYPES_BY_PROPERTY_SLUG = gql`
+  query GetRoomsTypesByPropertySlug($propertySlug: String!) {
+    getRoomsTypesByPropertySlug(propertySlug: $propertySlug)
+  }
+`;
+
+
+
+
+
+
+
+

@@ -14,11 +14,11 @@ const Breadcrumbs = ({ data }: { data: PropertyDetailType }) => {
         <Breadcrumb className={"font-semibold mb-2 font-"}>
             <BreadcrumbList>
                 <BreadcrumbItem>
-                    <BreadcrumbLink href="/"> {data.propertyCategories.name}</BreadcrumbLink>
+                    <BreadcrumbLink className={"hover:none"}> {data.propertyCategories.name}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    <BreadcrumbLink href="/components"> {data.city.name}</BreadcrumbLink>
+                    <BreadcrumbLink > {data.city.name}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

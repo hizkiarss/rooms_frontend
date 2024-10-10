@@ -10,6 +10,7 @@ import TotalRoomsCard from "./TotalRoomsCard";
 import TotalTransactionsCard from "./TotalTransactionsCard";
 import OccupiedRoomsCard from "./OccupiedRoomsCard";
 import PropertyReport from "./PropertyReport";
+import Footer from "@/components/Footer";
 
 type TabName =
   | "Overview"
