@@ -1,22 +1,12 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { FormikProps } from "formik";
+import { Label } from "@/components/ui/label";
 
 interface FormValues {
   travelerName: string;
@@ -31,9 +21,20 @@ interface PaymentMethodCardProps {
 }
 
 const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
+  // Local state to manage active tab
+  const [activeTab, setActiveTab] = useState(
+    formik.values.paymentMethod || "manual"
+  );
+
   const handlePaymentMethodChange = (value: string) => {
     formik.setFieldValue("paymentMethod", value);
+    setActiveTab(value); // Update active tab when radio button is selected
   };
+
+  // Synchronize active tab with formik value
+  useEffect(() => {
+    setActiveTab(formik.values.paymentMethod);
+  }, [formik.values.paymentMethod]);
 
   return (
     <div className="py-4">
@@ -52,10 +53,21 @@ const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Tabs defaultValue="manual" className="w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="manual">Manual Transfer</TabsTrigger>
-              <TabsTrigger value="bank">Payment Gateway</TabsTrigger>
+              <TabsTrigger
+                value="manual"
+                onClick={() => handlePaymentMethodChange("manual")}>
+                Manual Transfer
+              </TabsTrigger>
+              <TabsTrigger
+                value="bank"
+                onClick={() => handlePaymentMethodChange("bank")}>
+                Payment Gateway
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="manual">
               <Card>
@@ -63,13 +75,15 @@ const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
                   <CardTitle>Manual Transfer</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  By choosing manual transfer, you&apos;ll proceed to a page showing
-                  the payment amount and the bank account details. Once you&apos;ve
-                  made the transfer, navigate to the &apos;My Order&apos; section, open
-                  the relevant transaction, and you&apos;ll find a form to upload
-                  your payment proof. After you&apos;ve uploaded the receipt, please
-                  wait for our team to validate your payment. Upon approval, the
-                  status of your order will change.
+                  Great choice! When you opt for manual transfer, you'll be
+                  taken to a page that displays the payment amount along with
+                  our bank account details. After you've completed your
+                  transfer, head over to the 'My Order' section. Open the
+                  relevant transaction, and you&apos;ll find a handy form to
+                  upload your payment proof. Once you&apos;ve submitted your
+                  receipt, just kick back and relax while our team validates
+                  your payment. Once everything checks out, the status of your
+                  order will change to reflect your payment!
                 </CardContent>
               </Card>
             </TabsContent>
@@ -79,11 +93,14 @@ const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
                   <CardTitle>Payment Gateway</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  By choosing the payment gateway, you will proceed to a page
-                  that outlines the amount to be paid and the payment methods
-                  you can use. Follow the instructions provided for each method.
-                  After completing your payment, the system will validate your
-                  order, and your order status will be approved.
+                  Awesome choice! By selecting the payment gateway, you&apos;ll
+                  be directed to a page that outlines how much you need to pay
+                  and the various payment methods at your disposal. Just follow
+                  the simple instructions for each method, and once you&apos;ve
+                  completed your payment, our system will get to work validating
+                  your order. Before you know it, your order status will be
+                  approved, and you&apos;ll be one step closer to enjoying your
+                  purchase!
                 </CardContent>
               </Card>
             </TabsContent>

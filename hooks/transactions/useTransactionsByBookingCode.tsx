@@ -38,7 +38,17 @@ export const useTransactionsByBookingCode = (bookingCode: string) => {
 
         return response.transactionsByBookingCode;
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        if (error instanceof Error) {
+          if (
+            (error as any).response?.errors?.[0]?.extensions?.classification ===
+            "NOT_FOUND"
+          ) {
+            return null;
+          }
+          console.error("Error fetching transaction:", error);
+        } else {
+          console.error("Unexpected error:", error);
+        }
         throw error;
       }
     },

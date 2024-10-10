@@ -14,6 +14,8 @@ export const TransactionFilter: FilterFn<TransactionsType> = (
     "status",
     "paymentMethod",
     "mobileNumber",
+    "createdAt",
+    "bookingCode",
   ];
   if (!filterValue) return true;
   return searchableColumns.some((column) => {

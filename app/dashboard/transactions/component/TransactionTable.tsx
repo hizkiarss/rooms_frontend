@@ -36,10 +36,21 @@ import { useTransactions } from "@/hooks/transactions/useTransactions";
 import { useTransactionsByPropertyId } from "@/hooks/transactions/useTransactionsByPropertyId";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
+import useSelectedDate from "@/hooks/useSelectedDate";
+import DateRangePicker from "../../component/DateRangePicker";
 
 const TransactionTable = () => {
   //const { data, isLoading, error } = useTransactions();
-  const { data, isLoading, error } = useTransactionsByPropertyId();
+  const { selectedDates } = useSelectedDate();
+  const currentYear = new Date().getFullYear();
+  const { data, isLoading, error } = useTransactionsByPropertyId(
+    selectedDates?.startDate
+      ? new Date(selectedDates.startDate)
+      : new Date(currentYear, 0, 1),
+    selectedDates?.endDate
+      ? new Date(selectedDates.endDate)
+      : new Date(currentYear, 11, 31)
+  );
   console.log("ini datanya: ", data);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -84,8 +95,11 @@ const TransactionTable = () => {
 
   return (
     <div>
-      <div className="w-full">
-        <div className="flex items-center py-4">
+      <div className="w-full p-4 space-y-4">
+        <h4 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
+          Transactions
+        </h4>
+        <div className="flex space-x-2 items-center py-4">
           <Input
             placeholder="Search"
             value={globalFilter ?? ""}
@@ -96,6 +110,7 @@ const TransactionTable = () => {
             }}
             className="max-w-sm"
           />
+          <DateRangePicker />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">

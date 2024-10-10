@@ -1,6 +1,14 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDays, User, BedDouble, Info, Moon, Hotel } from "lucide-react";
+import {
+  CalendarDays,
+  User,
+  BedDouble,
+  Info,
+  Moon,
+  Hotel,
+  Users,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { PropertyFacility } from "@/types/property-facility/PropertyFacilityType";
 
@@ -10,7 +18,8 @@ interface ReservationDetailsCardProps {
   checkOut: string;
   guestName: string;
   bedType: string;
-  guestCount: number;
+  adult: number;
+  children: number;
   specialRequests?: string;
   facility: PropertyFacility[];
   night: number;
@@ -24,12 +33,14 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
   checkOut,
   guestName,
   bedType,
-  guestCount,
+  adult,
+  children,
   facility,
   night,
   roomName,
   status,
 }) => {
+  const totalguest = adult + children;
   return (
     <div>
       <Card className="w-full">
@@ -87,9 +98,17 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
               <div className="flex my-2 flex-col md:flex-row items-start">
                 <div className="w-full md:w-1/3 mb-4 md:mb-0">
                   <h3 className="font-semibold mb-2">Guest Details</h3>
-                  <div className="flex items-center">
-                    <User className="mr-2" />
-                    <p>{guestName}</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <User className="mr-2" />
+                      <p>{guestName}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Users className="mr-2" />
+                      <p>
+                        {totalguest} Guest ({adult} Adult, {children} children)
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -104,19 +123,13 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
                       <BedDouble className="mr-2" />
                       <p>{bedType}</p>
                     </div>
-                    <div className="flex items-center">
-                      <User className="mr-2" />
-                      <p>
-                        {guestCount} Guest ({guestCount} Adult)
-                      </p>
-                    </div>
                   </div>
                 </div>
 
                 <div className="w-full md:w-1/3">
                   <h3 className="font-semibold mb-2">Facilities</h3>
                   {facility && facility.length > 0 ? (
-                    <ul>
+                    <ul className="space-y-2">
                       {facility.map((item, index) => (
                         <li key={index}> {item.facilities.name}</li>
                       ))}

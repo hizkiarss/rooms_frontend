@@ -8,5 +8,7 @@ export type TransactionRequest = {
   firstName: string;
   lastName: string;
   mobileNumber: string;
+  adult: number;
+  children: number;
   transactionDetailRequests: TransactionDetailRequestType;
 };

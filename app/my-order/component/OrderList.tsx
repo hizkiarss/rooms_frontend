@@ -10,8 +10,7 @@ import { Separator } from "@radix-ui/react-select";
 import React, { useState } from "react";
 import OrderListItem from "./OrderListItem";
 
-const OrderList: React.FC = () => {
-
+const OrderList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [sort, setSort] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
@@ -42,88 +41,76 @@ const OrderList: React.FC = () => {
     return <ErrorAnimation />;
   }
 
+  const handlePageChange = (page: number) => {
+    if (transactionPage && page > 0 && page <= transactionPage.totalPages) {
+      setCurrentPage(page - 1);
+    }
+  };
+
+  if (error) {
+    return <ErrorAnimation />;
+  }
+
   const refreshTransactions = () => {
     refetch();
   };
 
-  const handlePageChange = (page: number) => {
-    if (transactionPage && page > 0 && page <= transactionPage.totalPages) {
-      setCurrentPage(page - 1);
-
-    }
-
-    if (error) {
-        return <ErrorAnimation />;
-    }
-
-    const refreshTransactions = () => {
-        refetch();
-    };
-
-    const handlePageChange = (page: number) => {
-        // Sesuaikan page yang dikirim ke backend (backend mulai dari 0)
-        if (transactionPage && page > 0 && page <= transactionPage.totalPages) {
-            setCurrentPage(page - 1); // Mengurangi 1 agar cocok dengan backend
-        }
-    };
-
-    return (
+  return (
+    <>
+      {transactionPage && (
         <>
-            {transactionPage && (
+          <Card className="">
+            <CardHeader>
+              <CardTitle>My Order</CardTitle>
+            </CardHeader>
+            <Separator className="mb-2" />
+            <CardContent className="space-y-4">
+              <SortAndFilter
+                sort={sort}
+                status={status}
+                onSortChange={handleSortChange}
+                onStatusChange={handleStatusFilterChange}
+              />
+              {transactionPage?.content &&
+              transactionPage.content.length > 0 ? (
                 <>
-                    <Card className="">
-                        <CardHeader>
-                            <CardTitle>My Order</CardTitle>
-                        </CardHeader>
-                        <Separator className="mb-2" />
-                        <CardContent className="space-y-4">
-                            <SortAndFilter
-                                sort={sort}
-                                status={status}
-                                onSortChange={handleSortChange}
-                                onStatusChange={handleStatusFilterChange}
-                            />
-                            {transactionPage?.content &&
-                            transactionPage.content.length > 0 ? (
-                                <>
-                                    {transactionPage.content.map((transaction) => (
-                                        <div key={transaction.id}>
-                                            <OrderListItem
-                                                bookingCode={transaction.bookingCode}
-                                                imgUrl="/img"
-                                                totalPrice={transaction.finalPrice}
-                                                propertyName={""}
-                                                status={transaction.status}
-                                                paymentMethod={transaction.paymentMethod}
-                                                transactionId={transaction.id}
-                                                paymentProofs={transaction.paymentProofs}
-                                                onRefresh={refreshTransactions}
-                                                transactionDetails={transaction.transactionDetails[0]}
-                                                review={transaction.reviews}
-                                                room={transaction.transactionDetails[0].rooms}
-                                            />
-                                        </div>
-                                    ))}
+                  {transactionPage.content.map((transaction) => (
+                    <div key={transaction.id}>
+                      <OrderListItem
+                        bookingCode={transaction.bookingCode}
+                        imgUrl="/img"
+                        totalPrice={transaction.finalPrice}
+                        propertyName={""}
+                        status={transaction.status}
+                        paymentMethod={transaction.paymentMethod}
+                        transactionId={transaction.id}
+                        paymentProofs={transaction.paymentProofs}
+                        onRefresh={refreshTransactions}
+                        transactionDetails={transaction.transactionDetails[0]}
+                        review={transaction.reviews}
+                        room={transaction.transactionDetails[0].rooms}
+                      />
+                    </div>
+                  ))}
 
-                                    <PaginationControl
-                                        currentPage={currentPage}
-                                        totalPages={transactionPage?.totalPages || 0}
-                                        onPageChange={handlePageChange}
-                                    />
-                                </>
-                            ) : (
-                                <EmptyDataAnimation
-                                    message="No transactions so far, but good things are coming!"
-                                    width={200}
-                                    height={200}
-                                />
-                            )}
-                        </CardContent>
-                    </Card>
+                  <PaginationControl
+                    currentPage={currentPage}
+                    totalPages={transactionPage?.totalPages || 0}
+                    onPageChange={handlePageChange}
+                  />
                 </>
-            )}
+              ) : (
+                <EmptyDataAnimation
+                  message="No transactions so far, but good things are coming!"
+                  width={200}
+                  height={200}
+                />
+              )}
+            </CardContent>
+          </Card>
         </>
-    );
+      )}
+    </>
+  );
 };
-
 export default OrderList;

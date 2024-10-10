@@ -16,6 +16,9 @@ import * as Yup from "yup";
 import { useCreateVirtualAccountCode } from "@/hooks/payment/useCreateVIrtualAccountCode";
 import { useSavePaymentIntial } from "@/hooks/payment/useSavePaymentInitial";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import { useRoomPrice } from "@/hooks/rooms/useRoomPrice";
+import NoDataFoundAnimation from "@/components/animations/DataNotFoundAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
 const validationSchema = Yup.object({
   bank: Yup.string().required("Bank is required"),
@@ -32,6 +35,27 @@ const Page = () => {
   } = useTransactionsByBookingCode(bookingCode);
   const createVirtualAccountCode = useCreateVirtualAccountCode();
   const savePaymentInitial = useSavePaymentIntial();
+  const startDateString = transaction?.transactionDetails[0]?.startDate;
+
+  const fromDate = new Date(
+    transaction?.transactionDetails[0].startDate || " "
+  );
+  console.log("ini formDate", fromDate);
+  const toDate = new Date(transaction?.transactionDetails[0].endDate || " ");
+
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  const formattedFromDate = fromDate.toLocaleDateString("en-US", options);
+  const formattedToDate = toDate.toLocaleDateString("en-US", options);
+  const differenceInMilliseconds = toDate.getTime() - fromDate.getTime();
+
+  const differenceInDays = Math.ceil(
+    differenceInMilliseconds / (1000 * 60 * 60 * 24)
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -89,7 +113,8 @@ const Page = () => {
   }
 
   if (error) {
-    return <p>Error loading transactions: {error.message}</p>;
+    console.log(error);
+    return <ErrorAnimation />;
   }
   return (
     <div className="min-h-screen py-4 px-5 sm:px-10 md:px-20 lg:px-[130px] ">
@@ -109,13 +134,27 @@ const Page = () => {
                 <ManualTransfer
                   createdAt={transaction.createdAt}
                   totalPrice={transaction.finalPrice}
+                  transactionId={transaction.id}
+                  paymentProof={transaction.paymentProofs}
                 />
               )}
-              <RoomDetailCard />
+              <RoomDetailCard
+                images={transaction.properties.propertyPictures}
+                propertyName={transaction.properties.name}
+                rating={transaction.properties.averageRating}
+                review={transaction.properties.totalReview}
+                roomName={transaction.transactionDetails[0].rooms.name}
+                from={formattedFromDate}
+                to={formattedToDate}
+                night={differenceInDays}
+              />
             </div>
             <div className="md:w-5/12 lg:w-4/12 w-full ">
               <div className="sticky top-4">
-                <PriceDetailsCard />
+                <PriceDetailsCard
+                  price={transaction.transactionDetails[0].price || 0}
+                  night={differenceInDays}
+                />
                 {transaction.paymentMethod ===
                   PaymentMethodType.BANK_TRANSFER && (
                   <Buttons
@@ -137,7 +176,7 @@ const Page = () => {
           </div>
         </form>
       ) : (
-        <p>No transactions found.</p>
+        <NoDataFoundAnimation />
       )}
     </div>
   );

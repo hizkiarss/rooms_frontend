@@ -1,7 +1,7 @@
 import { BedTypesType } from "../bed-types/BedTypesType";
 import { BookingsType } from "../bookings/BookingsType";
 import { PropertiesType } from "../properties/PropertiesType";
-import {RoomPictureType} from "@/types/room-picture/RoomPictureType";
+import { RoomPictureType } from "@/types/room-picture/RoomPictureType";
 
 export type RoomType = {
   id: string;
@@ -13,7 +13,7 @@ export type RoomType = {
   price: number;
   capacity: number;
   properties: PropertiesType;
-  includeBreakfast: Boolean;
+  includeBreakfast: boolean;
   bedTypes: BedTypesType;
   roomArea: number;
   bookings: [BookingsType];

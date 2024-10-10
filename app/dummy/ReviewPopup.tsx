@@ -19,28 +19,39 @@ import {
 import { ReviewType } from "@/types/review/ReviewType";
 import { getRatingDescription } from "@/types/review/GetRatingDescription";
 import Buttons from "@/components/Buttons";
+import { useReviewByPropertyId } from "@/hooks/Review/useReviewByPropertyId";
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
+import PaginationControl from "@/components/PaginationControl";
+
 interface ReviewCarouselProps {
-  reviews: ReviewType[];
+  propertyId: string;
 }
 
-const ReviewPopup: React.FC<ReviewCarouselProps> = ({ reviews }) => {
-  const [sortBy, setSortBy] = useState("most-recent");
+const ReviewPopup: React.FC<ReviewCarouselProps> = ({ propertyId }) => {
+  const [page, setPage] = useState(0);
+  const [sortBy, setSortBy] = useState("MOST_RECENT");
+  const size = 10;
+  const {
+    data: reviewPage,
+    isLoading,
+    error,
+  } = useReviewByPropertyId(propertyId, page, size, sortBy);
 
-  const sortedReviews = [...reviews].sort((a, b) => {
-    if (sortBy === "most-recent") {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    } else if (sortBy === "rating-asc") {
-      return a.rating - b.rating;
-    } else if (sortBy === "rating-desc") {
-      return b.rating - a.rating;
+  const handlePageChange = (newPage: number) => {
+    console.log("kepencet, INI PAGENYA", newPage);
+    if (reviewPage && newPage > 0 && newPage <= reviewPage.totalPages) {
+      setPage(newPage - 1); // -1 karena index halaman biasanya mulai dari 0
     }
-    return 0;
-  });
+  };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Buttons className={"!text-greenr bg-white hover:!bg-greenr hover:!text-white"} value={"See all reviews"}/>
+        <Buttons
+          className={"!text-greenr bg-white hover:!bg-greenr hover:!text-white"}
+          value={"See all reviews"}
+        />
         {/*<Button variant="outline">S</Button>*/}
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
@@ -54,43 +65,49 @@ const ReviewPopup: React.FC<ReviewCarouselProps> = ({ reviews }) => {
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="most-recent">Most Recent</SelectItem>
-              <SelectItem value="rating-asc">Rating (Low to High)</SelectItem>
-              <SelectItem value="rating-desc">Rating (High to Low)</SelectItem>
+              <SelectItem value="MOST_RECENT">Most recent</SelectItem>
+              <SelectItem value="HIGHEST_RATING">Highest rating</SelectItem>
+              <SelectItem value="LOWEST_RATING">Lowest rating</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-          {sortedReviews.map((review) => {
-            const formattedDate = new Date(review.createdAt).toLocaleDateString(
-              "en-US",
-              {
+          {reviewPage?.content &&
+            (reviewPage.content as unknown as ReviewType[]).map((review) => {
+              const formattedDate = new Date(
+                review.createdAt
+              ).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              }
-            );
+              });
 
-            return (
-              <Card key={review.id}>
-                <CardContent className="p-4">
-                  <h3 className="font-bold">
-                    {review.rating}/10 {getRatingDescription(review.rating)}
-                  </h3>
-                  <p>{review.users?.username}</p>
-                  <p>{formattedDate}</p>{" "}
-                  <p className="mt-2">{review.feedback}</p>
-                  {review.reply && (
-                    <div className="mt-4 bg-[#F5F5DC] p-2 rounded">
-                      <p className="font-semibold">Response :</p>
-                      <p>{review.reply}</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
+              return (
+                <Card key={review.id}>
+                  <CardContent className="p-4">
+                    <h3 className="font-bold">
+                      {review.rating}/10 {getRatingDescription(review.rating)}
+                    </h3>
+                    <p>{review.users.username}</p>
+                    <p>{formattedDate}</p>
+                    <p className="mt-2">{review.feedback}</p>
+
+                    {review.reply && (
+                      <div className="mt-4 bg-[#F5F5DC] p-2 rounded">
+                        <p className="font-semibold">Response :</p>
+                        <p>{review.reply}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          <PaginationControl
+            currentPage={page}
+            totalPages={reviewPage?.totalPages || 0}
+            onPageChange={handlePageChange}
+          />
         </div>
       </DialogContent>
     </Dialog>

@@ -1,5 +1,4 @@
-import { gql } from './gql-tag';
-
+import { gql } from "./gql-tag";
 
 export const GET_TRANSACTIONS = gql`
   query GetTransactions {
@@ -18,13 +17,48 @@ export const GET_TRANSACTIONS = gql`
         profilePicture
         mobileNumber
       }
+      tax
+      adult
+      children
     }
   }
 `;
 
+// export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
+//   query TransactionsByPropertyId($propertyId: ID!) {
+//     transactionsByPropertyId(propertyId: $propertyId) {
+//       id
+//       finalPrice
+//       status
+//       paymentMethod
+//       firstName
+//       lastName
+//       mobileNumber
+//       users {
+//         id
+//         email
+//         username
+//         profilePicture
+//         mobileNumber
+//       }
+//       tax
+//       adult
+//       children
+//     }
+//   }
+// `;
+
 export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
-  query TransactionsByPropertyId($propertyId: ID!) {
-    transactionsByPropertyId(propertyId: $propertyId) {
+  query TransactionsByPropertyId(
+    $propertyId: ID!
+    $startDate: String
+    $endDate: String
+  ) {
+    transactionsByPropertyId(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       id
       finalPrice
       status
@@ -32,6 +66,8 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
       firstName
       lastName
       mobileNumber
+      createdAt
+      bookingCode
       users {
         id
         email
@@ -39,6 +75,9 @@ export const GET_TRANSACTIONS_BY_PROPERTY_ID = gql`
         profilePicture
         mobileNumber
       }
+      tax
+      adult
+      children
     }
   }
 `;
@@ -170,6 +209,9 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
           reply
         }
         createdAt
+        tax
+        adult
+        children
       }
       pageNumber
       pageSize
@@ -220,6 +262,8 @@ export const GET_CHECK_PAYMENT_PROOF_BY_PROPERTY_ID = gql`
         status
         paymentMethod
         finalPrice
+        firstName
+        lastName
       }
       createdAt
     }
@@ -238,6 +282,9 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
       lastName
       mobileNumber
       createdAt
+      tax
+      adult
+      children
       users {
         id
         email
@@ -251,6 +298,9 @@ export const GET_TRANSACTIONS_BY_BOOKING_CODE = gql`
         checkInTime
         checkOutTime
         address
+        slug
+        averageRating
+        totalReview
         propertyFacilities {
           id
           facilities {
@@ -358,17 +408,45 @@ export const GET_UNREAD_REVIEW_BY_PROPERTY_ID = gql`
   }
 `;
 
+// export const REVIEW_BY_PROPERTY_ID = gql`
+//   query ReviewByPropertyId($propertyId: ID!) {
+//     reviewByPropertyId(propertyId: $propertyId) {
+//       id
+//       feedback
+//       rating
+//       reply
+//       users {
+//         username
+//       }
+//       createdAt
+//     }
+//   }
+// `;
 export const REVIEW_BY_PROPERTY_ID = gql`
-  query ReviewByPropertyId($propertyId: ID!) {
-    reviewByPropertyId(propertyId: $propertyId) {
-      id
-      feedback
-      rating
-      reply
-      users {
-        username
+  query ReviewByPropertyId(
+    $propertyId: ID!
+    $page: Int!
+    $size: Int!
+    $sortBy: String!
+  ) {
+    reviewByPropertyId(
+      propertyId: $propertyId
+      page: $page
+      size: $size
+      sortBy: $sortBy
+    ) {
+      totalPages
+      totalItems
+      content {
+        id
+        feedback
+        rating
+        reply
+        users {
+          username
+        }
+        createdAt
       }
-      createdAt
     }
   }
 `;
@@ -384,6 +462,10 @@ export const FIND_USER_BY_EMAIL = gql`
       mobileNumber
       gender
       dateOfBirth
+      properties {
+        id
+        name
+      }
     }
   }
 `;
@@ -391,6 +473,30 @@ export const FIND_USER_BY_EMAIL = gql`
 export const REVENUE_BY_PROPERTY = gql`
   query RevenueByProperty($propertyId: ID!, $startDate: Date, $endDate: Date) {
     revenueByProperty(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`;
+
+export const TAX_BY_PROPERTY = gql`
+  query TaxByProperty($propertyId: ID!, $startDate: Date, $endDate: Date) {
+    taxByProperty(
+      propertyId: $propertyId
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`;
+
+export const REVENUE_WITH_TAX_BY_PROPERTY = gql`
+  query RevenueWithTaxByProperty(
+    $propertyId: ID!
+    $startDate: Date
+    $endDate: Date
+  ) {
+    revenueWithTaxByProperty(
       propertyId: $propertyId
       startDate: $startDate
       endDate: $endDate
@@ -424,12 +530,38 @@ export const TOTAL_TRANSACTIONS_BY_PROPERTY_ID = gql`
   }
 `;
 
+// export const REPORT_ROOMS_BY_PROPERTY = gql`
+//   query GetRoomsByPropertiesId($propertyId: ID!) {
+//     getRoomsByPropertiesId(id: $propertyId) {
+//       id
+//       name
+//       roomNumber
+//       bookings {
+//         id
+//         startDate
+//         endDate
+//         users {
+//           username
+//           email
+//           mobileNumber
+//         }
+//       }
+//     }
+//   }
+// `;
 export const REPORT_ROOMS_BY_PROPERTY = gql`
   query GetRoomsByPropertiesId($propertyId: ID!) {
     getRoomsByPropertiesId(id: $propertyId) {
       id
       name
+      description
+      capacity
+      isAvailable
       roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
       bookings {
         id
         startDate
@@ -621,5 +753,36 @@ export const GET_AVAILABLE_ROOMS = gql`
         imgUrl
       }
     }
+  }
+`;
+
+export const GET_ROOM_BY_SLUG = gql`
+  query RoomBySlug($slug: String!) {
+    roomBySlug(slug: $slug) {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+      bedTypes {
+        id
+        name
+      }
+      roomPictures {
+        id
+        imgUrl
+      }
+    }
+  }
+`;
+
+export const GET_ROOM_PRICE = gql`
+  query RoomPrice($slug: String!, $propertyId: ID!, $checkInDate: Date!) {
+    roomPrice(slug: $slug, propertyId: $propertyId, checkInDate: $checkInDate)
   }
 `;

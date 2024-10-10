@@ -11,14 +11,10 @@ import TotalTransactionsCard from "./TotalTransactionsCard";
 import OccupiedRoomsCard from "./OccupiedRoomsCard";
 import PropertyReport from "./PropertyReport";
 
-type TabName =
-  | "Overview"
-  | "Property Report"
-  | "Sales Report"
-  | "Notifications";
+type TabName = "Sales Report" | "Property Report" | "Notifications";
 
 const Report = () => {
-  const [activeTab, setActiveTab] = useState<TabName>("Overview");
+  const [activeTab, setActiveTab] = useState<TabName>("Sales Report");
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(2022, 0, 20),
     to: addDays(new Date(2022, 0, 20), 20),
@@ -26,7 +22,7 @@ const Report = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "Overview":
+      case "Sales Report":
         return <Overview />;
       case "Property Report":
         return (
@@ -34,8 +30,7 @@ const Report = () => {
             <PropertyReport />
           </div>
         );
-      case "Sales Report":
-        return <div>Sales Report Content</div>;
+
       default:
         return null;
     }
@@ -49,18 +44,16 @@ const Report = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-wrap space-x-2">
-          {(["Overview", "Property Report", "Sales Report"] as TabName[]).map(
-            (tab) => (
-              <button
-                key={tab}
-                className={`px-3 py-1 rounded ${
-                  activeTab === tab ? "bg-greenr text-white" : "text-greenr"
-                }`}
-                onClick={() => setActiveTab(tab)}>
-                {tab}
-              </button>
-            )
-          )}
+          {(["Sales Report", "Property Report"] as TabName[]).map((tab) => (
+            <button
+              key={tab}
+              className={`px-3 py-1 rounded ${
+                activeTab === tab ? "bg-greenr text-white" : "text-greenr"
+              }`}
+              onClick={() => setActiveTab(tab)}>
+              {tab}
+            </button>
+          ))}
         </div>
         <DateRangePicker />
       </div>
