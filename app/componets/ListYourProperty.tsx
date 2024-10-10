@@ -1,8 +1,14 @@
+"use client";
 import React from "react";
 import Buttons from "@/components/Buttons";
 import AnimationWrapper from "@/components/animations/AnimationWrapper";
+import { useRouter } from "next/navigation";
 
 const ListYourProperty = () => {
+  const router = useRouter();
+  const handleNavigation = () => {
+    router.push("become-tenant");
+  };
   return (
     <div className={"px-5 sm:px-10 md:px-20 lg:px-[80px] mb-20"}>
       <AnimationWrapper y={40} transition={{ ease: "easeOut", duration: 1 }}>
@@ -22,6 +28,7 @@ const ListYourProperty = () => {
                 List your property on Rooms and open your door to rental income
               </h2>
               <Buttons
+                onClick={handleNavigation}
                 value={"List your property"}
                 className={"text-xl transition-all duration-150"}
               />
@@ -33,33 +40,28 @@ const ListYourProperty = () => {
 
         <div className={"mt-10"}>
           <h2 className={"text-3xl font-semibold mb-4"}>
-            Discover what Rooms is all about{" "}
+            Uncover the magic of Rooms{" "}
           </h2>
           <p>
-            With a vast selection of bookable vacation rentals, Rooms connects
-            homeowners with families and travelers seeking more than just a
-            hotel for their getaway. The Rooms community offers a variety of
-            rental property types and more. Explore properties in dream
-            destinations around the globe. A simple Rooms property search makes
-            it easy to securely book your next condo, cabin, or house anywhere
-            in the world.{" "}
+            Ready for a getaway that&apos;s more than just a hotel stay? Rooms
+            connects you with incredible vacation rentals—from cozy apartment to
+            beachfront hotels. Start exploring and find your dream destination
+            anywhere in the world with just a few clicks!
           </p>
         </div>
 
         <div className={"mt-10"}>
           <h2 className={"text-3xl font-semibold mb-4"}>
-            Perfect Rental with Rooms
+            Find Your Dream Stay with Rooms
           </h2>
           <p>
-            Whether you&apos;re planning a family getaway with your pet, a
-            relaxing weekend escape, or an adventurous trip, Rooms has the
-            perfect vacation rental for you. Discover everything from cozy
-            mountain cabins and lakeside lodges to stunning city apartments and
-            luxurious homes, all equipped with features to enhance your comfort
-            and convenience. Enjoy amenities like extra bedrooms and
-            fully-equipped kitchens for a stress-free stay. Plus, find rentals
-            with extras such as waterfront views, private pools, hot tubs, and
-            outdoor entertainment spaces to elevate your experience.{" "}
+            No matter your adventure—whether it&apos;s a family trip with your
+            furry friend, a weekend retreat, or a thrill-seeking escape—Rooms
+            has the perfect spot for you. From charming cabins and lakefront
+            lodges to chic city apartments and luxury hotels, each rental is
+            designed to maximize your comfort. Plus, enjoy top-notch extras like
+            private pools, hot tubs, and waterfront views to make your stay
+            unforgettable!
           </p>
         </div>
       </AnimationWrapper>
