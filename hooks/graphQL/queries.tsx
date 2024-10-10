@@ -462,6 +462,10 @@ export const FIND_USER_BY_EMAIL = gql`
       mobileNumber
       gender
       dateOfBirth
+      properties {
+        id
+        name
+      }
     }
   }
 `;
