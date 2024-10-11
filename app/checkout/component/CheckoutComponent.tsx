@@ -139,7 +139,7 @@ const CheckoutComponent = () => {
         },
         onError: (error) => {
           console.log("ini errornya ", error);
-
+          setPaymentError(true);
           //alert(`Error: ${error.message}`);
           setSubmitting(false);
           setIsLoading(false);
