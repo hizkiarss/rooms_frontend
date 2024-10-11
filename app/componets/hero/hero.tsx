@@ -107,11 +107,14 @@ const Hero = () => {
 
   const handleSearchClick = () => {
     const queryParams = new URLSearchParams({
-      city: searchInput.cityParam || "",
-      from: searchInput.dateRangeParam?.from?.toString() || "",
-      to: searchInput.dateRangeParam?.to?.toString() || "",
-      adult: searchInput.travellersParam?.adults?.toString() || "",
-      children: searchInput.travellersParam?.children?.toString() || "",
+      city: searchInput.cityParam || "Jakarta",
+      from: searchInput.dateRangeParam?.from?.toString() || formattedFromDate,
+      to: searchInput.dateRangeParam?.to?.toString() || formattedToDate,
+      adult:
+        searchInput.travellersParam?.adults?.toString() || adults.toString(),
+      children:
+        searchInput.travellersParam?.children?.toString() ||
+        children.toString(),
     }).toString();
     window.location.href = `/properties?${queryParams}`;
   };

@@ -151,8 +151,14 @@ const Page = () => {
             </div>
             <div className="md:w-5/12 lg:w-4/12 w-full ">
               <div className="sticky top-4">
-                <PriceDetailsCard
+                {/* <PriceDetailsCard
                   price={transaction.transactionDetails[0].price || 0}
+                  night={differenceInDays}
+                /> */}
+                <PriceDetailsCard
+                  price={Math.round(
+                    transaction.transactionDetails[0]?.price || 0
+                  )}
                   night={differenceInDays}
                 />
                 {transaction.paymentMethod ===

@@ -36,7 +36,7 @@ const PropertyReservationDetailCard: React.FC<
           </div>
 
           <Link
-            href={`/property-detail?slug=${slug}`}
+            href={`/property-detail?slugs=${slug}`}
             className="font-semibold text-greenr hover:underline">
             Details
           </Link>
