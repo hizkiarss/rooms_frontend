@@ -46,7 +46,7 @@ interface Prop {
 }
 
 
-const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
+const CreateRoomDeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
     const deletePropertyFacilitiesMutation = useDeletePropertyFacilities();
     const {data} = useGetPropertyBySlug("icikiwirasf-2jCf");
@@ -162,4 +162,4 @@ const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
     );
 };
 
-export default DeleteFacilitiesPopUp;
+export default CreateRoomDeleteFacilitiesPopUp;

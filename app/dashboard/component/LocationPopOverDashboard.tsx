@@ -28,7 +28,7 @@ interface City {
 interface LocationPopOverProps {
     onCitySelect: (city: City) => void;
     selectedCity: City | null;
-    initialValue: string | null;
+    initialValue?: string | null;
 }
 
 export function LocationPopOverDashboard({ onCitySelect, selectedCity, initialValue }: LocationPopOverProps) {
@@ -53,7 +53,7 @@ export function LocationPopOverDashboard({ onCitySelect, selectedCity, initialVa
                 >
                     {error && <div>Error: {error.message || "An error occurred"}</div>}
                     <div
-                        className="flex items-center justify-between w-full text-[16px] border border-slate-300 px-4 py-3 rounded-lg mx-0">
+                        className="flex items-center justify-between w-full text-sm md:text-[16px] border border-slate-300 px-4 py-3 rounded-lg mx-0">
                         {initialValue || selectedCity?.name || "Select city"}
                         <ChevronsUpDown className="w-4 shrink-0 opacity-50"/>
                     </div>

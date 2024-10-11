@@ -1,16 +1,14 @@
 "use client"
 import React from 'react';
-import AddPhotoPopUp from "@/app/dashboard/rooms/create-property/add-photo/component/AddPhotoPopUp";
-import AddFacilitiesPopUp from "@/app/dashboard/rooms/update-property/component/facilities-list/component/AddFacilitiesPopUp";
+import AddFacilitiesPopUp from "./AddFacilitiesPopUp";
 import {useState} from "react";
-import DeletePhotosPopUp from "@/app/dashboard/rooms/update-property/component/delete-photo/DeletePhotosPopUp";
 
 
-const AddFacilities = () => {
+const CreateRoomAddFacilities = () => {
     const [popUp, setPopUp] = useState<boolean>(false);
 
     return (
-        <div className=" md:grid grid-cols-2  md:items-center ">
+        <div className=" md:flex md:items-center md:justify-between ">
             <div className={"flex flex-col  justify-center"}>
             <h2 className={"font-semibold text-xl md:text-2xl"}>Add Facilities</h2>
                 <p className={"mt-2 text-sm md:text-base text-gray-400 md:mb-8 ml-[2px]"}>Share some pictures so the world can see those rooms.
@@ -25,4 +23,4 @@ const AddFacilities = () => {
     );
 };
 
-export default AddFacilities;
+export default CreateRoomAddFacilities;

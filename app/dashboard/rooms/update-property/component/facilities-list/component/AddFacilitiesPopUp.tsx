@@ -45,7 +45,7 @@ interface Prop {
 }
 
 
-const AddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
+const CreateRoomAddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
     const addPropertiesFacilitiesMutation = useAddPropertiesFacilities();
     const {data} = useGetPropertyBySlug("icikiwirasf-2jCf");
@@ -82,25 +82,25 @@ const AddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
         <div>
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Buttons value={"Add Facilities"}/>
+                    <Buttons value={"Add Facilities"} className={"!text-xs md:text-base"}/>
                 </AlertDialogTrigger>
-                <AlertDialogContent className="max-w-3xl max-h-fit px-10 py-10">
+                <AlertDialogContent className="max-w-3xl max-h-fit md:px-10 py-10">
                     <AlertDialogHeader>
 
 
                         <AlertDialogDescription>
-                            <div className={"mb-16 text-black"}>
-                                <AlertDialogTitle className={"text-2xl mb-6 flex justify-between"}>
-                                    <div>
-                                        <h2>Your Current Facilities</h2>
-                                        <p className={"text-base text-gray-400 font-medium"}>
+                            <div className={"mb-10 md:mb-16 text-black"}>
+                                <AlertDialogTitle className={"text-xl md:text-2xl mb-6  flex justify-between"}>
+                                    <div className={""}>
+                                        <h2 className={"text-start"}>Your Current Facilities</h2>
+                                        <p className={"text-sm md:text-base text-gray-400 font-medium"}>
                                             Attract customers with your new facilities</p>
                                     </div>
                                     <AlertDialogCancel className="px-0 hover:none !border-none !hover:border-none">
                                     <X/>
                                     </AlertDialogCancel>
                                 </AlertDialogTitle> {propertyData?.propertyFacilities.length > 0 ? (
-                                <div className={"grid grid-cols-2 gap-y-3 gap-x-3 text-base items-center "}>
+                                <div className={"flex flex-col md:grid grid-cols-2 gap-y-2 md:gap-y-3 gap-x-3 text-sm md:text-base md:items-center "}>
                                     {propertyData.propertyFacilities.map((facility: PropertyFacility) => (
                                         <div key={facility.id} className={"flex gap-2"}>
                                             {getAmenityLabel(facility.facilities.name)}
@@ -114,12 +114,13 @@ const AddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
                             </div>
 
                             <div className={"text-black"}>
-                                <AlertDialogTitle className={"text-2xl mb-6"}>Add Facilities
-                                    <p className={"text-base text-gray-400 font-medium"}> Attract customers with your
+                                <AlertDialogTitle className={"text-xl text-start  md:text-2xl mb-6"}>
+                                    Add Facilities
+                                    <p className={"text-sm md:text-base text-gray-400 font-medium"}> Attract customers with your
                                         new
                                         facilities</p>
                                 </AlertDialogTitle>
-                                <div className={"grid grid-cols-2 gap-y-3 gap-x-8 "}>
+                                <div className={"flex flex-col md:grid grid-cols-2 gap-y-3 gap-x-8 "}>
                                     {facilitiesOptions.length > 0 ? (
                                         facilitiesOptions.map((facility, index) => (
                                             <div key={index} className="flex items-center space-x-2">
@@ -129,7 +130,7 @@ const AddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
                                                           id={facility.id}/>
                                                 <label
                                                     htmlFor="terms"
-                                                    className="text-base flex items-center gap-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                    className="text-sm md:text-base flex items-center gap-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                                 >
                                                     {getAmenityLabel(facility.name)}
                                                     {facility.name}
@@ -146,7 +147,7 @@ const AddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogAction className="px-0 hover:none !border-none !hover:border-none" onClick={handleSubmit}>
+                        <AlertDialogAction className="mt-2 px-0 hover:none !border-none !hover:border-none" onClick={handleSubmit}>
                             <Buttons value={addPropertiesFacilitiesMutation.isPending ? "Saving..." : "Save"} disabled={addPropertiesFacilitiesMutation.isPending} />
                         </AlertDialogAction>
                     </AlertDialogFooter>
@@ -157,4 +158,4 @@ const AddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
     );
 };
 
-export default AddFacilitiesPopUp;
+export default CreateRoomAddFacilitiesPopUp;

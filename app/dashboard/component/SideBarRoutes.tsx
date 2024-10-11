@@ -5,7 +5,7 @@ import SidebarItems from "./SideBarItems";
 const routes = [
   { label: "Overview", href: "/dashboard", icon: "LayoutDashboard" },
   { label: "My Rooms", href: "/dashboard/rooms", icon: "BedDouble" },
-  { label: "My Property", href: "/dashboard/property", icon: "Housenpx kill-port 3000" },
+  // { label: "My Property", href: "/dashboard/property", icon: "House" },
 
 
   {

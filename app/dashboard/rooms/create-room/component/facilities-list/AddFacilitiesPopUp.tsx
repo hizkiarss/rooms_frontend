@@ -1,6 +1,6 @@
 "use client"
-import React, {useState, useMemo, useEffect} from 'react';
-import {ArrowRight, X} from "lucide-react";
+import React, {useState, useMemo} from 'react';
+import {X} from "lucide-react";
 import {useAddPropertiesFacilities} from "@/hooks/properties/useAddPropertiesFacilities";
 import {getAmenityLabel} from "@/utils/FacilityLogoUtils";
 import Buttons from "@/components/Buttons";
@@ -19,12 +19,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import {Button} from "@/components/ui/button"
 import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
-import {FacilitiesType} from "@/types/facilities/FacilitiesType";
 import {PropertyFacility} from "@/types/property-facility/PropertyFacilityType";
-import {map} from "d3-array";
-import {useDeletePropertyFacilities} from "@/hooks/properties/useDeletePropertyFacilites";
 
 const facilities = [
     {id: "1", name: "High-speed internet access"},
@@ -46,9 +42,9 @@ interface Prop {
 }
 
 
-const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
+const CreateRoomAddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
-    const deletePropertyFacilitiesMutation = useDeletePropertyFacilities();
+    const addPropertiesFacilitiesMutation = useAddPropertiesFacilities();
     const {data} = useGetPropertyBySlug("icikiwirasf-2jCf");
     const propertyData = data as PropertyDetailType;
     const existingFacilityIds = useMemo(() => {
@@ -72,19 +68,18 @@ const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
 
     const handleSubmit = () => {
         if (selectedFacilities.length > 0) {
-            deletePropertyFacilitiesMutation.mutate({
+            addPropertiesFacilitiesMutation.mutate({
                 id: propertyId.propertyId,
                 facilitiesId: selectedFacilities
             });
         }
     };
 
-
     return (
         <div>
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Buttons value={"Delete facilities"} className={"!text-xs md:text-base"}/>
+                    <Buttons value={"Add Facilities"} className={"text-xs md:text-base"}/>
                 </AlertDialogTrigger>
                 <AlertDialogContent className="max-w-3xl max-h-fit md:px-10 py-10">
                     <AlertDialogHeader>
@@ -93,17 +88,16 @@ const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
                         <AlertDialogDescription>
                             <div className={"mb-10 md:mb-16 text-black"}>
                                 <AlertDialogTitle className={"text-xl md:text-2xl mb-6  flex justify-between"}>
-                                    <div>
+                                    <div className={""}>
                                         <h2 className={"text-start"}>Your Current Facilities</h2>
                                         <p className={"text-sm md:text-base text-gray-400 font-medium"}>
-                                            Attract customers with your facilities</p>
+                                            Attract customers with your new facilities</p>
                                     </div>
                                     <AlertDialogCancel className="px-0 hover:none !border-none !hover:border-none">
-                                        <X/>
+                                    <X/>
                                     </AlertDialogCancel>
                                 </AlertDialogTitle> {propertyData?.propertyFacilities.length > 0 ? (
-                                <div
-                                    className={"flex flex-col md:grid grid-cols-2 gap-y-2 md:gap-y-3 gap-x-3 text-sm md:text-base md:items-center "}>
+                                <div className={"flex flex-col md:grid grid-cols-2 gap-y-2 md:gap-y-3 gap-x-3 text-sm md:text-base md:items-center "}>
                                     {propertyData.propertyFacilities.map((facility: PropertyFacility) => (
                                         <div key={facility.id} className={"flex gap-2"}>
                                             {getAmenityLabel(facility.facilities.name)}
@@ -118,8 +112,10 @@ const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
 
                             <div className={"text-black"}>
                                 <AlertDialogTitle className={"text-xl text-start  md:text-2xl mb-6"}>
-                                    <p className={"text-sm md:text-base text-gray-400 font-medium"}> Remove these
-                                        facilities and keep your listing fresh</p>
+                                    Add Facilities
+                                    <p className={"text-sm md:text-base text-gray-400 font-medium"}> Attract customers with your
+                                        new
+                                        facilities</p>
                                 </AlertDialogTitle>
                                 <div className={"flex flex-col md:grid grid-cols-2 gap-y-3 gap-x-8 "}>
                                     {facilitiesOptions.length > 0 ? (
@@ -148,11 +144,8 @@ const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogAction className="mt-2 px-0 hover:none !border-none !hover:border-none"
-                                           onClick={handleSubmit}>
-
-                            <Buttons value={deletePropertyFacilitiesMutation.isPending ? "Saving..." : "Save"}
-                                     disabled={deletePropertyFacilitiesMutation.isPending}/>
+                        <AlertDialogAction className="mt-2 px-0 hover:none !border-none !hover:border-none" onClick={handleSubmit}>
+                            <Buttons value={addPropertiesFacilitiesMutation.isPending ? "Saving..." : "Save"} disabled={addPropertiesFacilitiesMutation.isPending} />
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
@@ -162,4 +155,4 @@ const DeleteFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
     );
 };
 
-export default DeleteFacilitiesPopUp;
+export default CreateRoomAddFacilitiesPopUp;

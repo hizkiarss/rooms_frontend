@@ -14,16 +14,16 @@ import {
 import {Form, Formik, FormikProps} from "formik";
 import useCloudinaryUpload from "@/hooks/useCloudinaryUpload";
 import * as Yup from "yup";
-import {useAddPropertyPictures} from "@/hooks/properties/useAddPropertyPictures";
-import Top from "@/app/dashboard/rooms/create-property/add-photo/component/top";
 import Buttons from "@/components/Buttons";
 import usePropertyId from "@/hooks/usePropertyId";
+import {useAddRoomPictures} from "@/hooks/rooms/useAddRoomPictures";
+import useRoomName from "@/hooks/useRoomName";
 
 interface FormValues {
     imageUrls: string[];
 }
 
-const AddPhotoPopUp: React.FC = () => {
+const CreateRoomAddPhotoPopUp: React.FC = () => {
     const [previewImages, setPreviewImages] = useState<string[]>([]);
     const initialValues: FormValues = {
         imageUrls: [],
@@ -33,19 +33,19 @@ const AddPhotoPopUp: React.FC = () => {
         imageUrls: Yup.array().of(Yup.string()).min(1, "At least one image is required"),
     });
 
-    const uploadPropertyPhotosMutation = useAddPropertyPictures();
-
-    const {propertyId} = usePropertyId({propertyId: ""})
-
+    const uploadRoomsPhotoMutation = useAddRoomPictures();
+    const {propertyId} = usePropertyId({propertyId: "9"})
+    const {roomName}= useRoomName("")
 
     const handleSubmit = async (values: FormValues): Promise<void> => {
         try {
-            await uploadPropertyPhotosMutation.mutateAsync({
-                propertyId: propertyId.propertyId,
-                imgUrl: values.imageUrls
+            await uploadRoomsPhotoMutation.mutateAsync({
+                propertyId: "1",
+                roomPicture: values.imageUrls,
+                roomName: "Lahadalia"
             });
         } catch (error) {
-            console.error("Failed to upload property photos:", error);
+            console.error("Failed to upload photos:", error);
         }
     };
 
@@ -72,23 +72,22 @@ const AddPhotoPopUp: React.FC = () => {
     const handleDialogOpenChange = (open: boolean) => {
         setIsDialogOpen(open);
         if (!open) {
-            // Reset the mutation state when the dialog is closed
-            uploadPropertyPhotosMutation.reset();
+            uploadRoomsPhotoMutation.reset();
         }
     };
 
 
     return (
-        <div className={""}>
+        <div>
             <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
                 <DialogTrigger asChild>
-                    <Buttons value={"Upload Photos"} className={"md:text-base text-xs"}/>
+                    <Buttons value={"Upload Photos"} className={"text-xs md:text-base"}/>
                 </DialogTrigger>
-                <DialogContent className="max-w-xs sm:max-w-md ">
+                <DialogContent className="sm:max-w-md">
                     <DialogHeader className={"flex items-center"}>
-                        <DialogTitle className="md:text-2xl">Upload Photos</DialogTitle>
+                        <DialogTitle className="text-2xl">Upload Room Photos</DialogTitle>
                         <DialogDescription>
-                            Upload multiple photos for your property listing.
+                            Upload multiple photos for your room listing.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -148,7 +147,7 @@ const AddPhotoPopUp: React.FC = () => {
                                 />
                                 {errors.imageUrls && <div className="text-red-500 mt-2">{errors.imageUrls}</div>}
                                 <div className="flex justify-end gap-4 mt-4 items-center">
-                                    {uploadPropertyPhotosMutation.isSuccess ?
+                                    {uploadRoomsPhotoMutation.isSuccess ?
                                         <p className={"text-greenr"}>Upload Success!</p> : null}
                                     <Button type="submit" size="sm" className="px-3 font-semibold"
                                             disabled={isSubmitting}>
@@ -164,4 +163,4 @@ const AddPhotoPopUp: React.FC = () => {
     );
 };
 
-export default AddPhotoPopUp;
+export default CreateRoomAddPhotoPopUp;

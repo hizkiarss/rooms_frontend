@@ -5,17 +5,18 @@ import AddFacilities from "@/app/dashboard/rooms/update-property/component/facil
 import DeletePhoto from "@/app/dashboard/rooms/update-property/component/delete-photo/DeletePhoto";
 import DeleteFacilities from "@/app/dashboard/rooms/update-property/component/delete-facilities/DeleteFacilities";
 
-const UpdateProperty = () => {
+const Page = () => {
     return (
-        <div className={"px-20"}>
+
+        <div className={"px-8 md:px-20 md:mt-20"}>
             <div className={"flex flex-col "}>
-                <h2 className={"font-semibold text-3xl"}>Update your property</h2>
-                <p className={"mt-2 text-gray-400 mb-8 ml-[2px]"}>Fill this field to update the property
+                <h2 className={"font-semibold text-xl md:text-3xl"}>Update your property</h2>
+                <p className={"mt-[2px] md:mt-2 text-sm md:text-base  text-gray-400 mb-6 md:mb-8 md:ml-[2px]"}>Fill this field to update the property
                     information.</p>
             </div>
-            <div className={'grid grid-cols-2 gap-x-10'}>
+            <div className={'flex flex-col gap-6 md:grid grid-cols-2 md:gap-x-10'}>
                 <GeneralDetails/>
-                <div className={"flex-col flex gap-2"}>
+                <div className={"mb-6 md:mb-0 flex-col md:flex gap-3 md:gap-0"}>
                     <AddPhoto/>
                     <DeletePhoto/>
                     <AddFacilities/>
@@ -28,4 +29,4 @@ const UpdateProperty = () => {
     );
 };
 
-export default UpdateProperty;
+export default Page;

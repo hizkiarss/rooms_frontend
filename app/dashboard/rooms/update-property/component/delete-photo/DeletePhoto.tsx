@@ -6,8 +6,9 @@ import {ArrowRight} from "lucide-react";
 import FinishCreateProperty from "@/app/dashboard/rooms/create-property/add-photo/component/finishCreateProperty";
 import DeletePhotosPopUp from "@/app/dashboard/rooms/update-property/component/delete-photo/DeletePhotosPopUp";
 import {useGetPropertyBySlug} from "@/hooks/properties/useGetPropertyBySlug";
+import UpdatePropertyAddPhotoPopUp from "@/app/dashboard/rooms/create-property/add-photo/component/AddPhotoPopUp";
 
-const AddPhoto = () => {
+const DeletePhoto = () => {
     const [finished, setFinished] = useState<boolean>()
     const [open, setOpen] = useState<boolean>(false)
     if (finished) {
@@ -16,14 +17,14 @@ const AddPhoto = () => {
 
 
     return (
-        <div className=" grid grid-cols-2 items-center ">
+        <div className=" md:grid grid-cols-2  md:items-center ">
             <div className={"flex flex-col  justify-center"}>
-                <h2 className={"font-semibold text-2xl"}>Delete Photos</h2>
-                <p className={"mt-2 text-gray-400 mb-8 ml-[2px]"}>Remove unwanted pictures, add some more then.
+            <h2 className={"font-semibold text-xl md:text-2xl"}>Delete Photos</h2>
+                <p className={"mt-2 text-sm md:text-base text-gray-400 md:mb-8 ml-[2px]"}>Remove unwanted pictures, add some more then.
                 </p>
             </div>
-            <div className={"flex items-center justify-center "}>
-                <DeletePhotosPopUp />
+            <div className={"flex items-center justify-end md:justify-center "}>
+                <DeletePhotosPopUp/>
             </div>
 
 
@@ -31,4 +32,4 @@ const AddPhoto = () => {
     );
 };
 
-export default AddPhoto;
+export default DeletePhoto;

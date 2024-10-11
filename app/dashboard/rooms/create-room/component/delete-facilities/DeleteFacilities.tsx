@@ -1,11 +1,8 @@
 "use client"
 import React, {useState} from 'react';
-import AddPhotoPopUp from "@/app/dashboard/rooms/create-property/add-photo/component/AddPhotoPopUp";
-import DeleteFacilitiesPopUp
-    from "@/app/dashboard/rooms/update-property/component/delete-facilities/component/DeleteFacilitiesPopUp";
-import DeletePhotosPopUp from "@/app/dashboard/rooms/update-property/component/delete-photo/DeletePhotosPopUp";
+import DeleteFacilitiesPopUp  from "./DeleteFacilitiesPopUp";
 
-const DeleteFacilites = () => {
+const CreateRoomDeleteFacilites = () => {
     const [popUp, setPopUp] = useState<boolean>(false);
 
     return (
@@ -18,11 +15,8 @@ const DeleteFacilites = () => {
             <div className={"flex items-center justify-end md:justify-center"}>
                 <DeleteFacilitiesPopUp onClose={() => setPopUp(false)} isOpen={popUp}/>
             </div>
-
-
-
         </div>
     );
 };
 
-export default DeleteFacilites;
+export default CreateRoomDeleteFacilites;

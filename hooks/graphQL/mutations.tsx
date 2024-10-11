@@ -217,3 +217,15 @@ export const DELETE_PROPERTIES = gql`
     deleteProperties(id: $id)
   }
 `;
+
+export const CREATE_ROOM = gql`
+  mutation CreateRoom($input: AddRoomsRequestDto!, $email: String!) {
+    createRoom(input: $input, email: $email)
+  }
+`;
+
+export const ADD_ROOM_PICTURES = gql`
+  mutation AddRoomPictures($input: AddRoomPicturesInput!) {
+    addRoomPictures(input: $input)
+  }
+`;
