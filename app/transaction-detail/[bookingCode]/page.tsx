@@ -3,7 +3,7 @@ import Reservation from "../../my-order/reservation-details/[bookingCode]/compon
 
 const page = () => {
   return (
-    <div className="min-h-screen py-8 px-5 sm:px-10 md:px-20 lg:px-[130px]">
+    <div className="min-h-screen py-8 px-5 sm:px-10 md:px-20 lg:px-[80px]">
       <Reservation />
     </div>
   );
