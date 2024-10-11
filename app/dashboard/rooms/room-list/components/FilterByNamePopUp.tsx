@@ -26,7 +26,7 @@ export const FilterByNamePopUp: React.FC<Prop> = ({}) => {
         available: null,
     });
 
-    const {data} = useGetRoomsTypesByPropertyId("hotel-Dummy-MbUS")
+    const {data} = useGetRoomsTypesByPropertyId("1")
     const roomTypesData = Array.isArray(data) ? data : [];
 
 

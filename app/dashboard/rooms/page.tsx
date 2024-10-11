@@ -13,7 +13,6 @@ return (
         <div className={"py-10"}>
         </div>
 
-
         <div className={"flex flex-col gap-8 px-20"}>
             <div className={"flex justify-between gap-12 items-center  "}>
                 <div>
