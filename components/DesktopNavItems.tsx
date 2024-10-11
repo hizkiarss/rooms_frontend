@@ -6,7 +6,7 @@ const DesktopNavItems: React.FC = () => {
       <NavigationMenuItem>
         <NavigationMenuLink
           className="text-sm font-medium text-gray-700 hover:text-gray-900"
-          href="#">
+          href="become-tenant">
           List your property
         </NavigationMenuLink>
       </NavigationMenuItem>

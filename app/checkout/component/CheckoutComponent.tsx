@@ -2,12 +2,11 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Buttons from "@/components/Buttons";
 import { useCreateTransaction } from "@/hooks/transactions/useCreateTransaction";
 import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
 import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import { useGetPropertyBySlug } from "@/hooks/properties/useGetPropertyBySlug";
 import { useRoomBySlug } from "@/hooks/rooms/useRoomBySlug";
@@ -39,15 +38,13 @@ const validationSchema = Yup.object().shape({
 const CheckoutComponent = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState(false);
   const createTransaction = useCreateTransaction();
   const formatDate = (date: string | Date) => {
     return new Date(date).toISOString().split("T")[0];
   };
 
   const searchParams = useSearchParams();
-
-  //   const searchParams = new URLSearchParams(window.location.search);
-
   const propertySlug = searchParams.get("property");
   const roomSlug = searchParams.get("room");
   const fromSlug = searchParams.get("from");
@@ -136,12 +133,13 @@ const CheckoutComponent = () => {
           console.log("ini on success");
           //alert("Transaction created successfully!");
           setSubmitting(false);
-          router.push(`/checkout/${randomString}`);
           setIsLoading(false);
+          router.push(`/checkout/${randomString}`);
         },
         onError: (error) => {
           console.log("ini errornya ", error);
-          alert(`Error: ${error.message}`);
+          setPaymentError(true);
+          //alert(`Error: ${error.message}`);
           setSubmitting(false);
           setIsLoading(false);
         },
@@ -167,10 +165,14 @@ const CheckoutComponent = () => {
 
   return (
     <Suspense fallback={<LoadingStateAnimation />}>
-      <div className="min-h-screen py-4 px-5 sm:px-10 md:px-20 lg:px-[130px]">
+      <div className="min-h-screen py-8 px-5 sm:px-10 md:px-20 lg:px-[80px]">
         {isLoading ? (
           <>
             <LoadingStateAnimation />
+          </>
+        ) : paymentError ? (
+          <>
+            <ErrorAnimation />
           </>
         ) : (
           <>
