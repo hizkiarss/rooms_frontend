@@ -55,7 +55,7 @@ const Sidebar = () => {
                     ))
                   ) : (
                     <SelectItem value="none">
-                      You don't have any property
+                      You don&apos;t have any property
                     </SelectItem>
                   )}
                 </SelectGroup>

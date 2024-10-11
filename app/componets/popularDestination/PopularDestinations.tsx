@@ -70,7 +70,7 @@ const PopularDestinations = () => {
           plugins={[
             Autoplay({
               delay: 4000,
-            }),
+            }) as any,
           ]}>
           <CarouselContent className="px-5 sm:px-10 md:px-20 lg:px-[80px]">
             {HomepageLocations.map((location, index) => (

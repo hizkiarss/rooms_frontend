@@ -75,10 +75,10 @@ const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({ formik }) => {
                   <CardTitle>Manual Transfer</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  Great choice! When you opt for manual transfer, you'll be
+                  Great choice! When you opt for manual transfer, you&apos;ll be
                   taken to a page that displays the payment amount along with
-                  our bank account details. After you've completed your
-                  transfer, head over to the 'My Order' section. Open the
+                  our bank account details. After you&apos;ve completed your
+                  transfer, head over to the &apos;My Order&apos; section. Open the
                   relevant transaction, and you&apos;ll find a handy form to
                   upload your payment proof. Once you&apos;ve submitted your
                   receipt, just kick back and relax while our team validates

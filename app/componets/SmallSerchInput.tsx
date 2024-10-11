@@ -5,14 +5,14 @@ interface SmallSearchInputProps {
   cityName: string;
   date: string;
   adult: number;
-  children: number;
+  childrenNumber: number;
 }
 
 const SmallSearchInput: React.FC<SmallSearchInputProps> = ({
   cityName,
   date,
   adult,
-  children,
+  childrenNumber,
 }) => {
   return (
     <>
@@ -23,7 +23,7 @@ const SmallSearchInput: React.FC<SmallSearchInputProps> = ({
             <div className="flex  w-full justify-between">
               <div>{date}</div>
               <div>
-                {adult}Adult, {children} Children{" "}
+                {adult}Adult, {childrenNumber} Children{" "}
               </div>
             </div>
           </div>

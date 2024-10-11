@@ -28,9 +28,9 @@ const Faq = () => {
                     How do I become a rooms host?
                   </AccordionTrigger>
                   <AccordionContent>
-                    Hosting with us is a breeze! Just hit the "List your
-                    property" button on the main menu and you're on your way to
-                    becoming the next superstar host on Rooms. It's free, fast,
+                    Hosting with us is a breeze! Just hit the &quot;List your
+                    property&quot; button on the main menu and you&apos;re on your way to
+                    becoming the next superstar host on Rooms. It&apos;s free, fast,
                     and totally easy!
                   </AccordionContent>
                 </AccordionItem>

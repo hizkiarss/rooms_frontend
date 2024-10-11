@@ -36,7 +36,7 @@ interface FormValues {
 interface FormCheckoutCardProps {
   formik: FormikProps<FormValues>;
   adult: number;
-  children: number;
+  childrenNumber: number;
   bedType: string;
   includeBreakfast: boolean;
 }
@@ -44,7 +44,7 @@ interface FormCheckoutCardProps {
 const FormCheckoutCard: React.FC<FormCheckoutCardProps> = ({
   formik,
   adult,
-  children,
+  childrenNumber,
   bedType,
   includeBreakfast,
 }) => {
@@ -94,7 +94,7 @@ const FormCheckoutCard: React.FC<FormCheckoutCardProps> = ({
     <Card className="w-full">
       <FormCheckoutHeaderCard
         adult={adult}
-        children={children}
+        childrenNumber={childrenNumber}
         bedType={bedType}
         includeBreakfast={includeBreakfast}
       />

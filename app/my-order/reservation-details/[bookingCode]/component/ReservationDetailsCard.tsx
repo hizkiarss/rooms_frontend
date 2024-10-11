@@ -19,7 +19,7 @@ interface ReservationDetailsCardProps {
   guestName: string;
   bedType: string;
   adult: number;
-  children: number;
+  childrenNumber: number;
   specialRequests?: string;
   facility: PropertyFacility[];
   night: number;
@@ -34,13 +34,13 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
   guestName,
   bedType,
   adult,
-  children,
+  childrenNumber,
   facility,
   night,
   roomName,
   status,
 }) => {
-  const totalguest = adult + children;
+  const totalguest = adult + childrenNumber;
   return (
     <div>
       <Card className="w-full">
@@ -106,7 +106,7 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
                     <div className="flex items-center">
                       <Users className="mr-2" />
                       <p>
-                        {totalguest} Guest ({adult} Adult, {children} children)
+                        {totalguest} Guest ({adult} Adult, {childrenNumber} children)
                       </p>
                     </div>
                   </div>

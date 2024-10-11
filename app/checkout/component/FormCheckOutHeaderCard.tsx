@@ -3,14 +3,14 @@ import { Check } from "lucide-react";
 
 interface FormCheckoutHeaderCardProps {
   adult: number;
-  children: number;
+  childrenNumber: number;
   bedType: string;
   includeBreakfast: boolean;
 }
 
 const FormCheckoutHeaderCard: React.FC<FormCheckoutHeaderCardProps> = ({
   adult,
-  children,
+  childrenNumber,
   bedType,
   includeBreakfast,
 }) => {
@@ -20,7 +20,7 @@ const FormCheckoutHeaderCard: React.FC<FormCheckoutHeaderCardProps> = ({
       <div className="text-sm text-muted-foreground">
         <div className="mb-2">
           <span className="font-semibold text-black">Room :</span> {adult}{" "}
-          Adults, {children !== 0 ? `${children} Children, ` : ""} 1 {bedType}
+          Adults, {childrenNumber !== 0 ? `${childrenNumber} Children, ` : ""} 1 {bedType}
         </div>
         <div className="flex text-green-700">
           {includeBreakfast && (

@@ -206,7 +206,7 @@ const Hero = () => {
                     searchInput.cityParam || selectedCity?.name || "Select city"
                   }
                   adult={adults}
-                  children={children}
+                  childrenNumber={children}
                   date={showDate}
                 />
               </div>

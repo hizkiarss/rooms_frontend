@@ -94,7 +94,7 @@ const Reservation: React.FC = () => {
             guestName={guestName}
             bedType={transaction.transactionDetails[0].rooms.bedTypes.name}
             adult={transaction.adult}
-            children={transaction.children}
+            childrenNumber={transaction.children}
             facility={transaction.properties.propertyFacilities}
             night={dayDifference}
             roomName={transaction.transactionDetails[0].rooms.name}

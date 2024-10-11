@@ -37,23 +37,23 @@ const ImportantInformationCard: React.FC<ImportantInformationCardProps> = ({
             <li>
               Ready for some fun? Many properties host exciting events, like
               gala dinners and festive celebrations, that you won&apos;t want to
-              miss! If you're interested, be sure to book your spot at least a
+              miss! If you&apos;re interested, be sure to book your spot at least a
               week in advance to secure your place and avoid missing out. Fees
               and details for these events can be checked directly with the
               hotel.
             </li>
             <li>
               Thinking about getting around? We have transportation options
-              available, but it's best to arrange them ahead of time. Whether
-              you're in need of a shuttle, boat transfer, or any other mode of
+              available, but it&apos;s best to arrange them ahead of time. Whether
+              you&apos;re in need of a shuttle, boat transfer, or any other mode of
               transport, just ask us about availability and pricing. Planning
               ahead is key, especially during busy travel seasons!
             </li>
             <li>
               Just a heads up: Some of our properties can only be accessed via
               specific transportation methods that run on set schedules. To
-              ensure you don't miss your ride, please arrive at the departure
-              point at least 30 minutes early. We're here to help with details
+              ensure you don&apos;t miss your ride, please arrive at the departure
+              point at least 30 minutes early. We&apos;re here to help with details
               about transportation options and any associated fees to make your
               travel seamless.
             </li>

@@ -90,6 +90,7 @@ const FinishPayment = () => {
         totalPrice={transaction.data?.finalPrice ?? 0}
         createdAt={transaction.data?.createdAt ?? ""}
         transactionId={transaction.data?.id}
+        paymentProof={transaction.data?.paymentProofs?? []}
       />
     );
   }
