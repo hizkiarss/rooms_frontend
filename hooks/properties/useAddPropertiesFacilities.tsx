@@ -21,7 +21,7 @@ export function useAddPropertiesFacilities() {
             return response.addPropertyFacilities;
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey: ["propertyFacilities"]});
+            queryClient.invalidateQueries({queryKey: ["propertyFacilities", "property"]});
             console.log("Property facilities updated successfully");
         },
         onError: (error) => {

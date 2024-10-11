@@ -11,6 +11,8 @@ import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import Footer from "@/components/Footer";
 import {Suspense} from "react";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import { Toaster } from "@/components/ui/toaster"
+
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -37,6 +39,7 @@ export default function RootLayout({
                     </div>
                 </div>
                 <ReactQueryDevtools initialIsOpen={false}/>
+                <Toaster />
                 </body>
             {/*</Suspense>*/}
         </ReactQueryProvider>

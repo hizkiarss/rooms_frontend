@@ -24,6 +24,7 @@ import useSearchInput from "@/hooks/useSearchInput";
 import {useSearchParams} from "next/navigation";
 import {PagedPropertyResult} from "@/types/properties/PagedPropertyResult";
 import {PropertyProjection} from "@/types/properties/PropertiesProjection";
+import PaginationControl from "@/components/PaginationControl";
 // import {useRouter} from "next/router";
 
 interface PropertiesItemsProps {
@@ -33,7 +34,7 @@ interface PropertiesItemsProps {
 }
 
 const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsPageLoading, setTotalProperty}) => {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     // const [searchVariables, setSearchVariables] = useState<SearchVariables>({city: ""})
 
     const {searchInput, setSearchInput} = useSearchInput({
@@ -80,18 +81,6 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         setSearchButtonHit: () => {
         },
     });
-    // const router = useRouter();
-    // const { query } = router;
-    // const cityParam = query.city as string;
-    // const ratingParam = query.rating as string;
-    // const categoryParam = query.category as string;
-    // const startPriceParam = query.startPrice as string;
-    // const endPriceParam = query.endPrice as string;
-    // const isBreakfastParam = query.includeBreakfast as string;
-    // const sortByParam = query.sortBy as string
-    // const rating = ratingParam ? parseFloat(ratingParam) : null;
-    // const startPrice = startPriceParam ? parseFloat(startPriceParam) : null;
-    // const endPrice = endPriceParam ? parseFloat(endPriceParam) : null;
 
     const params = useSearchParams();
     const cityParam = params.get('city');
@@ -166,8 +155,14 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         console.log(searchInput.totalProperties)
     }, [isLoading, error, setIsPageLoading, setIsPageError, data]);
 
+    // const handlePageChange = (page: number) => {
+    //     setCurrentPage(page);
+    // };
+
     const handlePageChange = (page: number) => {
-        setCurrentPage(page);
+        if (pagedData && page > 0 && page <= pagedData.totalPages) {
+            setCurrentPage(page-1 );
+        }
     };
 
     if (!data) {
@@ -182,10 +177,6 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
         const toString = params.get("to");
         const adult = params.get("adult");
         const children = params.get("children");
-        // const fromString = query.from as string;
-        // const toString = query.to as string;
-        // const adult = query.adult as string;
-        // const children = query.children as string;
         const slugs = slug;
 
         const queryObject: Record<string, string> = {};
@@ -279,38 +270,44 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({setIsPageError, setIsP
                 ))}
             </div>
 
-            <Pagination className={"mt-16"}>
-                <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious
-                            href="#"
-                            onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                            aria-disabled={currentPage === 1}
-                            className={"disabled:hidden font-semibold text-greenr "}
-                        />
-                    </PaginationItem>
-                    {Array.from({length: pagedData?.totalPages || 0}, (_, index) => (
-                        <PaginationItem key={index} className={""}>
-                            <PaginationLink
-                                href="#"
-                                isActive={currentPage === index + 1}
-                                onClick={() => handlePageChange(index + 1)}
-                                className={" font-semibold text-greenr "}
-                            >
-                                {index + 1}
-                            </PaginationLink>
-                        </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                        <PaginationNext
-                            href="#"
-                            onClick={() => currentPage < (pagedData?.totalPages || 0) && handlePageChange(currentPage + 1)}
-                            aria-disabled={currentPage === length}
-                            className={"disabled:hidden font-semibold text-greenr "}
-                        />
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
+            {/*<Pagination className={"mt-16"}>*/}
+            {/*    <PaginationContent>*/}
+            {/*        <PaginationItem>*/}
+            {/*            <PaginationPrevious*/}
+            {/*                href="#"*/}
+            {/*                onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}*/}
+            {/*                aria-disabled={currentPage === 1}*/}
+            {/*                className={"disabled:hidden font-semibold text-greenr "}*/}
+            {/*            />*/}
+            {/*        </PaginationItem>*/}
+            {/*        {Array.from({length: pagedData?.totalPages || 0}, (_, index) => (*/}
+            {/*            <PaginationItem key={index} className={""}>*/}
+            {/*                <PaginationLink*/}
+            {/*                    href="#"*/}
+            {/*                    isActive={currentPage === index + 1}*/}
+            {/*                    onClick={() => handlePageChange(index + 1)}*/}
+            {/*                    className={" font-semibold text-greenr "}*/}
+            {/*                >*/}
+            {/*                    {index + 1}*/}
+            {/*                </PaginationLink>*/}
+            {/*            </PaginationItem>*/}
+            {/*        ))}*/}
+            {/*        <PaginationItem>*/}
+            {/*            <PaginationNext*/}
+            {/*                href="#"*/}
+            {/*                onClick={() => currentPage < (pagedData?.totalPages || 0) && handlePageChange(currentPage + 1)}*/}
+            {/*                aria-disabled={currentPage === length}*/}
+            {/*                className={"disabled:hidden font-semibold text-greenr "}*/}
+            {/*            />*/}
+            {/*        </PaginationItem>*/}
+            {/*    </PaginationContent>*/}
+            {/*</Pagination>*/}
+
+            <PaginationControl
+                currentPage={currentPage}
+                totalPages={pagedData?.totalPages || 0}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };

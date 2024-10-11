@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-import {Card, CardContent} from "@/components/ui/card"
+import React, {useEffect, useState} from 'react';
 import {
     Carousel,
     CarouselContent,
@@ -8,13 +7,14 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import Image from "next/image";
-import HotelBali from "@/public/homepage/apartment.jpg"
-import {getAmenityLabel} from "@/utils/FacilityLogoUtils";
 import {BedDouble, Grid3X3, UsersRound, Utensils} from "lucide-react";
 import Buttons from "@/components/Buttons";
 import {RoomType} from "@/types/rooms/RoomsType";
 import {useSearchParams} from "next/navigation";
-
+import {useSession} from "next-auth/react";
+import ErrorPopUp from "@/components/ErrorPopUp";
+import LoginFirstPopup from "@/app/property-detail/components/LoginFirstPopup";
+import useRefetchRooms from "@/hooks/useRefetchRooms";
 
 const amenities = [
     "High-Speed Internet Access",
@@ -34,30 +34,42 @@ const RoomCards = ({data}: { data: RoomType }) => {
         console.log(data)
         console.log(data.name)
     }, []);
+    const [openLoginFirstPopup, setOpenLoginFirstPopup] = useState<boolean>(false)
+    const {refetchStatus, setRefetchStatus, isLoading} = useRefetchRooms({
+        refetch: false,
+        from: null,
+        to: null,
+        propertyId :null
+    });
 
+    const session = useSession();
     const params = useSearchParams()
-    const handleClick =(roomSlug :string)=>{
-        const queryParams = new URLSearchParams({
-            property: params.get("slugs") || '',
-            room: roomSlug,
-            from:  params.get("from")|| '',
-            to: params.get("to") || '',
-            adult: params.get("adult") || '',
-            children: params.get("children") || '',
-        }).toString();
-        window.location.href = `/checkout?${queryParams}`;
+    const handleClick = (roomSlug: string) => {
+        if (session.data == null) {
+            setOpenLoginFirstPopup(true)
+        } else {
+            const queryParams = new URLSearchParams({
+                property: params.get("slugs") || '',
+                room: roomSlug,
+                from: refetchStatus?.from?.toString()|| params.get("from") || '',
+                to: refetchStatus?.to?.toString()||params.get("to") || '',
+                adult: params.get("adult") || '',
+                children: params.get("children") || '',
+            }).toString();
+            window.location.href = `/checkout?${queryParams}`;
+        }
     };
 
     return (
         <div className={"rounded-lg border border-slate-300 h-fit "}
-            onClick={()=> handleClick(data.slug)}
         >
             <Carousel className={""}>
                 <CarouselContent className={"h-[200px]"}>
                     {data.roomPictures && data.roomPictures.length > 0 ? (
                         data.roomPictures.map((picture, index) => (
                             <CarouselItem key={index}>
-                                <Image src={picture.imgUrl} alt={`Room image ${index + 1}`} width={100} height={100} className="rounded-t-lg w-full h-full" />
+                                <Image src={picture.imgUrl} alt={`Room image ${index + 1}`} width={100} height={100}
+                                       className="rounded-t-lg w-full h-full"/>
                             </CarouselItem>
                         ))
                     ) : (
@@ -82,10 +94,10 @@ const RoomCards = ({data}: { data: RoomType }) => {
                         </div>
 
                         {data.includeBreakfast ? <div className={"flex gap-2 items-center"}>
-                            <Utensils size={"18"}/>
-                            <p className={"-mb-1"}>Include breakfast</p>
-                        </div>
-                        : null}
+                                <Utensils size={"18"}/>
+                                <p className={"-mb-1"}>Include breakfast</p>
+                            </div>
+                            : null}
 
 
                         <div className={"flex gap-2 items-center"}>
@@ -104,11 +116,19 @@ const RoomCards = ({data}: { data: RoomType }) => {
                 <div className={"flex justify-between mt-10 items-center"}>
                     <div>
                         <p className={"text-red-600 font-semibold text-xl"}>
-                            IDR {new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(data.price)}
+                            IDR {new Intl.NumberFormat('id-ID', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(data.price)}
                         </p>
                         <p className={"text-slate-400 text-sm mt-[2px]"}>/night/room</p>
                     </div>
-                    <Buttons value={"Reserve"} className={"text-lg"}></Buttons>
+                    <Buttons value={"Reserve"} className={"text-lg"} onClick={() => handleClick(data.slug)}
+                    ></Buttons>
+                    <LoginFirstPopup title={"Login needed"}
+                                     content={"Please login first to create a transaction."}
+                                     isOpen={openLoginFirstPopup}
+                                     onClose={() => setOpenLoginFirstPopup(false)}/>
                 </div>
 
             </div>

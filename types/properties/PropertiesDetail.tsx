@@ -6,7 +6,7 @@ type Facility ={
     logoUrl: string;
 }
 
-type PropertyFacility ={
+export type PropertyFacility ={
     id: string;
     facilities: Facility;
 }
@@ -33,5 +33,8 @@ export type PropertyDetailType = {
     propertyFacilities: PropertyFacility[];
     propertyPictures: PropertyPicture[];
     propertyCategories: PropertyCategory;
-    city: City
+    city: City;
+    slug: String;
+    star: number;
+    phoneNumber: string;
 }

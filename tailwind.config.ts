@@ -26,6 +26,7 @@ const config = {
 
             },
             colors: {
+                placeholder: '#A3A3A3',
                 greenr: "#007989",
                 earth: "#F5F5DC",
                 brightGray: "#F0F7F8",

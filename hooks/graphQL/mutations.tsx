@@ -1,4 +1,4 @@
-import { gql } from './gql-tag';
+import {gql} from './gql-tag';
 
 
 export const CREATE_TRANSACTION = gql`
@@ -162,3 +162,70 @@ mutation AddPropertyFacilities($id: ID!, $facilitiesId: [ID!]!) {
     }
 }`;
 
+
+export const CREATE_PROPERTIES = gql`
+  mutation CreateProperties($input: CreatePropertyInput!) {
+    createProperties(input: $input) {
+      id
+      name
+      description
+      checkInTime
+      checkOutTime
+      address
+      slug
+      phoneNumber
+      star
+      propertyCategories {
+        id
+        name
+      }
+      city {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const ADD_PROPERTY_PICTURES = gql`
+  mutation AddPropertyPictures($propertyId: ID!, $imgUrl: [String]!) {
+    addPropertyPictures(propertyId: $propertyId, imgUrl: $imgUrl) 
+  }
+`;
+
+export const UPDATE_PROPERTIES = gql`
+  mutation UpdateProperties($id: ID!, $input: UpdatePropertyInput!) {
+    updateProperties(id: $id, input: $input)
+  }
+`;
+
+export const DELETE_PROPERTY_PICTURES = gql`
+  mutation DeletePropertyPictures($propertyPictureId: [ID]!, $email: String!) {
+    deletePropertyPictures(propertyPictureId: $propertyPictureId, email: $email)
+  }
+`;
+
+export const DELETE_PROPERTY_FACILITIES = gql`
+  mutation DeletePropertyFacilities($id: ID!, $facilitiesId: [ID]!) {
+    deletePropertyFacilities(id: $id, facilitiesId: $facilitiesId)
+  }
+`;
+
+
+export const DELETE_PROPERTIES = gql`
+  mutation DeleteProperties($id: ID!) {
+    deleteProperties(id: $id)
+  }
+`;
+
+export const CREATE_ROOM = gql`
+  mutation CreateRoom($input: AddRoomsRequestDto!, $email: String!) {
+    createRoom(input: $input, email: $email)
+  }
+`;
+
+export const ADD_ROOM_PICTURES = gql`
+  mutation AddRoomPictures($input: AddRoomPicturesInput!) {
+    addRoomPictures(input: $input)
+  }
+`;
