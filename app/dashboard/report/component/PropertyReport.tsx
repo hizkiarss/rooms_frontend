@@ -27,6 +27,7 @@ const PropertyReport = () => {
     endDate: new Date(),
   });
 
+
   const schedulerData: SchedulerData =
     rooms?.map((room) => ({
       id: room.id, // Assign room ID to Scheduler
@@ -42,6 +43,7 @@ const PropertyReport = () => {
         title: booking.users.username, // Task title
         subtitle: booking.users.mobileNumber || "", // Optional subtitle
         description: booking.users.email || "", // Optional description
+        occupancy: 3600,
         bgColor: "#007989", // Set a default color or dynamic color
       })),
     })) || [];
