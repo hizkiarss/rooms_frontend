@@ -19,8 +19,24 @@ import {
 import { TransactionsType } from "@/types/transactions/TransactionsType";
 
 export const columns: ColumnDef<TransactionsType>[] = [
-
-    {
+  {
+    accessorKey: "bookingCode",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="text-start p-0"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Booking Code
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("bookingCode")}</div>
+    ),
+  },
+  {
     accessorKey: "firstName",
     header: ({ column }) => {
       return (
@@ -125,13 +141,40 @@ export const columns: ColumnDef<TransactionsType>[] = [
   },
 
   {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="text-start p-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Date
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const createdAt = new Date(row.getValue("createdAt"));
+      const formattedDate = createdAt.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+
+      return <div className="capitalize">{formattedDate}</div>;
+    },
+  },
+
+  {
     accessorKey: "finalPrice",
     header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("finalPrice"));
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("id-ID", {
         style: "currency",
-        currency: "USD",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
       }).format(amount);
 
       return <div className="text-right font-medium">{formatted}</div>;
@@ -151,9 +194,10 @@ export const columns: ColumnDef<TransactionsType>[] = [
       //     );
       // };
 
-      const handleViewCustomer =( )=>{
-        console.log("hiya");
-      }
+      const handleViewCustomer = (bookingCode: string) => {
+        const url = `/transaction-detail/${bookingCode}`;
+        window.open(url, "_blank");
+      };
 
       return (
         <DropdownMenu>
@@ -166,14 +210,16 @@ export const columns: ColumnDef<TransactionsType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}>
+              onClick={() =>
+                navigator.clipboard.writeText(payment.bookingCode)
+              }>
               Copy Transaction ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleViewCustomer}>
-              View customer
+            <DropdownMenuItem
+              onClick={() => handleViewCustomer(payment.bookingCode)}>
+              View transactions details
             </DropdownMenuItem>
-            <DropdownMenuItem>View transactions details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

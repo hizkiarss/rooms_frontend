@@ -16,16 +16,12 @@ const Reservation: React.FC = () => {
     error,
   } = useTransactionsByBookingCode(bookingCode);
 
-  if (isLoading) {
-    return <LoadingStateAnimation />;
-  }
+  if (isLoading) return <LoadingStateAnimation />;
 
-  if (error) {
-    return <ErrorAnimation />;
-  }
+  if (error) return <ErrorAnimation />;
 
   const guestName =
-    (transaction?.firstName || "") + (transaction?.lastName || "");
+    (transaction?.firstName || "") + " " + (transaction?.lastName || "");
   console.log("ini transaksinya", transaction);
 
   const startDate: Date = new Date(
@@ -39,6 +35,9 @@ const Reservation: React.FC = () => {
   const timeDifference: number = endDate.getTime() - startDate.getTime();
 
   const dayDifference: number = timeDifference / (1000 * 3600 * 24);
+
+  const subtotal =
+    (transaction?.transactionDetails[0].price || 0) * dayDifference;
 
   const formattedEndDate: string = new Date(endDate).toLocaleDateString(
     "en-US",
@@ -66,7 +65,17 @@ const Reservation: React.FC = () => {
   const formattedRoomPrice: string = new Intl.NumberFormat("id-ID", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(transaction?.finalPrice || 0);
+  }).format(transaction?.transactionDetails[0].price || 0);
+
+  const formattedTax: string = new Intl.NumberFormat("id-ID", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(transaction?.tax || 0);
+
+  const formattedSubTotal: string = new Intl.NumberFormat("id-ID", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(subtotal);
 
   return (
     <div className=" flex flex-col space-y-4">
@@ -76,6 +85,7 @@ const Reservation: React.FC = () => {
             propertyName={transaction.properties.name}
             propertyAddress={transaction.properties.name}
             imgUrl={transaction.properties.propertyPictures[0].imgUrl}
+            slug={transaction.properties.slug}
           />
           <ReservationDetailsCard
             orderId={transaction.bookingCode}
@@ -83,7 +93,8 @@ const Reservation: React.FC = () => {
             checkOut={formattedEndDate}
             guestName={guestName}
             bedType={transaction.transactionDetails[0].rooms.bedTypes.name}
-            guestCount={1}
+            adult={transaction.adult}
+            children={transaction.children}
             facility={transaction.properties.propertyFacilities}
             night={dayDifference}
             roomName={transaction.transactionDetails[0].rooms.name}
@@ -96,6 +107,8 @@ const Reservation: React.FC = () => {
             roomPrice={formattedRoomPrice}
             paymentMethod={transaction.paymentMethod}
             night={dayDifference}
+            tax={formattedTax}
+            subTotal={formattedSubTotal}
           />
         </>
       ) : (

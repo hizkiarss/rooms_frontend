@@ -6,11 +6,12 @@ interface PropertyReservationDetailCardProps {
   imgUrl: string;
   propertyName: string;
   propertyAddress: string;
+  slug: string;
 }
 
 const PropertyReservationDetailCard: React.FC<
   PropertyReservationDetailCardProps
-> = ({ imgUrl, propertyName, propertyAddress }) => {
+> = ({ imgUrl, propertyName, propertyAddress, slug }) => {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -34,7 +35,9 @@ const PropertyReservationDetailCard: React.FC<
             </div>
           </div>
 
-          <Link href="#" className="font-semibold text-greenr hover:underline">
+          <Link
+            href={`/property-detail?slug=${slug}`}
+            className="font-semibold text-greenr hover:underline">
             Details
           </Link>
         </div>

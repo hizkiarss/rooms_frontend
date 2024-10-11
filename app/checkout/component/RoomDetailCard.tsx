@@ -9,15 +9,37 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { PropertyPicturesType } from "@/types/property-pictures/PropertyPicturesType";
+import { getRatingDescription } from "@/types/review/GetRatingDescription";
 
-const images = [
-  "/checkout/4cdd2496.webp",
-  "/checkout/7c2de61d.webp",
-  "/checkout/45d6fb98.webp",
-  "/checkout/265d4aae.webp",
-];
+// const images = [
+//   "/checkout/4cdd2496.webp",
+//   "/checkout/7c2de61d.webp",
+//   "/checkout/45d6fb98.webp",
+//   "/checkout/265d4aae.webp",
+// ];
 
-const RoomDetailCard = () => {
+interface RoomDetailCardProps {
+  images: PropertyPicturesType[];
+  propertyName: string;
+  rating: number;
+  review: number;
+  roomName: string;
+  from: string;
+  to: string;
+  night: number;
+}
+
+const RoomDetailCard: React.FC<RoomDetailCardProps> = ({
+  images,
+  propertyName,
+  rating,
+  review,
+  roomName,
+  from,
+  to,
+  night,
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
@@ -35,7 +57,7 @@ const RoomDetailCard = () => {
       <CardContent className="p-0 relative">
         <div className="relative h-64 overflow-hidden">
           <img
-            src={images[currentImageIndex]}
+            src={images[currentImageIndex].imgUrl}
             alt="Hotel view"
             className="w-full h-full object-cover"
           />
@@ -56,10 +78,7 @@ const RoomDetailCard = () => {
         </div>
       </CardContent>
       <CardHeader>
-        <CardTitle>
-          Santhiya Koh Yao Yai Resort & Spa Compulsory Join Santhiya Speedboat
-          from / to Ao Po Grand Marina at Phuket
-        </CardTitle>
+        <CardTitle>{propertyName}</CardTitle>
 
         <Separator className="my-4" />
       </CardHeader>
@@ -67,25 +86,25 @@ const RoomDetailCard = () => {
       <CardContent>
         <div className="flex items-center mb-4">
           <div className="bg-green-800 text-white font-semibold py-1 px-2 rounded">
-            8.8
+            {rating}
           </div>
-          <span className="ml-2 font-semibold">Excellent</span>
-          <span className="ml-2 text-gray-500">(1,010 reviews)</span>
+          <span className="ml-2 font-semibold">
+            {getRatingDescription(rating)}
+          </span>
+          <span className="ml-2 text-gray-500">({review} reviews)</span>
         </div>
         <p className="mb-2">
-          <span className="font-semibold">1 Room:</span> Exclusive Deal -
-          Supreme Deluxe Sea View with Complimentary THB 1,000 Net Hotel Credit
-          per night
+          <span className="font-semibold">1 Room:</span> {roomName}
         </p>
         <p className="text-sm text-gray-500 mb-4">Non-refundable</p>
         <div className="space-y-1">
           <p>
-            <span className="font-semibold">Check-in: Tue, Sep 3</span>
+            <span className="font-semibold">Check-in: {from}</span>
           </p>
           <p>
-            <span className="font-semibold">Check-out: Wed, Sep 4</span>
+            <span className="font-semibold">Check-out: {to}</span>
           </p>
-          <p>1-night stay</p>
+          <p>{night}-night stay</p>
         </div>
       </CardContent>
     </Card>

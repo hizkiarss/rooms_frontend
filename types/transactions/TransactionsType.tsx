@@ -29,4 +29,7 @@ export type TransactionsType = {
   paymentProofs: PaymentProofType[];
   reviews: ReviewType[];
   createdAt: string;
+  tax: number;
+  adult: number;
+  children: number;
 };

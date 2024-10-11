@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="bg-white shadow-sm ">
-      <div className="max-w-7xl mx-auto px-5 sm:px-10 md:px-20 lg:px-[130px]">
+      <div className="max-w-7xl mx-auto px-5 sm:px-10 md:px-20 lg:px-[80px]">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0">
             <Image

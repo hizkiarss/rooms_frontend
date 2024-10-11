@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import { Check, X } from "lucide-react";
+import { Banknote, Check, X } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,11 +30,18 @@ import usePendingPaymentProofByPropertyId from "@/hooks/payment-proof/usePending
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import useCheckPaymentProofByPropertyId from "@/hooks/payment-proof/useCheckPaymentProofByPropertyId";
 import NoDataFoundAnimation from "@/components/animations/DataNotFoundAnimation";
-const PaymentVerificationList = () => {
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
+
+const PaymentVerificationList: React.FC = () => {
   const [selectedProof, setSelectedProof] = useState<PaymentProofType | null>(
     null
   );
-  const { data: paymentProofs, isLoading } = useCheckPaymentProofByPropertyId();
+  const {
+    data: paymentProofs,
+    isLoading,
+    isError,
+  } = useCheckPaymentProofByPropertyId();
   const { mutate: acceptPaymentProof } = useAcceptPaymentProof();
   const { mutate: rejectPaymentProof } = useRejectPaymentProof();
 
@@ -46,13 +53,8 @@ const PaymentVerificationList = () => {
     rejectPaymentProof({ transactionId: id });
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        <LoadingStateAnimation />
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingStateAnimation />;
+  if (isError) return <ErrorAnimation />;
 
   return (
     <div className="space-y-4">
@@ -61,8 +63,11 @@ const PaymentVerificationList = () => {
       </h4>
 
       {!paymentProofs || paymentProofs.length === 0 ? (
-        // <div className="text-center text-gray-500">Data not found</div>
-        <NoDataFoundAnimation />
+        <EmptyDataAnimation
+          message="No transactions so far, but good things are coming!"
+          width={300}
+          height={300}
+        />
       ) : (
         paymentProofs.map((proof) => {
           const formattedDate = new Date(proof.createdAt).toLocaleDateString(
@@ -82,16 +87,14 @@ const PaymentVerificationList = () => {
                 <div className="flex flex-col sm:flex-row items-center">
                   <div className="flex-1 p-4 sm:p-6 space-y-1 sm:space-y-2 w-full sm:w-auto">
                     <div className="flex items-center space-x-4">
-                      <div className="bg-pink-100 p-2 rounded-lg">
-                        <Image
-                          src="/path-to-your-icon.svg"
-                          alt="Icon"
-                          width={24}
-                          height={24}
-                        />
+                      <div className="bg-white p-2 rounded-lg">
+                        <Banknote className="text-greenr" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">{proof.id}</h3>
+                        <h3 className="font-semibold">
+                          {proof.transaction.firstName}{" "}
+                          {proof.transaction.lastName}
+                        </h3>
                         <div className="sm:hidden flex justify-between text-sm text-gray-500 mt-1 w-full">
                           <span className="text-left mr-2">
                             {proof.transaction.finalPrice.toLocaleString(
@@ -99,6 +102,8 @@ const PaymentVerificationList = () => {
                               {
                                 style: "currency",
                                 currency: "IDR",
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
                               }
                             )}
                           </span>
@@ -116,6 +121,8 @@ const PaymentVerificationList = () => {
                       {proof.transaction.finalPrice.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
                       })}
                     </p>
                   </div>
@@ -145,6 +152,8 @@ const PaymentVerificationList = () => {
                                 {
                                   style: "currency",
                                   currency: "IDR",
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
                                 }
                               )}
                             </div>
