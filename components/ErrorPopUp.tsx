@@ -22,7 +22,7 @@ interface Props {
 const ErrorPopUp: React.FC<Props> = ({title,content,isOpen,onClose}) => {
     return (
             <AlertDialog open={isOpen} onOpenChange={onClose}>
-                <AlertDialogTrigger>Open</AlertDialogTrigger>
+                {/*<AlertDialogTrigger>Open</AlertDialogTrigger>*/}
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>{title}</AlertDialogTitle>

@@ -10,6 +10,7 @@ import {
   ReceiptText,
   Handshake,
   MessagesSquare,
+  House
 } from "lucide-react";
 import React from "react";
 
@@ -20,6 +21,7 @@ const iconMap = {
   Handshake,
   MessagesSquare,
   FileChartColumnIncreasing,
+  House
 };
 
 interface SidebarItemsProps {

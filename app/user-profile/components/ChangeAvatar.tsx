@@ -53,7 +53,6 @@ const ChangeAvatar = () => {
     const {data: user, isLoading, error} = useFindUserbyEmail("qakaben@gmail.com");
 
 
-
     return (
         <Dialog>
             <DialogTrigger asChild>

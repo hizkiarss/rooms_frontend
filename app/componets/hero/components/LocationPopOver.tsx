@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/popover";
 import useDebounce from "@/hooks/useDebounce";
 import {useFindCityByName} from "@/hooks/city/useFindCityByName";
-import {useSearchContext} from "@/context/useSearchContext";
 import useSearchInput from "@/hooks/useSearchInput";
 import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/router";

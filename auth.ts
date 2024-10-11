@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import GoogleProvider from "next-auth/providers/google";
+import {Awaitable} from "@auth/core/types";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     providers: [
@@ -87,7 +88,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user, account }):Promise<any> {
+        async jwt({ token, user, account }): Promise<any>{
             if (user) {
                 token.id = user.id;
                 token.email = user.email;

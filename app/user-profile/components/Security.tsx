@@ -18,7 +18,6 @@ const Security: React.FC<SecurityProps> = ({setIsPageLoading}) => {
     const email: string = "qakaben@gmail.com";
 
     const handleChangePasswordClick = () => {
-        // setIsPageLoading(true); // Start loading animation
         sendResetPasswordLink(
             {email},
             {

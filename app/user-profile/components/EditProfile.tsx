@@ -9,13 +9,13 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { X } from "lucide-react";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import {X} from "lucide-react";
 import ChangeAvatar from "@/app/user-profile/components/ChangeAvatar";
-import { useUploadUserInformation } from "@/hooks/user/useUploaduserInformation";
-import { Gender } from "@/types/gender/Gender";
+import {useUploadUserInformation} from "@/hooks/user/useUploaduserInformation";
+import {Gender} from "@/types/gender/Gender";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 
 const validationSchema = Yup.object({
@@ -43,15 +43,16 @@ const email: String = "qakaben@gmail.com";
 
 
 const EditProfile: React.FC = () => {
-    const { mutate: updateUserInfo, isPending, isError, error } = useUploadUserInformation();
+    const {mutate: updateUserInfo, isPending, isError, error} = useUploadUserInformation();
 
     const handleSubmit = (values: FormValues) => {
-        updateUserInfo({ input: values, email: email });
+        updateUserInfo({input: values, email: email});
     };
 
     return (
         <Drawer>
-            <DrawerTrigger className="text-greenr font-semibold text-xl hover:text-opacity-40 hover:underline duration-200">
+            <DrawerTrigger
+                className="text-greenr font-semibold text-xl hover:text-opacity-40 hover:underline duration-200">
                 Edit
             </DrawerTrigger>
             <DrawerContent className="w-full md:w-1/2">
@@ -65,12 +66,13 @@ const EditProfile: React.FC = () => {
                         </div>
                         <DrawerClose>
                             <Button>
-                                <X />
+                                <X/>
                             </Button>
                         </DrawerClose>
                     </DrawerHeader>
                     <div>
-                        <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+                        <Formik initialValues={initialValues} onSubmit={handleSubmit}
+                                validationSchema={validationSchema}>
                             <Form>
                                 <div className="flex flex-col gap-1">
                                     <label htmlFor="name" className="font-semibold text-sm">Name</label>
@@ -80,18 +82,20 @@ const EditProfile: React.FC = () => {
                                         id="name"
                                         className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-sm text-greenr z-10"
                                     />
-                                    <ErrorMessage name="name" component="div" className="text-red-600 text-sm mt-1" />
+                                    <ErrorMessage name="name" component="div" className="text-red-600 text-sm mt-1"/>
                                 </div>
 
                                 <div className="flex flex-col gap-1 mt-6">
-                                    <label htmlFor="mobileNumber" className="font-semibold text-sm">Mobile Number</label>
+                                    <label htmlFor="mobileNumber" className="font-semibold text-sm">Mobile
+                                        Number</label>
                                     <Field
                                         type="text"
                                         name="mobileNumber"
                                         id="mobileNumber"
                                         className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-sm text-greenr z-10"
                                     />
-                                    <ErrorMessage name="mobileNumber" component="div" className="text-red-600 text-sm mt-1" />
+                                    <ErrorMessage name="mobileNumber" component="div"
+                                                  className="text-red-600 text-sm mt-1"/>
                                 </div>
 
                                 <div className="flex flex-col gap-1 mt-6">
@@ -106,7 +110,7 @@ const EditProfile: React.FC = () => {
                                         <option value={Gender.FEMALE}>Female</option>
                                         <option value={Gender.OTHER}>Other</option>
                                     </Field>
-                                    <ErrorMessage name="gender" component="div" className="text-red-600 text-sm mt-1" />
+                                    <ErrorMessage name="gender" component="div" className="text-red-600 text-sm mt-1"/>
                                 </div>
 
                                 <div className="flex flex-col gap-1 mt-6">
@@ -117,7 +121,8 @@ const EditProfile: React.FC = () => {
                                         id="dateOfBirth"
                                         className="border border-greenr rounded-md pl-3 md:h-12 h-8 text-sm text-greenr z-10"
                                     />
-                                    <ErrorMessage name="dateOfBirth" component="div" className="text-red-600 text-sm mt-1" />
+                                    <ErrorMessage name="dateOfBirth" component="div"
+                                                  className="text-red-600 text-sm mt-1"/>
                                 </div>
 
                                 {isError && (
@@ -139,5 +144,8 @@ const EditProfile: React.FC = () => {
         </Drawer>
     );
 };
+
+
+
 
 export default EditProfile;
