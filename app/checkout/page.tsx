@@ -24,6 +24,7 @@ import {useRoomPrice} from "@/hooks/rooms/useRoomPrice";
 import {useSession} from "next-auth/react";
 import {useFindUserbyEmail} from "@/hooks/user/useFindUserbyEmail";
 import {Suspense, useState} from "react";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
@@ -44,14 +45,17 @@ const Page = () => {
         return new Date(date).toISOString().split("T")[0];
     };
 
-    const propertySlug = "";
-    const roomSlug = "";
-    const fromSlug = "";
-    const toSlug = "";
-    const adultSlug = "";
-    const childrenSlug = "";
-    // const searchParams = useSearchParams();
-    if (typeof window !== "undefined") {
+    // const propertySlug = "";
+    // const roomSlug = "";
+    // const fromSlug = "";
+    // const toSlug = "";
+    // const adultSlug = "";
+    // const childrenSlug = "";
+    // // const searchParams = useSearchParams();
+    // if (typeof window !== "undefined") {
+    if(typeof window == "undefined") {
+        return <ErrorAnimation/>
+    }
         const searchParams = new URLSearchParams(window.location.search);
 
         const propertySlug = searchParams.get("property");
@@ -66,7 +70,7 @@ const Page = () => {
         console.log("ini to nya: ", toSlug);
         console.log("ini adult nya: ", adultSlug);
         console.log("ini children nya: ", childrenSlug);
-    }
+    // }
 
     const fromDate = new Date(fromSlug || " ");
     const toDate = new Date(toSlug || " ");

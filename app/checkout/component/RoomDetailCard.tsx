@@ -57,7 +57,7 @@ const RoomDetailCard: React.FC<RoomDetailCardProps> = ({
       <CardContent className="p-0 relative">
         <div className="relative h-64 overflow-hidden">
           <img
-            src={images[currentImageIndex].imgUrl}
+              src={images && images[currentImageIndex] ? images[currentImageIndex].imgUrl : ""}
             alt="Hotel view"
             className="w-full h-full object-cover"
           />

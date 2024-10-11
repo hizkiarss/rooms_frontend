@@ -38,7 +38,6 @@ export function CheckInDatePicker(
     });
 
 
-
     const {data, refetch: refetchCalendarPrice} = useGetCalendarPrice(searchInput);
 
     const priceMap = React.useMemo(() => {
@@ -60,12 +59,8 @@ export function CheckInDatePicker(
 
     useEffect(() => {
         console.log("Refetching prices for:", searchInput.month, searchInput.year);
-
         console.log("Refetching prices for:", searchInput.month, searchInput.year);
         refetchCalendarPrice();
-        if (data) console.log(data);
-
-
     }, [searchInput]);
 
 
