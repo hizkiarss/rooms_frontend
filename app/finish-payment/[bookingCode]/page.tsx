@@ -14,7 +14,7 @@ const Page = () => {
     router.push(`/my-order`);
   };
   return (
-    <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[130px] flex flex-col items-center ">
+    <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[80px] py-8 flex flex-col items-center ">
       <FinishPayment />
       <Buttons
         value={"My Order"}
