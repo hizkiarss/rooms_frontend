@@ -9,7 +9,7 @@ const MobileNavItems: React.FC = () => {
   return (
     <div className="flex flex-col space-y-4">
       <Link
-        href="#"
+        href="become-tenant"
         className="text-sm font-medium text-gray-700 hover:text-gray-900">
         List your property
       </Link>
