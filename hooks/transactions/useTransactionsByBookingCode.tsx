@@ -11,6 +11,7 @@ import { TransactionsType } from "@/types/transactions/TransactionsType";
 import useSelectedProperty from "../useSelectedProperty";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { TransactionDetailType } from "@/types/transactions/TransactionDetailType";
 
 export const useTransactionsByBookingCode = (bookingCode: string) => {
   const { data: session } = useSession();
@@ -35,6 +36,13 @@ export const useTransactionsByBookingCode = (bookingCode: string) => {
         if (!response || !response.transactionsByBookingCode) {
           throw new Error("No transactions data in the response");
         }
+        response.transactionsByBookingCode.transactionDetails =
+          response.transactionsByBookingCode.transactionDetails.map(
+            (detail: TransactionDetailType) => ({
+              ...detail,
+              price: detail.price ? Math.round(detail.price) : 0,
+            })
+          );
 
         return response.transactionsByBookingCode;
       } catch (error) {

@@ -2,12 +2,11 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Buttons from "@/components/Buttons";
 import { useCreateTransaction } from "@/hooks/transactions/useCreateTransaction";
 import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
 import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import { useGetPropertyBySlug } from "@/hooks/properties/useGetPropertyBySlug";
 import { useRoomBySlug } from "@/hooks/rooms/useRoomBySlug";
