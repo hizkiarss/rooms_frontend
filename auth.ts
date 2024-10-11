@@ -4,7 +4,8 @@ import axios from "axios";
 import GoogleProvider from "next-auth/providers/google";
 import {Awaitable} from "@auth/core/types";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+const url: string = process.env.NEXT_PUBLIC_URL || "http://localhost:8080/graphql";
+export const {handlers, auth, signIn, signOut} = NextAuth({
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -20,10 +21,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: { label: "email", type: "text" },
-                password: { label: "password", type: "password" },
+                email: {label: "email", type: "text"},
+                password: {label: "password", type: "password"},
             },
-            async authorize(credentials):Promise<any> {
+            async authorize(credentials): Promise<any> {
                 if (!credentials?.email || !credentials?.password) {
                     return {
                         error: "Email and password are required",
@@ -32,7 +33,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
                 try {
                     const response = await axios.post(
-                        `http://localhost:8080/graphql`,
+                                url,
                         {
                             query: `
                 mutation Login($email: String!, $password: String!) {
@@ -48,13 +49,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                             },
                         },
                         {
-                            headers: { "Content-Type": "application/json" },
+                            headers: {"Content-Type": "application/json"},
                         }
                     );
 
                     console.log("Full response:", JSON.stringify(response.data, null, 2));
 
-                    const { data } = response;
+                    const {data} = response;
 
                     if (data.errors) {
                         console.log("GraphQL Error:", data.errors);
@@ -65,7 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
                     if (data?.data?.login?.token) {
                         console.log("Successful login. Token:", data.data.login.token, "Role:", data.data.login.role);
-                        const { token, role } = data.data.login;
+                        const {token, role} = data.data.login;
                         return {
                             id: credentials.email,
                             email: credentials.email,
@@ -88,7 +89,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user, account }): Promise<any>{
+        async jwt({token, user, account}): Promise<any> {
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
@@ -114,18 +115,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                             },
                         },
                         {
-                            headers: { "Content-Type": "application/json" },
+                            headers: {"Content-Type": "application/json"},
                         }
                     );
-                    const { data } = response;
+                    const {data} = response;
                     console.log("Google login response:", data);
 
                     if (data.errors) {
                         console.error("Google login error:", data.errors);
-                        return { ...token, error: data.errors[0]?.message || "Error during Google authentication" };
+                        return {...token, error: data.errors[0]?.message || "Error during Google authentication"};
                     }
 
-                    const { token: authToken, role } = data.data.googleLogin;
+                    const {token: authToken, role} = data.data.googleLogin;
 
                     if (authToken) {
                         return {
@@ -136,16 +137,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         };
                     } else {
                         console.error("Invalid response from server during Google login");
-                        return { ...token, error: "Invalid response from server" };
+                        return {...token, error: "Invalid response from server"};
                     }
                 } catch (error) {
                     console.error("Failed to authenticate with backend:", error);
-                    return { ...token, error: "Failed to authenticate with backend" };
+                    return {...token, error: "Failed to authenticate with backend"};
                 }
             }
             return token;
         },
-        async session({ session, token }) {
+        async session({session, token}) {
             if (session.user) {
                 session.user.id = token.id as string;
                 session.user.email = token.email as string;
@@ -157,7 +158,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
             return session;
         },
-        async signIn({ user }) {
+        async signIn({user}) {
             if (user.error) {
                 return `/login?error=${encodeURIComponent(user.error)}`;
             }
