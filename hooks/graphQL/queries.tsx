@@ -844,16 +844,16 @@ export const GET_PROPERTIES_BY_OWNER_EMAIL = gql`
 `;
 
 
-export const GET_FILTERED_ROOMS_BY_PROPERTY_SLUG = gql`
-  query GetFilteredRoomsByPropertySlug(
-    $propertySlug: String!
+export const GET_FILTERED_ROOMS_BY_PROPERTY_ID = gql`
+  query GetFilteredRoomsByPropertyId(
+    $propertyId: ID!
     $isAvailable: Boolean
     $roomName: String
     $pageSize: Int!
     $pageNumber: Int!
   ) {
-    getFilteredRoomsByPropertySlug(
-      propertySlug: $propertySlug
+    getFilteredRoomsByPropertyId(
+      propertyId: $propertyId
       isAvailable: $isAvailable
       roomName: $roomName
       pageSize: $pageSize
@@ -887,10 +887,81 @@ export const GET_FILTERED_ROOMS_BY_PROPERTY_SLUG = gql`
 }
 `;
 
-export const GET_ROOMS_TYPES_BY_PROPERTY_SLUG = gql`
-  query GetRoomsTypesByPropertySlug($propertySlug: String!) {
-    getRoomsTypesByPropertySlug(propertySlug: $propertySlug)
+export const GET_ROOMS_TYPES_BY_PROPERTY_ID = gql`
+  query GetRoomsTypesByPropertyId($propertyId: ID!) {
+    getRoomsTypesByPropertyId(propertyId: $propertyId)
   }
 `;
+
+
+export const GET_ROOM_BY_ID = gql`
+  query GetRoomsById($id: ID!) {
+    getRoomsById(id: $id) {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+      bedTypes {
+        id
+        name
+      }
+      roomPictures {
+        id
+        imgUrl
+      }
+    }
+  }
+`;
+
+
+export const GET_PROPERTIES_BY_ID = gql`
+  query GetPropertiesById($id: String!) {
+    getPropertiesById(id: $id) {
+      id
+      name
+      description
+      checkInTime
+      checkOutTime
+      address
+      totalReview
+      averageRating
+      slug
+      phoneNumber
+      star
+      propertyFacilities {
+        id
+        facilities {
+          id
+          name
+          logoUrl
+        }
+      }
+      propertyPictures {
+        id
+        imgUrl
+      }
+      city {
+        id
+        name
+      }
+      propertyCategories {
+        id
+        name
+      }
+      users {
+        id
+        email
+        username
+      }
+    }
+  }
+`;
+
 
 

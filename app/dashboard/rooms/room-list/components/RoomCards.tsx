@@ -20,7 +20,7 @@ const RoomCards = ({data}: { data: RoomType[] | null }) => {
 
 
     return (
-        <div className={"grid grid-cols-5 gap-6 px-10"}>
+        <div className={"grid grid-cols-4 gap-6 px-10"}>
             <>
                 {data.map((room: RoomType) => (
                     <div key={room.id} className="rounded-lg border border-slate-300 h-fit">
@@ -29,9 +29,9 @@ const RoomCards = ({data}: { data: RoomType[] | null }) => {
                                     {room.roomPictures && room.roomPictures.length > 0 ? (
                                         room.roomPictures.map((picture, index) => (
                                             <CarouselItem key={index}>
-                                                <Image src={picture.imgUrl} alt={`Room image ${index + 1}`} width={100}
-                                                       height={100}
-                                                       className="rounded-t-lg w-full h-full object-cover"/>
+                                                {/*<Image src={picture.imgUrl} alt={`Room image ${index + 1}`} width={100}*/}
+                                                {/*       height={100}*/}
+                                                {/*       className="rounded-t-lg w-full h-full object-cover"/>*/}
                                             </CarouselItem>
                                         ))
                                     ) : (
@@ -89,9 +89,14 @@ const RoomCards = ({data}: { data: RoomType[] | null }) => {
                                     {room.isAvailable ?
                                         <p className={"text-sm font-semibold text-green-600"}>Available</p> :
                                         <p className={"text-sm font-semibold text-red-600"}>Not available</p>}
-                                    {/*<Buttons value="On maintenance" className="text-xs w-fit h-fit" />*/}
                                 </div>
+                            <div className={'flex flex-col gap-2 mt-2'}>
+                                <Buttons value="Update room" className="text-xs  md:text-sm w-full h-fit"
+                                         onClick={() => window.location.href = `/dashboard/rooms/update-room?num=${room.id}&name=${room.name}`}/>
+                                <Buttons value="Mark Unavailable" className="text-xs md:text-sm h-fit w-full" />
                             </div>
+
+                        </div>
 
                     </div>
 

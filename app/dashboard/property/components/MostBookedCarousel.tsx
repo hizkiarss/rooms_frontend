@@ -1,5 +1,5 @@
 import React from 'react';
-import {useGetFilteredRoomsByPropertySlug} from "@/hooks/rooms/useGetFilteredRoomsByPropertySlug";
+import {useGetFilteredRoomsByPropertyId} from "@/hooks/rooms/useGetFilteredRoomsByPropertyId";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import Buttons from "@/components/Buttons";
 import {RoomType} from "@/types/rooms/RoomsType";
@@ -9,8 +9,8 @@ import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation
 
 const MostBookedCarousel = () => {
 
-    const {data: RoomsData, error, refetch, isLoading} = useGetFilteredRoomsByPropertySlug({
-        propertySlug: "hotel-Dummy-MbUS",
+    const {data: RoomsData, error, refetch, isLoading} = useGetFilteredRoomsByPropertyId({
+        propertyId: "1",
         isAvailable: null,
         roomName: null,
         pageNumber: 1,

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {LetterText} from "lucide-react";
 import useFilterRoomsDashboard from "@/hooks/useFilterRoomsDashboard";
-import {useGetRoomsTypesByPropertySlug} from "@/hooks/rooms/useGetRoomsTypesByPropertySlug";
+import {useGetRoomsTypesByPropertyId} from "@/hooks/rooms/useGetRoomsTypesByPropertyId";
 
 interface Prop {
     isOpen: boolean;
@@ -26,7 +26,7 @@ export const FilterByNamePopUp: React.FC<Prop> = ({}) => {
         available: null,
     });
 
-    const {data} = useGetRoomsTypesByPropertySlug("hotel-Dummy-MbUS")
+    const {data} = useGetRoomsTypesByPropertyId("hotel-Dummy-MbUS")
     const roomTypesData = Array.isArray(data) ? data : [];
 
 

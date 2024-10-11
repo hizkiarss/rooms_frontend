@@ -229,3 +229,44 @@ export const ADD_ROOM_PICTURES = gql`
     addRoomPictures(input: $input)
   }
 `;
+
+export const UPDATE_ROOM = gql`
+  mutation UpdateRoom($id: ID!, $input: UpdateRoomInput!, $email: String!) {
+    updateRoom(id: $id, input: $input, email: $email) {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+    }
+  }
+`;
+
+export const DELETE_ROOM_PICTURES = gql`
+  mutation DELETE_ROOM_PICTURES($roomPictureIds: [ID]!) {
+    deleteRoomPicture(roomPictureIds: $roomPictureIds)
+  }
+`;
+
+
+export const UPDATE_ROOMS_BY_NAME = gql`
+  mutation UPDATE_ROOMS_BY_NAME($name: String!, $input: UpdateRoomInput!, $email: String!, $propertyId: ID!) {
+    updateRoomsByName(name: $name, input: $input, email: $email, propertyId: $propertyId) {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+    }
+  }
+`;

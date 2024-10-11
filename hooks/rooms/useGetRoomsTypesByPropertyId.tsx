@@ -1,20 +1,20 @@
 "use client";
 
 import {graphqlClient} from "../graphQL/graphqlClient";
-import {GET_ROOMS_TYPES_BY_PROPERTY_SLUG} from "@/hooks/graphQL/queries";
+import {GET_ROOMS_TYPES_BY_PROPERTY_ID} from "@/hooks/graphQL/queries";
 import {useQuery} from "@tanstack/react-query";
 
 
-export function useGetRoomsTypesByPropertySlug(propertySlug: string) {
+export function useGetRoomsTypesByPropertyId(propertyId: string) {
     return useQuery<string[], Error>({
-        queryKey: ["availableRooms", propertySlug],
+        queryKey: ["availableRooms", propertyId],
         queryFn: async () => {
 
-            const response = await graphqlClient.request<{ getRoomsTypesByPropertySlug: string[] }>(
-                GET_ROOMS_TYPES_BY_PROPERTY_SLUG,
-                {propertySlug}
+            const response = await graphqlClient.request<{ getRoomsTypesByPropertyId: string[] }>(
+                GET_ROOMS_TYPES_BY_PROPERTY_ID,
+                {propertyId}
             );
-            return response.getRoomsTypesByPropertySlug;
+            return response.getRoomsTypesByPropertyId;
         },
         meta: {
             onSuccess: (roomTypesData: String[]) => {

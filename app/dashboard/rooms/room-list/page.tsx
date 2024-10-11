@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useGetPropertiesByOwnerEmail} from "@/hooks/properties/useGetPropertiesByOwnerEmail";
 import PropertyCards from "@/app/dashboard/rooms/room-list/components/RoomCards";
 import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
-import {useGetFilteredRoomsByPropertySlug} from "@/hooks/rooms/useGetFilteredRoomsByPropertySlug";
+import {useGetFilteredRoomsByPropertyId} from "@/hooks/rooms/useGetFilteredRoomsByPropertyId";
 import FilterPopup from "@/app/properties/components/FilterPopup";
 import {FilterByNamePopUp} from "@/app/dashboard/rooms/room-list/components/FilterByNamePopUp";
 import Buttons from "@/components/Buttons";
@@ -27,13 +27,13 @@ const Page = () => {
 
     const [openFilterName, setOpenFilterName] = useState<boolean>(true)
     const [openFilterAvailable, setOpenFilterAvailable] = useState<boolean>(true)
-    const [currentPage, setCurrentPage] = useState(0);
-    const {data: RoomsData, error, refetch, isLoading} = useGetFilteredRoomsByPropertySlug({
-        propertySlug: "hotel-Dummy-MbUS",
+    const [currentPage, setCurrentPage] = useState(1);
+    const {data: RoomsData, error, refetch, isLoading} = useGetFilteredRoomsByPropertyId({
+        propertyId: "1",
         isAvailable: filterContent?.available ? filterContent.available : null,
         roomName: filterContent?.filterName ? filterContent.filterName : null,
         pageNumber: currentPage,
-        pageSize: 30,
+        pageSize: 32,
     })
 
     const pagedData = RoomsData as PagedRoomResult | undefined;
@@ -46,12 +46,15 @@ const Page = () => {
     };
 
 
-    useEffect(() => {
-        refetch()
-        console.log(filterContent.filterName)
-        console.log("kocak")
-    }, [filterContent, setFilterContent]);
+    // useEffect(() => {
+    //     refetch()
+    //     console.log(filterContent.filterName)
+    //     console.log("kocak")
+    // }, [filterContent, setFilterContent]);
 
+    if(error){
+        console.log(error)
+    }
 
     if(isLoading){
         return <LoadingStateAnimation />;
