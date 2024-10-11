@@ -4,7 +4,7 @@ import axios from "axios";
 import GoogleProvider from "next-auth/providers/google";
 import {Awaitable} from "@auth/core/types";
 
-const url: string = process.env.NEXT_PUBLIC_URL || "http://localhost:8080/graphql";
+const url: string = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/graphql";
 export const {handlers, auth, signIn, signOut} = NextAuth({
     providers: [
         GoogleProvider({
