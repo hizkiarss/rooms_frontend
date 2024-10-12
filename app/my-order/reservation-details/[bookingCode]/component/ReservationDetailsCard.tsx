@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { PropertyFacility } from "@/types/property-facility/PropertyFacilityType";
+import { getAmenityLabel } from "@/utils/FacilityLogoUtils";
+import AnimationWrapper from "@/components/animations/AnimationWrapper";
 
 interface ReservationDetailsCardProps {
   orderId: string;
@@ -42,7 +44,7 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
 }) => {
   const totalguest = adult + childrenNumber;
   return (
-    <div>
+    <AnimationWrapper y={40} transition={{ ease: "easeOut", duration: 1 }}>
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
@@ -106,7 +108,8 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
                     <div className="flex items-center">
                       <Users className="mr-2" />
                       <p>
-                        {totalguest} Guest ({adult} Adult, {childrenNumber} children)
+                        {totalguest} Guest ({adult} Adult, {childrenNumber}{" "}
+                        children)
                       </p>
                     </div>
                   </div>
@@ -129,11 +132,14 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
                 <div className="w-full md:w-1/3">
                   <h3 className="font-semibold mb-2">Facilities</h3>
                   {facility && facility.length > 0 ? (
-                    <ul className="space-y-2">
+                    <div className="space-y-2">
                       {facility.map((item, index) => (
-                        <li key={index}> {item.facilities.name}</li>
+                        <div key={index} className="flex items-center gap-2">
+                          {getAmenityLabel(item.facilities.name)}
+                          <p>{item.facilities.name}</p>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   ) : (
                     <p>-</p>
                   )}
@@ -151,7 +157,7 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
           </Card>
         </CardContent>
       </Card>
-    </div>
+    </AnimationWrapper>
   );
 };
 
