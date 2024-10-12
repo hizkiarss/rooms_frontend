@@ -1,4 +1,5 @@
 "use client";
+import AnimationWrapper from "@/components/animations/AnimationWrapper";
 import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
@@ -76,20 +77,24 @@ const OrderList = () => {
                 <>
                   {transactionPage.content.map((transaction) => (
                     <div key={transaction.id}>
-                      <OrderListItem
-                        bookingCode={transaction.bookingCode}
-                        imgUrl="/img"
-                        totalPrice={transaction.finalPrice}
-                        propertyName={""}
-                        status={transaction.status}
-                        paymentMethod={transaction.paymentMethod}
-                        transactionId={transaction.id}
-                        paymentProofs={transaction.paymentProofs}
-                        onRefresh={refreshTransactions}
-                        transactionDetails={transaction.transactionDetails[0]}
-                        review={transaction.reviews}
-                        room={transaction.transactionDetails[0].rooms}
-                      />
+                      <AnimationWrapper
+                        y={40}
+                        transition={{ ease: "easeOut", duration: 1 }}>
+                        <OrderListItem
+                          bookingCode={transaction.bookingCode}
+                          imgUrl="/img"
+                          totalPrice={transaction.finalPrice}
+                          propertyName={""}
+                          status={transaction.status}
+                          paymentMethod={transaction.paymentMethod}
+                          transactionId={transaction.id}
+                          paymentProofs={transaction.paymentProofs}
+                          onRefresh={refreshTransactions}
+                          transactionDetails={transaction.transactionDetails[0]}
+                          review={transaction.reviews}
+                          room={transaction.transactionDetails[0].rooms}
+                        />
+                      </AnimationWrapper>
                     </div>
                   ))}
 
