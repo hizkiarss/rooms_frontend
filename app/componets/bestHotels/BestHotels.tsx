@@ -195,7 +195,7 @@ const BestDeals = () => {
           }>
           <h2
             className={
-              "col-span-1 font-semibold text-xl sm:text-2xl text-greenr tracking-tight w-full items-start"
+              "col-span-1 font-semibold text-xl sm:text-2xl text-greenr tracking-tight w-full lg:w-2/4 items-start "
             }>
             Relax, we&apos;ve got it <br />
             <span className={"tracking-normal text-4xl sm:text-[50px]"}>

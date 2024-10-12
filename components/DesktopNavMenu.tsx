@@ -18,33 +18,32 @@ import { NavigationMenu, NavigationMenuList } from "./ui/navigation-menu";
 const DesktopNavMenu: React.FC = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log("ini isi nya", session?.user);
   const handleSignout = async () => {
-    await signOut({
-      redirect: false,
-    });
+    await signOut();
+    router.push("/");
   };
+  const isTenant = session?.user?.roles?.includes("TENANT");
   return (
-    <div className="flex items-center w-6/12 lg:w-5/12 justify-between">
+    <div className="flex items-center px-2 w-8/12 lg:w-5/12 justify-between">
       <div className="hidden md:block">
         <NavigationMenu>
           <NavigationMenuList>
-            <DesktopNavItems />
+            {!isTenant && <DesktopNavItems />}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
 
-      <div className="hidden md:flex items-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full bg-gray-200">
-              <User className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          {session && session.user ? (
+      {session && session.user ? (
+        <div className="hidden md:flex items-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-gray-200">
+                <User className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
             <DropdownMenuContent className="w-80 mt-2" align="end">
               <DropdownMenuLabel className="flex justify-between items-center">
                 <div>
@@ -55,25 +54,33 @@ const DesktopNavMenu: React.FC = () => {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Account</DropdownMenuItem>
-              <DropdownMenuItem>List of favorites</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/user-profile")}>
+                Account
+              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignout}>
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
-          ) : (
-            <DropdownMenuContent className="w-80 mt-2" align="end">
-              <DropdownMenuItem
-                onClick={() => {
-                  router.push("/login");
-                }}>
-                Login
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          )}
-        </DropdownMenu>
-      </div>
+          </DropdownMenu>
+        </div>
+      ) : (
+        <div className="hidden md:flex space-x-2">
+          <Button
+            variant="ghost"
+            onClick={() => router.push("/login")}
+            className="text-sm font-medium ml-2">
+            Login
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => router.push("/register")}
+            className="text-sm font-medium">
+            Sign up
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
