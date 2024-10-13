@@ -14,8 +14,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
+
 import Image from "next/image";
 import defaultAvatar from "@/public/user.png";
 import {Form, Formik, FormikHelpers, FormikProps} from "formik";
@@ -58,7 +57,7 @@ const ChangeAvatar = () => {
             <DialogTrigger asChild>
                 <div className={"flex gap-4 items-center mb-10"}>
                     <Image src={user?.profilePicture || defaultAvatar} alt="User Avatar" width={48} height={48}
-                           className="w-[100px] h-[100px] rounded-full object-cover object-center"/>                    <div>
+                           className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] rounded-full object-cover object-center"/>                    <div>
                         <p className={"font-semibold"}> Profile picture </p>
                         <p className={"text-slate-400"}>Click to change your profile picture</p>
                     </div>
@@ -91,12 +90,12 @@ const ChangeAvatar = () => {
                                         <img
                                             src={values.imageUrl}
                                             alt="Uploaded"
-                                            className="mx-auto max-h-52 object-cover"
+                                            className="mx-auto max-h-28 md:max-h-52 object-cover"
                                         />
                                     ) : (
                                         <>
                                             <div className="text-greenr mx-auto mb-2">
-                                                <ImageUp className="w-12 h-12 mx-auto"/>
+                                                <ImageUp className="w-6 h-6 md:w-12 md:h-12 mx-auto"/>
                                             </div>
                                             <p className="text-greenr font-semibold">
                                                 Upload Files
