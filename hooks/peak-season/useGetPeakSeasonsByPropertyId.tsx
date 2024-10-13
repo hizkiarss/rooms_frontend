@@ -7,7 +7,7 @@ import {useSession} from "next-auth/react";
 
 export function useGetPeakSeasonsByPropertyId(propertyId: string) {
     const queryClient = useQueryClient();
-    const { data: session } = useSession();
+    const {data: session} = useSession();
 
 
     return useQuery<PeakSeason[], Error>({
@@ -24,11 +24,13 @@ export function useGetPeakSeasonsByPropertyId(propertyId: string) {
 
             return response.getPeakSeasonsByPropertyId;
         },
-        onSuccess: (data: PeakSeason[]) => {
-            console.log("Fetched peak seasons successfully");
-        },
-        onError: (error: Error) => {
-            console.error("Failed to fetch peak seasons:", error);
-        },
+        meta: {
+            onSuccess: (data: PeakSeason[]) => {
+                console.log("Fetched peak seasons successfully");
+            },
+            onError: (error: Error) => {
+                console.error("Failed to fetch peak seasons:", error);
+            },
+        }
     });
 }
