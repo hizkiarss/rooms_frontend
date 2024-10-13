@@ -18,6 +18,7 @@ import {useAddPropertyPictures} from "@/hooks/properties/useAddPropertyPictures"
 import Top from "@/app/dashboard/rooms/create-property/add-photo/component/top";
 import Buttons from "@/components/Buttons";
 import usePropertyId from "@/hooks/usePropertyId";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 interface FormValues {
     imageUrls: string[];
@@ -72,7 +73,6 @@ const AddPhotoPopUp: React.FC = () => {
     const handleDialogOpenChange = (open: boolean) => {
         setIsDialogOpen(open);
         if (!open) {
-            // Reset the mutation state when the dialog is closed
             uploadPropertyPhotosMutation.reset();
         }
     };
@@ -101,22 +101,28 @@ const AddPhotoPopUp: React.FC = () => {
                           }: FormikProps<FormValues>) => (
                             <Form>
                                 <div className="flex flex-wrap gap-4 mb-4">
-                                    {previewImages.map((preview, index) => (
-                                        <div key={index} className="relative">
-                                            <img
-                                                src={preview}
-                                                alt={`Preview ${index + 1}`}
-                                                className="w-24 h-24 object-cover rounded"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => removeImage(index, setFieldValue, values)}
-                                                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                                            >
-                                                <X size={16}/>
-                                            </button>
+                                    {isUploading ? (
+                                        <div className={"w-full h-full"}>
+                                            <LoadingAnimation />
                                         </div>
-                                    ))}
+                                    ) : (
+                                        previewImages.map((preview, index) => (
+                                            <div key={index} className="relative">
+                                                <img
+                                                    src={preview}
+                                                    alt={`Preview ${index + 1}`}
+                                                    className="w-24 h-24 object-cover rounded"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeImage(index, setFieldValue, values)}
+                                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                                                >
+                                                    <X size={16} />
+                                                </button>
+                                            </div>
+                                        ))
+                                    )}
                                 </div>
                                 <div
                                     className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-green-500 transition"
@@ -149,7 +155,7 @@ const AddPhotoPopUp: React.FC = () => {
                                 {errors.imageUrls && <div className="text-red-500 mt-2">{errors.imageUrls}</div>}
                                 <div className="flex justify-end gap-4 mt-4 items-center">
                                     {uploadPropertyPhotosMutation.isSuccess ?
-                                        <p className={"text-greenr"}>Upload Success!</p> : null}
+                                        <p className={"text-greenr font-semibold"}>Upload Success!</p> : null}
                                     <Button type="submit" size="sm" className="px-3 font-semibold"
                                             disabled={isSubmitting}>
                                         {isSubmitting ? 'Uploading...' : 'Upload Photos'}

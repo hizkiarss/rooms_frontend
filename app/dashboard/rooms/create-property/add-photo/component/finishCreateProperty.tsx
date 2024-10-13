@@ -10,7 +10,7 @@ const FinishCreateProperty = () => {
                 <div className={"flex flex-col justify-center items-center gap-3"}>
                     <h2 className={"font-semibold text-4xl"}> Your Property Is Ready! </h2>
                     <p> Let&apos;s add awesome rooms to impress potential tenants! </p>
-                    <Buttons value={"Create rooms"} className={"text-xl w-fit px-10"}/>
+                    <Buttons value={"Create rooms"} className={"text-xl w-fit px-10"} onClick={()=>window.location.href = "/dashboard/rooms"}/>
                 </div>
             </div>
 

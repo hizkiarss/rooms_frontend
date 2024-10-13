@@ -12,7 +12,7 @@ import Buttons from "@/components/Buttons";
 import {RoomType} from "@/types/rooms/RoomsType";
 import {useSearchParams} from "next/navigation";
 import {useSession} from "next-auth/react";
-import ErrorPopUp from "@/components/ErrorPopUp";
+import NotificationPopUp from "@/components/NotificationPopUp";
 import LoginFirstPopup from "@/app/property-detail/components/LoginFirstPopup";
 import useRefetchRooms from "@/hooks/useRefetchRooms";
 

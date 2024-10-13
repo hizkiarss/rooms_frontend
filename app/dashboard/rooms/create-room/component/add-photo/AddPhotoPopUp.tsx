@@ -18,6 +18,7 @@ import Buttons from "@/components/Buttons";
 import usePropertyId from "@/hooks/usePropertyId";
 import {useAddRoomPictures} from "@/hooks/rooms/useAddRoomPictures";
 import useRoomName from "@/hooks/useRoomName";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
 
 interface FormValues {
     imageUrls: string[];
@@ -34,15 +35,15 @@ const CreateRoomAddPhotoPopUp: React.FC = () => {
     });
 
     const uploadRoomsPhotoMutation = useAddRoomPictures();
-    const {propertyId} = usePropertyId({propertyId: "9"})
+    const{selectedProperty}= useSelectedProperty()
     const {roomName}= useRoomName("")
 
     const handleSubmit = async (values: FormValues): Promise<void> => {
         try {
             await uploadRoomsPhotoMutation.mutateAsync({
-                propertyId: "1",
+                propertyId: selectedProperty || "1",
                 roomPicture: values.imageUrls,
-                roomName: "Lahadalia"
+                roomName: roomName || "Lahadalia"
             });
         } catch (error) {
             console.error("Failed to upload photos:", error);

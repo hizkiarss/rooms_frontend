@@ -194,7 +194,7 @@ export const ADD_PROPERTY_PICTURES = gql`
 `;
 
 export const UPDATE_PROPERTIES = gql`
-  mutation UpdateProperties($id: ID!, $input: UpdatePropertyInput!) {
+  mutation UpdateProperties($id: ID!, $input: UpdatePropertyInput) {
     updateProperties(id: $id, input: $input)
   }
 `;
@@ -269,4 +269,46 @@ export const UPDATE_ROOMS_BY_NAME = gql`
       slug
     }
   }
+`;
+
+
+export const SET_UNAVAILABLE = gql`
+  mutation SetUnavailable($roomId: ID!) {
+    setUnavailable(roomId: $roomId)
+  }
+`;
+
+export const SET_AVAILABLE = gql`
+  mutation SetAvailable($roomId: ID!) {
+    setAvailable(roomId: $roomId)
+  }
+`;
+
+export const CHANGE_PRICE_FOR_PEAK_SEASON = gql`
+    mutation ChangePriceForPeakSeason($input: changePriceForPeakSeasonInput!) {
+        changePriceForPeakSeason(input: $input) {
+            id
+            startDate
+            endDate
+            markUpPercentage
+        }
+    }
+`;
+
+export const DELETE_PEAK_SEASON = gql`
+    mutation DeletePeakSeason($peakSeasonId: ID!) {
+        deletePeakSeason(peakSeasonId: $peakSeasonId)
+    }
+`;
+
+
+export const UPDATE_PEAK_SEASON = gql`
+    mutation UpdatePeakSeason($input: UpdatePeakSeasonInput!) {
+        updatePeakSeason(input: $input) {
+            id
+            startDate
+            endDate
+            markUpPercentage
+        }
+    }
 `;

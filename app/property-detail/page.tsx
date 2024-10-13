@@ -1,6 +1,5 @@
 "use client";
 import React, {useEffect, useState, useCallback} from 'react';
-import {useSearchParams} from "next/navigation";
 import PictureLayout from "@/app/property-detail/components/pictureLayout";
 import Breadcrumbs from "@/app/property-detail/components/breadcrumbs";
 import Navigation from "@/app/property-detail/components/navigation";
@@ -15,12 +14,14 @@ import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation
 import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
 import {RoomType} from "@/types/rooms/RoomsType";
 import useRefetchRooms from "@/hooks/useRefetchRooms";
-import DataNotFoundAnimation from "@/components/animations/DataNotFoundAnimation";
 import NoSlugError from "@/app/property-detail/components/NoSlugError";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
+import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
 
 const Page = () => {
     const [slug, setSlug] = useState<string | null>(null);
+    const [isSlugLoading, setIsSlugLoading] = useState(true);
     const [roomsSearchInput, setRoomsSearchInput] = useState({
         checkinDate: new Date("2024-10-10"),
         checkOutDate: (new Date("2024-10-11")),
@@ -34,6 +35,8 @@ const Page = () => {
             if (slugParam) {
                 setSlug(slugParam);
             }
+            setIsSlugLoading(false);
+
         }
     }, []);
 
@@ -54,7 +57,7 @@ const Page = () => {
         refetch: false,
         from: null,
         to: null,
-        propertyId :null
+        propertyId: null
     });
 
     const handleRefetch = () => {
@@ -84,13 +87,19 @@ const Page = () => {
         }
     }, [data?.id]);
 
+    if (isSlugLoading) {
+        return <div className={""}><LoadingStateAnimation/></div>;
+    }
 
     if (!slug) {
         return <NoSlugError/>;
     }
 
     if (isLoading) return <div className={""}><LoadingStateAnimation/></div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (error || roomsError) return <div><ErrorAnimation/></div>;
+    if (roomsError) {
+        console.log(roomsError)
+    }
     if (!data) return <div>No property data found</div>;
 
     return (
@@ -102,9 +111,9 @@ const Page = () => {
                 <Navigation/>
                 <Overview data={data}/>
                 {roomsLoading ? (
-                    <div>Loading rooms...</div>
+                    <div><LoadingAnimation/></div>
                 ) : roomsError ? (
-                    <div>Error loading rooms: {roomsError.message}</div>
+                    <div></div>
                 ) : (
                     <Rooms data={availableRoomsData as RoomType[]}/>
                 )}

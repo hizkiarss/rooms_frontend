@@ -1,9 +1,7 @@
 import React from 'react';
 import GeneralDetails from "./component/general-details/GeneralDetails";
 import AddPhoto from "./component/add-photo/AddPhoto";
-import AddFacilities from "./component/facilities-list/AddFacilities";
-import DeletePhoto from "./component/delete-photo/DeletePhoto";
-import DeleteFacilities from "./component/delete-facilities/DeleteFacilities";
+
 
 const Page = () => {
     return (
@@ -17,7 +15,6 @@ const Page = () => {
                 <GeneralDetails/>
                 <div className={"mb-6 md:mb-0 flex-col md:flex gap-3 md:gap-0"}>
                     <AddPhoto/>
-                    {/*<AddFacilities/>*/}
                 </div>
             </div>
             <div>

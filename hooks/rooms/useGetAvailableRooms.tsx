@@ -4,6 +4,7 @@ import { graphqlClient } from "../graphQL/graphqlClient";
 import { GET_AVAILABLE_ROOMS } from "@/hooks/graphQL/queries";
 import { RoomType } from "@/types/rooms/RoomsType"; // Assuming you have a Room type
 import { useQuery } from "@tanstack/react-query";
+import {useSession} from "next-auth/react";
 
 interface GetAvailableRoomsInput {
     checkinDate: Date;
@@ -12,9 +13,16 @@ interface GetAvailableRoomsInput {
 }
 
 export function useGetAvailableRooms(input: GetAvailableRoomsInput) {
+    const { data: session } = useSession();
+
     return useQuery<RoomType[], Error>({
         queryKey: ["availableRooms", input.checkinDate, input.checkOutDate, input.propertyId],
         queryFn: async () => {
+            const token = session?.accessToken;
+            graphqlClient.setHeaders({
+                Authorization: `Bearer ${token}`,
+            });
+
             const variables = {
                 checkinDate: input.checkinDate.toISOString().split('T')[0], // Format date as YYYY-MM-DD
                 checkOutDate: input.checkOutDate.toISOString().split('T')[0], // Format date as YYYY-MM-DD

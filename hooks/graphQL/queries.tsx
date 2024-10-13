@@ -921,7 +921,7 @@ export const GET_ROOM_BY_ID = gql`
 
 
 export const GET_PROPERTIES_BY_ID = gql`
-  query GetPropertiesById($id: String!) {
+  query GetPropertiesById($id: ID!) {
     getPropertiesById(id: $id) {
       id
       name
@@ -961,6 +961,19 @@ export const GET_PROPERTIES_BY_ID = gql`
       }
     }
   }
+`;
+
+
+export const GET_PEAK_SEASONS_BY_PROPERTY_ID = gql`
+    query GetPeakSeasonsByPropertyId($propertyId: ID!) {
+        getPeakSeasonsByPropertyId(propertyId: $propertyId) {
+            name
+            id
+            startDate
+            endDate
+            markUpPercentage
+        }
+    }
 `;
 
 

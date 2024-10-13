@@ -7,17 +7,18 @@ import {useToast} from "@/hooks/use-toast";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import {useUpdateRoomsByName} from "@/hooks/rooms/useUpdateRoomsByName";
 import {useSearchParams} from "next/navigation";
-import {Button} from "@/components/ui/button";
 import {useGetRoomsTypesByPropertyId} from "@/hooks/rooms/useGetRoomsTypesByPropertyId";
 import Buttons from "@/components/Buttons";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
+import {useSession} from "next-auth/react";
 
 const UpdateRoomsByName = () => {
     const param = useSearchParams();
-    // const propertyId = param.get("propertyId") || "";
     const updateRoomsMutation = useUpdateRoomsByName();
     const {toast} = useToast();
 
-    const {data: roomTypes, error, isLoading} = useGetRoomsTypesByPropertyId("1");
+    const{selectedProperty} =useSelectedProperty()
+    const {data: roomTypes, error, isLoading} = useGetRoomsTypesByPropertyId(selectedProperty || "1");
 
     if (error) {
         console.log(error)
@@ -33,6 +34,7 @@ const UpdateRoomsByName = () => {
         includeBreakfast: Yup.boolean(),
         bedType: Yup.string().required('Required'),
     });
+    const { data: session } = useSession();
 
     const handleSubmit = (values: any) => {
         updateRoomsMutation.mutate(
@@ -47,8 +49,8 @@ const UpdateRoomsByName = () => {
                     includeBreakfast: values.includeBreakfast,
                     bedType: values.bedType,
                 },
-                email: "email@dummy.com",
-                propertyId: "1",
+                email: session?.user?.email,
+                propertyId: selectedProperty || "",
             },
             {
                 onSuccess: (data) => {

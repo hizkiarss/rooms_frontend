@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {graphqlClient} from "../graphQL/graphqlClient";
 import {ADD_ROOM_PICTURES} from "@/hooks/graphQL/mutations";
+import {useSession} from "next-auth/react";
 
 
 interface AddRoomPicturesInput {
@@ -11,10 +12,16 @@ interface AddRoomPicturesInput {
 
 export function useAddRoomPictures() {
     const queryClient = useQueryClient();
+    const { data: session } = useSession();
+
 
     return useMutation<string, Error, AddRoomPicturesInput>({
         mutationKey: ["addRoomPicture"],
         mutationFn: async (input) => {
+            const token = session?.accessToken;
+            graphqlClient.setHeaders({
+                Authorization: `Bearer ${token}`,
+            });
             const response = await graphqlClient.request<{ addRoomPictures: string }>(
                 ADD_ROOM_PICTURES,
                 {input},

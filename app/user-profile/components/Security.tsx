@@ -3,7 +3,7 @@ import {ChevronRight} from "lucide-react";
 import {useSendResetPasswordLink} from "@/hooks/user/useSendResetPasswordLink";
 import EmailSentPopUp from "@/app/user-profile/components/EmailSentPopUp";
 import ErrorHandler from "@/app/reset-password/components/ErrorHandler";
-import ErrorPopUp from "@/components/ErrorPopUp";
+import NotificationPopUp from "@/components/NotificationPopUp";
 import {useRouter} from "next/navigation";
 
 interface SecurityProps {
@@ -46,7 +46,7 @@ const Security: React.FC<SecurityProps> = ({setIsPageLoading}) => {
     return (
         <div>
             {emailSent && <EmailSentPopUp isOpen={emailSent} onClose={() => setEmailSent(false)}/>}
-            <ErrorPopUp
+            <NotificationPopUp
                 title="An error occured"
                 content={error?.message || "An error occurred"}
                 isOpen={isErrorDialogOpen}
