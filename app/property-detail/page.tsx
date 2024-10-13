@@ -36,7 +36,6 @@ const Page = () => {
                 setSlug(slugParam);
             }
             setIsSlugLoading(false);
-
         }
     }, []);
 
@@ -45,7 +44,9 @@ const Page = () => {
         isLoading: boolean;
         error: Error | null;
     };
-
+    console.log(slug, "Slug value");
+    console.log(data, "API response data");
+    console.log(data?.id , "id cuy")
     const {
         data: availableRoomsData,
         isLoading: roomsLoading,
@@ -73,6 +74,7 @@ const Page = () => {
 
     useEffect(() => {
         if (refetchStatus.refetch) {
+            console.log(refetchStatus);
             handleRefetch();
             refetchRooms();
         }

@@ -8,14 +8,21 @@ const useRoomName = (defaultRoomName: string) => {
         queryKey: ["roomName"],
         queryFn: () => {
             const storedData = localStorage.getItem("roomName");
-            return storedData ? JSON.parse(storedData) : defaultRoomName;
+            if (!storedData) return defaultRoomName;
+            try {
+                const parsedData = JSON.parse(storedData);
+                return typeof parsedData === 'string' ? parsedData : defaultRoomName;
+            } catch {
+                return storedData; // If it's not valid JSON, return it as-is
+            }
         },
         staleTime: Infinity,
     });
 
-    const setRoomName = (newRoomName: string) => {
-        localStorage.setItem("roomName", JSON.stringify(newRoomName));
-        queryClient.setQueryData(["roomName"], newRoomName);
+    const setRoomName = (newRoomName: string | { createRoom: string }) => {
+        const roomNameString = typeof newRoomName === 'string' ? newRoomName : newRoomName.createRoom;
+        localStorage.setItem("roomName", JSON.stringify(roomNameString));
+        queryClient.setQueryData(["roomName"], roomNameString);
     };
 
     return { roomName: roomName ?? defaultRoomName, setRoomName, isLoading };
