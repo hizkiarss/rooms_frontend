@@ -3,12 +3,20 @@ import React from "react";
 import Image from "next/image";
 import AnimationWrapper from "@/components/animations/AnimationWrapper";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 
 const FindSpaces = () => {
   const router = useRouter();
+  const today = new Date();
+  const fromDate = new Date(today);
+  fromDate.setDate(fromDate.getDate() + 2);
+  const toDate = new Date(today);
+  toDate.setDate(toDate.getDate() + 3);
+  const formattedFromDate = format(fromDate, "yyyy-MM-dd");
+  const formattedToDate = format(toDate, "yyyy-MM-dd");
   const handleNavigation = (category: string) => {
     router.push(
-      `/properties?city=Jakarta&from=&to=&adult=&children=&category=${category}`
+      `/properties?city=Jakarta&from=${formattedFromDate}&to=${formattedToDate}&adult=2&children=0&category=${category}`
     );
   };
   return (

@@ -133,8 +133,8 @@ const CheckoutComponent = () => {
           console.log("ini on success");
           //alert("Transaction created successfully!");
           setSubmitting(false);
-          setIsLoading(false);
           router.push(`/checkout/${randomString}`);
+          setIsLoading(false);
         },
         onError: (error) => {
           console.log("ini errornya ", error);

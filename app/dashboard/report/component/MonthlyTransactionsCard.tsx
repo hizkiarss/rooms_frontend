@@ -1,3 +1,4 @@
+import AnimationWrapper from "@/components/animations/AnimationWrapper";
 import {
   Card,
   CardContent,
@@ -111,51 +112,53 @@ const MonthlyTransactionsCard: React.FC = () => {
   const formattedPercentage = Math.abs(percentageChange).toFixed(0);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Monthly transactions</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={fetchedData}>
-            <CartesianGrid vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis allowDecimals={false} domain={[0, "dataMax"]} />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar
-              dataKey="transactions"
-              fill="var(--color-transactions)"
-              radius={8}>
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
+    <AnimationWrapper y={40} transition={{ ease: "easeOut", duration: 1 }}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Monthly transactions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <BarChart accessibilityLayer data={fetchedData}>
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis allowDecimals={false} domain={[0, "dataMax"]} />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
               />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          {isTrendingUp ? (
-            <>
-              Trending up by {formattedPercentage}% {icon}
-            </>
-          ) : (
-            <>
-              Trending down by {formattedPercentage}% {icon}
-            </>
-          )}
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total transaction this year
-        </div>
-      </CardFooter>
-    </Card>
+              <Bar
+                dataKey="transactions"
+                fill="var(--color-transactions)"
+                radius={8}>
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        </CardContent>
+        <CardFooter className="flex-col items-start gap-2 text-sm">
+          <div className="flex gap-2 font-medium leading-none">
+            {isTrendingUp ? (
+              <>
+                Trending up by {formattedPercentage}% {icon}
+              </>
+            ) : (
+              <>
+                Trending down by {formattedPercentage}% {icon}
+              </>
+            )}
+          </div>
+          <div className="leading-none text-muted-foreground">
+            Showing total transaction this year
+          </div>
+        </CardFooter>
+      </Card>
+    </AnimationWrapper>
   );
 };
 export default MonthlyTransactionsCard;

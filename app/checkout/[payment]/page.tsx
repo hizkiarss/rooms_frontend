@@ -104,11 +104,11 @@ const Page = () => {
   });
 
   const handleMyOrder = () => {
-    router.push(`/my-order`);
+    router.push(`/user-profile`);
   };
 
   console.log("ini transaksinya", transaction);
-  if (isLoading) {
+  if (isLoading || formik.isSubmitting) {
     return <LoadingStateAnimation />;
   }
 

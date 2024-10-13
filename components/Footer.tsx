@@ -31,7 +31,7 @@ const Footer = () => {
   return (
     <section>
       <div className="border-solid border-b-[1px] border-gray-300"></div>
-      <div className="max-w-7xl mx-auto px-5 sm:px-10 md:px-20 lg:px-[80px]">
+      <div className=" mx-auto px-5 sm:px-10 md:px-20 lg:px-[80px]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 items-start border-solid border-b-[1px] pb-6">
           <LogoAndContact />
           <CompanyAndProduct />

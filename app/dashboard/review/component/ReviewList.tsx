@@ -16,6 +16,10 @@ import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
 import { ReviewType } from "@/types/review/ReviewType";
 import PaginationControl from "@/components/PaginationControl";
+import NoDataFoundAnimation from "@/components/animations/DataNotFoundAnimation";
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
+import { Divide } from "lucide-react";
+import AnimationWrapper from "@/components/animations/AnimationWrapper";
 
 const ReviewList: React.FC = () => {
   const { selectedProperty } = useSelectedProperty();
@@ -39,6 +43,16 @@ const ReviewList: React.FC = () => {
       setPage(newPage - 1); // -1 karena index halaman biasanya mulai dari 0
     }
   };
+
+  if (!reviewPage?.content || reviewPage.content.length === 0) {
+    return (
+      <EmptyDataAnimation
+        message="No review so far, but good things are coming!"
+        width={300}
+        height={300}
+      />
+    );
+  }
 
   return (
     <div>
@@ -72,23 +86,27 @@ const ReviewList: React.FC = () => {
             );
 
             return (
-              <Card key={review.id}>
-                <CardContent className="p-4">
-                  <h3 className="font-bold">
-                    {review.rating}/10 {getRatingDescription(review.rating)}
-                  </h3>
-                  <p>{review.users.username}</p>
-                  <p>{formattedDate}</p>
-                  <p className="mt-2">{review.feedback}</p>
+              <AnimationWrapper
+                y={40}
+                transition={{ ease: "easeOut", duration: 1 }}>
+                <Card key={review.id}>
+                  <CardContent className="p-4">
+                    <h3 className="font-bold">
+                      {review.rating}/10 {getRatingDescription(review.rating)}
+                    </h3>
+                    <p>{review.users.username}</p>
+                    <p>{formattedDate}</p>
+                    <p className="mt-2">{review.feedback}</p>
 
-                  {review.reply && (
-                    <div className="mt-4 bg-[#F5F5DC] p-2 rounded">
-                      <p className="font-semibold">Response :</p>
-                      <p>{review.reply}</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    {review.reply && (
+                      <div className="mt-4 bg-[#F5F5DC] p-2 rounded">
+                        <p className="font-semibold">Response :</p>
+                        <p>{review.reply}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </AnimationWrapper>
             );
           })}
         <PaginationControl
