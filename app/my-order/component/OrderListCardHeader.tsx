@@ -57,9 +57,9 @@ const OrderListCardHeader: React.FC<OrderListCardHeaderProps> = ({
               <DropdownMenuItem onClick={handleDetailReservation}>
                 View Details
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              {/* <DropdownMenuItem className="text-red-600">
                 Delete order
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

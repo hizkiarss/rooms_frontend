@@ -11,6 +11,7 @@ import TotalTransactionsCard from "./TotalTransactionsCard";
 import OccupiedRoomsCard from "./OccupiedRoomsCard";
 import PropertyReport from "./PropertyReport";
 import Footer from "@/components/Footer";
+import AnimationWrapper from "@/components/animations/AnimationWrapper";
 
 type TabName = "Sales Report" | "Property Report" | "Notifications";
 

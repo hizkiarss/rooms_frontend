@@ -27,9 +27,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="bg-white shadow-sm ">
-      <div className="max-w-7xl mx-auto px-5 sm:px-10 md:px-20 lg:px-[80px]">
+      <div className="mx-auto px-5 sm:px-10 md:px-20 lg:px-[80px]">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 ">
             <Link href="/" passHref>
               <Image
                 className={"w-[130px] h-fit cursor-pointer"}
