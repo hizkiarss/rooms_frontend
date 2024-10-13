@@ -24,6 +24,9 @@ import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
 import {FacilitiesType} from "@/types/facilities/FacilitiesType";
 import {PropertyFacility} from "@/types/property-facility/PropertyFacilityType";
 import {map} from "d3-array";
+import {useGetPropertyById} from "@/hooks/properties/useGetPropertyById";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
+import {useToast} from "@/hooks/use-toast";
 
 const facilities = [
     {id: "1", name: "High-speed internet access"},
@@ -39,16 +42,13 @@ const facilities = [
 
 ];
 
-interface Prop {
-    isOpen: boolean;
-    onClose: () => void;
-}
 
 
-const CreateRoomAddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
+const UpdatePropertyAddFacilitiesPopUp: React.FC = () => {
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
     const addPropertiesFacilitiesMutation = useAddPropertiesFacilities();
-    const {data} = useGetPropertyBySlug("icikiwirasf-2jCf");
+    const{selectedProperty}= useSelectedProperty()
+    const{data, refetch}= useGetPropertyById(selectedProperty || "1")
     const propertyData = data as PropertyDetailType;
     const existingFacilityIds = useMemo(() => {
         return data?.propertyFacilities?.map((facility: PropertyFacility) => facility.facilities.id) || [];
@@ -67,22 +67,42 @@ const CreateRoomAddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
         );
     };
 
-    const {propertyId} = usePropertyId({propertyId: ""})
+    const {toast} = useToast()
 
-    const handleSubmit = () => {
+
+    const handleSubmit = async () => {
         if (selectedFacilities.length > 0) {
-            addPropertiesFacilitiesMutation.mutate({
-                id: propertyId.propertyId,
-                facilitiesId: selectedFacilities
-            });
+            try {
+                await addPropertiesFacilitiesMutation.mutateAsync({
+                    id: selectedProperty || "1",
+                    facilitiesId: selectedFacilities
+                });
+                await refetch();
+                setSelectedFacilities([]);
+                toast({
+                    title: "Success",
+                    description: "Facilities updated successfully",
+                    variant: "default",
+                });
+            } catch (error) {
+                console.error("Failed to update facilities:", error);
+
+                toast({
+                    title: "Error",
+                    description: "Failed to update facilities. Please try again.",
+                    variant: "destructive",
+                });
+            }
         }
     };
+
+    console.log(selectedFacilities);
 
     return (
         <div>
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Buttons value={"Add Facilities"} className={"!text-xs md:text-base"}/>
+                    <Buttons value={"Add Facilities"} className={"!text-xs md:!text-base w-fit md:w-48 "}/>
                 </AlertDialogTrigger>
                 <AlertDialogContent className="max-w-3xl max-h-fit md:px-10 py-10">
                     <AlertDialogHeader>
@@ -96,11 +116,11 @@ const CreateRoomAddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
                                         <p className={"text-sm md:text-base text-gray-400 font-medium"}>
                                             Attract customers with your new facilities</p>
                                     </div>
-                                    <AlertDialogCancel className="px-0 hover:none !border-none !hover:border-none">
-                                    <X/>
-                                    </AlertDialogCancel>
+
                                 </AlertDialogTitle> {propertyData?.propertyFacilities.length > 0 ? (
                                 <div className={"flex flex-col md:grid grid-cols-2 gap-y-2 md:gap-y-3 gap-x-3 text-sm md:text-base md:items-center "}>
+
+
                                     {propertyData.propertyFacilities.map((facility: PropertyFacility) => (
                                         <div key={facility.id} className={"flex gap-2"}>
                                             {getAmenityLabel(facility.facilities.name)}
@@ -146,10 +166,11 @@ const CreateRoomAddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
 
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogAction className="mt-2 px-0 hover:none !border-none !hover:border-none" onClick={handleSubmit}>
-                            <Buttons value={addPropertiesFacilitiesMutation.isPending ? "Saving..." : "Save"} disabled={addPropertiesFacilitiesMutation.isPending} />
-                        </AlertDialogAction>
+                    <AlertDialogFooter className={"flex  flex-row items-center justify-end"}>
+                        <Buttons className={"w-fit h-fit"} value={addPropertiesFacilitiesMutation.isPending ? "Saving..." : "Save"} disabled={addPropertiesFacilitiesMutation.isPending} onClick={handleSubmit} />
+                        <AlertDialogCancel className={"hover:none !border-none !hover:border-none p-0 m-0"}>
+                            <Buttons value={"Close"} className={"py-0"}/>
+                        </AlertDialogCancel>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -158,4 +179,4 @@ const CreateRoomAddFacilitiesPopUp: React.FC<Prop> = ({isOpen, onClose}) => {
     );
 };
 
-export default CreateRoomAddFacilitiesPopUp;
+export default UpdatePropertyAddFacilitiesPopUp;

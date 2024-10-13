@@ -19,6 +19,7 @@ import usePropertyId from "@/hooks/usePropertyId";
 import {useAddRoomPictures} from "@/hooks/rooms/useAddRoomPictures";
 import useRoomName from "@/hooks/useRoomName";
 import {useSearchParams} from "next/navigation";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
 
 interface FormValues {
     imageUrls: string[];
@@ -36,13 +37,12 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
     });
 
     const uploadRoomsPhotoMutation = useAddRoomPictures();
-    const {propertyId} = usePropertyId({propertyId: "9"})
-    const {roomName}= useRoomName("")
+    const {selectedProperty} = useSelectedProperty()
 
     const handleSubmit = async (values: FormValues): Promise<void> => {
         try {
             await uploadRoomsPhotoMutation.mutateAsync({
-                propertyId: "1",
+                propertyId: selectedProperty || "1",
                 roomPicture: values.imageUrls,
                 roomName: searchParam.get("name") || "Lahadalia"
             });
@@ -83,7 +83,7 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
         <div>
             <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
                 <DialogTrigger asChild>
-                    <Buttons value={"Upload Photos"} className={"text-xs md:text-base"}/>
+                    <Buttons value={"Upload Photos"} className={"!text-xs md:!text-base"}/>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader className={"flex items-center"}>

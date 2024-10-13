@@ -7,10 +7,11 @@ import Buttons from "@/components/Buttons";
 import {LocationPopOverDashboard} from "@/app/dashboard/component/LocationPopOverDashboard";
 import {City} from "@/types/city/City";
 import usePropertyId from "@/hooks/usePropertyId";
+import {useSession} from "next-auth/react";
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 
 const Page = () => {
     const initialValues = {
-        email: '',
         propertyName: '',
         propertyCategories: 'Hotel',
         description: '',
@@ -23,7 +24,6 @@ const Page = () => {
     };
 
     const validationSchema = Yup.object({
-        email: Yup.string().email('Invalid email address').required('Required'),
         propertyName: Yup.string().required('Required'),
         propertyCategories: Yup.string().oneOf(['Hotel', 'Apartment'], 'Invalid property category').required('Required'),
         description: Yup.string(),
@@ -37,15 +37,16 @@ const Page = () => {
             .oneOf(["1", "2", "3", "4", "5"], 'Invalid rating')
             .required('Required'),
     });
+    const {data: session} = useSession();
 
     const createPropertiesMutation = useCreateProperties();
     const [selectedCity, setSelectedCity] = useState<City | null>(null);
     const {propertyId, setPropertyId} = usePropertyId({propertyId: ""});
-
     const handleSubmit = (values: typeof initialValues) => {
         createPropertiesMutation.mutate(
             {
                 ...values,
+                email: session?.user?.email,
                 star: parseInt(values.star, 10),
                 city: selectedCity?.name ?? null,
             },
@@ -63,13 +64,11 @@ const Page = () => {
         );
     };
 
-    if (createPropertiesMutation.error){
-        console.log(createPropertiesMutation.error);
+
+    if (createPropertiesMutation.isPending) {
+        return <div className={"h-screen w-full flex items-center justify-center"}><LoadingStateAnimation/></div>
     }
 
-    useEffect(() => {
-        console.log(propertyId.propertyId);
-    }, []);
 
     return (
         <div className="mt-8 px-80">
@@ -112,38 +111,35 @@ const Page = () => {
             >
                 {({isSubmitting}) => (
                     <Form className="space-y-4">
-                        {/* Email Field */}
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
-                            <Field name="email" type="email"
-                                   className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"/>
-                            <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1"/>
-                        </div>
-
                         <div className={"grid grid-cols-2 gap-6"}>
                             {/* Property Name Field */}
                             <div>
-                                <label htmlFor="propertyName" className="block text-sm font-semibold text-gray-700">Property Name</label>
+                                <label htmlFor="propertyName" className="block text-sm font-semibold text-gray-700">Property
+                                    Name</label>
                                 <Field name="propertyName" type="text"
                                        className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"/>
-                                <ErrorMessage name="propertyName" component="div" className="text-red-500 text-sm mt-1"/>
+                                <ErrorMessage name="propertyName" component="div"
+                                              className="text-red-500 text-sm mt-1"/>
                             </div>
 
                             {/* Property Categories Field */}
                             <div>
-                                <label htmlFor="propertyCategories" className="block text-sm font-semibold text-gray-700">Property Categories</label>
+                                <label htmlFor="propertyCategories"
+                                       className="block text-sm font-semibold text-gray-700">Property Categories</label>
                                 <Field as="select" name="propertyCategories"
                                        className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10">
                                     <option value="Hotel">Hotel</option>
                                     <option value="Apartment">Apartment</option>
                                 </Field>
-                                <ErrorMessage name="propertyCategories" component="div" className="text-red-500 text-sm mt-1"/>
+                                <ErrorMessage name="propertyCategories" component="div"
+                                              className="text-red-500 text-sm mt-1"/>
                             </div>
                         </div>
 
                         {/* Description Field */}
                         <div>
-                            <label htmlFor="description" className="block text-sm font-semibold text-gray-700">Description</label>
+                            <label htmlFor="description"
+                                   className="block text-sm font-semibold text-gray-700">Description</label>
                             <Field name="description" as="textarea"
                                    className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"/>
                             <ErrorMessage name="description" component="div" className="text-red-500 text-sm mt-1"/>
@@ -152,7 +148,8 @@ const Page = () => {
                         <div className={"grid grid-cols-2 gap-6"}>
                             {/* Check-in Time Field */}
                             <div>
-                                <label htmlFor="checkInTime" className="block text-sm font-semibold text-gray-700">Check-in Time</label>
+                                <label htmlFor="checkInTime" className="block text-sm font-semibold text-gray-700">Check-in
+                                    Time</label>
                                 <Field name="checkInTime" type="text"
                                        className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"/>
                                 <ErrorMessage name="checkInTime" component="div" className="text-red-500 text-sm mt-1"/>
@@ -160,10 +157,12 @@ const Page = () => {
 
                             {/* Check-out Time Field */}
                             <div>
-                                <label htmlFor="checkOutTime" className="block text-sm font-semibold text-gray-700">Check-out Time</label>
+                                <label htmlFor="checkOutTime" className="block text-sm font-semibold text-gray-700">Check-out
+                                    Time</label>
                                 <Field name="checkOutTime" type="text"
                                        className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"/>
-                                <ErrorMessage name="checkOutTime" component="div" className="text-red-500 text-sm mt-1"/>
+                                <ErrorMessage name="checkOutTime" component="div"
+                                              className="text-red-500 text-sm mt-1"/>
                             </div>
                         </div>
 
@@ -177,7 +176,8 @@ const Page = () => {
 
                         {/* Address Field */}
                         <div>
-                            <label htmlFor="address" className="block text-sm font-semibold text-gray-700">Address</label>
+                            <label htmlFor="address"
+                                   className="block text-sm font-semibold text-gray-700">Address</label>
                             <Field name="address" type="text"
                                    className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"/>
                             <ErrorMessage name="address" component="div" className="text-red-500 text-sm mt-1"/>
@@ -186,7 +186,8 @@ const Page = () => {
                         <div className={"grid grid-cols-2 gap-6"}>
                             {/* Phone Number Field */}
                             <div>
-                                <label htmlFor="phoneNumber" className="block text-sm font-semibold text-gray-700">Phone Number</label>
+                                <label htmlFor="phoneNumber" className="block text-sm font-semibold text-gray-700">Phone
+                                    Number</label>
                                 <Field name="phoneNumber" type="text"
                                        className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"/>
                                 <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-sm mt-1"/>
@@ -194,7 +195,8 @@ const Page = () => {
 
                             {/* Stars Field */}
                             <div>
-                                <label htmlFor="star" className="block text-sm font-semibold text-gray-700">Stars</label>
+                                <label htmlFor="star"
+                                       className="block text-sm font-semibold text-gray-700">Stars</label>
                                 <Field as="select" name="star"
                                        className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10">
                                     <option value="">Select Rating</option>

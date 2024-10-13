@@ -11,7 +11,7 @@ import React from "react";
 const Page = () => {
   const router = useRouter();
   const handleBtn = () => {
-    router.push(`/my-order`);
+    router.push(`/user-profile`);
   };
   return (
     <div className="min-h-screen px-5 sm:px-10 md:px-20 lg:px-[80px] py-8 flex flex-col items-center ">

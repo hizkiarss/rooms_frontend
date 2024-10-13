@@ -12,6 +12,7 @@ import {
 import {LetterText} from "lucide-react";
 import useFilterRoomsDashboard from "@/hooks/useFilterRoomsDashboard";
 import {useGetRoomsTypesByPropertyId} from "@/hooks/rooms/useGetRoomsTypesByPropertyId";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
 
 interface Prop {
     isOpen: boolean;
@@ -26,7 +27,9 @@ export const FilterByNamePopUp: React.FC<Prop> = ({}) => {
         available: null,
     });
 
-    const {data} = useGetRoomsTypesByPropertyId("1")
+    const {selectedProperty} =useSelectedProperty();
+
+    const {data} = useGetRoomsTypesByPropertyId(selectedProperty || "");
     const roomTypesData = Array.isArray(data) ? data : [];
 
 
@@ -38,9 +41,10 @@ export const FilterByNamePopUp: React.FC<Prop> = ({}) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button className="font-semibold bg-greenr text-white">
+                <Button className="font-semibold bg-greenr text-white text-xs md:text-base">
                     <div className="flex gap-1 items-center">
-                        <LetterText size={18}/>
+                        <LetterText size={18} className={
+                            "size-[12px] md:size-[18px]"}/>
                         <p>Name</p>
                     </div>
                 </Button>

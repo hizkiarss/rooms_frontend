@@ -3,6 +3,7 @@ import {graphqlClient} from "../graphQL/graphqlClient";
 import {CREATE_PROPERTIES} from "@/hooks/graphQL/mutations";
 import {PropertyFacility} from "@/types/property-facility/PropertyFacilityType";
 import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
+import {useSession} from "next-auth/react";
 
 interface CreatePropertiesInput {
     email: string | null;
@@ -19,10 +20,16 @@ interface CreatePropertiesInput {
 
 export function useCreateProperties() {
     const queryClient = useQueryClient();
+    const { data: session } = useSession();
 
     return useMutation<PropertyDetailType, Error, CreatePropertiesInput>({
         mutationKey: ["createProperties"],
         mutationFn: async (input) => {
+            const token = session?.accessToken;
+            graphqlClient.setHeaders({
+                Authorization: `Bearer ${token}`,
+            });
+
             const response = await graphqlClient.request<{ createProperties: PropertyDetailType }>(
                 CREATE_PROPERTIES,
                 {input}

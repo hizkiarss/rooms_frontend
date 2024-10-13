@@ -10,23 +10,27 @@ import {RoomType} from "@/types/rooms/RoomsType";
 import {useGetRoomById} from "@/hooks/rooms/useGetRoomById";
 import {useSearchParams} from "next/navigation";
 import {useUpdateRoom} from "@/hooks/rooms/useUpdateRoom";
+import {useSession} from "next-auth/react";
+import { useRouter } from 'next/navigation';
+import SlugErrorPopUp from "@/app/dashboard/rooms/update-room/components/SlugErrorPopUp";
+
 
 const UpdateRoomGeneralDetails = () => {
     const param = useSearchParams();
     const roomId = param.get("num") || "";
-    const { data, error, isLoading } = useGetRoomById(roomId);
+    const {data, error, isLoading} = useGetRoomById(roomId);
     const updateRoomMutation = useUpdateRoom();
-    const { toast } = useToast();
-    const { roomName, setRoomName } = useRoomName("");
-
+    const {toast} = useToast();
+    const {roomName, setRoomName} = useRoomName("");
+    const [errorPopUp, setErrorPopUp] =useState(false);
     const initialValues = {
-        name: data? data.name : "",
-        description: data? data.description : "",
-        capacity: data? data.capacity : "",
-        price: data? data.price : "",
-        includeBreakfast: data? data.includeBreakfast : false,
+        name: data ? data.name : "",
+        description: data ? data.description : "",
+        capacity: data ? data.capacity : "",
+        price: data ? data.price : "",
+        includeBreakfast: data ? data.includeBreakfast : false,
         bedType: data?.bedTypes.name || '',
-        roomArea: data? data.roomArea : "",
+        roomArea: data ? data.roomArea : "",
     };
 
     const validationSchema = Yup.object({
@@ -39,18 +43,20 @@ const UpdateRoomGeneralDetails = () => {
         roomArea: Yup.number().positive('Must be positive').required('Required'),
     });
 
+    const {data: session} = useSession();
+    const router = useRouter();
+
     const handleSubmit = (values: typeof initialValues) => {
         updateRoomMutation.mutate(
             {
                 id: roomId,
                 input: {
                     ...values,
-
                     capacity: Number(values.capacity),
                     price: Number(values.price),
                     roomArea: Number(values.roomArea),
                 },
-                email: "email@dummy.com",
+                email: session?.user?.email,
             },
             {
                 onSuccess: (data: string) => {
@@ -64,6 +70,9 @@ const UpdateRoomGeneralDetails = () => {
                     });
                 },
                 onError: (error: Error) => {
+                    if(roomId == null){
+                        setErrorPopUp(true)
+                    }
                     console.error("Failed to update room:", error);
                     toast({
                         title: "Error",
@@ -77,8 +86,9 @@ const UpdateRoomGeneralDetails = () => {
 
 
     if (isLoading || updateRoomMutation.isPending) {
-        return <LoadingStateAnimation />;
+        return <LoadingStateAnimation/>;
     }
+
 
     if (error) {
         return <div>Error loading room data: {error.message}</div>;
@@ -90,13 +100,13 @@ const UpdateRoomGeneralDetails = () => {
     }
 
     const formInitialValues = {
-        name: roomData.name || '',
-        description: roomData.description || '',
-        capacity: roomData.capacity || '',
-        price: roomData.price || '',
-        includeBreakfast: roomData.includeBreakfast || false,
-        bedType: roomData.bedTypes?.name || '',
-        roomArea: roomData.roomArea || '',
+        name: '',
+        description: '',
+        capacity:  '',
+        price:  '',
+        includeBreakfast:  false,
+        bedType:  '',
+        roomArea: '',
     };
     return (
         <div className="">
@@ -116,7 +126,7 @@ const UpdateRoomGeneralDetails = () => {
                                     name="name"
                                     type="text"
                                     className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
-                                    placeholder = {initialValues.name}
+                                    placeholder={data ? data.name : ""}
                                 />
                                 <ErrorMessage name="name" component="div"
                                               className="text-red-500 text-xs md:text-sm mt-1"/>
@@ -131,13 +141,13 @@ const UpdateRoomGeneralDetails = () => {
                                     as="select"
                                     name="bedType"
                                     className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
-                                    placeholder = {initialValues.bedType}
+                                    placeholder={data ? data.bedTypes : ""}
                                 >
                                     <option value="" className={"text-gray-400"}>Select Bed Type</option>
                                     <option value="Single Bed">Single</option>
                                     <option value="Double Bed">Double</option>
                                     <option value="Queen Bed">Queen</option>
-                                    <option value="King Bed">King </option>
+                                    <option value="King Bed">King</option>
                                     <option value="Super King Bed">Super King</option>
 
                                 </Field>
@@ -155,7 +165,7 @@ const UpdateRoomGeneralDetails = () => {
                                 name="description"
                                 as="textarea"
                                 className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
-                                placeholder = {initialValues.description}
+                                placeholder={data ? data.description : ""}
                             />
                             <ErrorMessage name="description" component="div"
                                           className="text-red-500 text-xs md:text-sm mt-1"/>
@@ -171,7 +181,7 @@ const UpdateRoomGeneralDetails = () => {
                                     name="capacity"
                                     type="number"
                                     className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
-                                    placeholder = {initialValues.capacity}
+                                    placeholder={data ? data.capacity : ""}
                                 />
                                 <ErrorMessage name="capacity" component="div"
                                               className="text-red-500 text-xs md:text-sm mt-1"/>
@@ -185,7 +195,7 @@ const UpdateRoomGeneralDetails = () => {
                                     name="price"
                                     type="number"
                                     className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
-                                    placeholder = {initialValues.price}
+                                    placeholder={data ? data.price : ""}
                                 />
                                 <ErrorMessage name="price" component="div"
                                               className="text-red-500 text-xs md:text-sm mt-1"/>
@@ -202,24 +212,10 @@ const UpdateRoomGeneralDetails = () => {
                                     name="roomArea"
                                     type="number"
                                     className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
-                                    placeholder = {initialValues.roomArea}
+                                    placeholder={data ? data.roomArea : ""}
 
                                 />
                                 <ErrorMessage name="roomArea" component="div"
-                                              className="text-red-500 text-xs md:text-sm mt-1"/>
-                            </div>
-
-                            <div>
-                                <label htmlFor="numberOfRooms"
-                                       className="block text-xs md:text-sm font-semibold text-gray-700">
-                                    Number of Rooms
-                                </label>
-                                <Field
-                                    name="numberOfRooms"
-                                    type="number"
-                                    className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
-                                />
-                                <ErrorMessage name="numberOfRooms" component="div"
                                               className="text-red-500 text-xs md:text-sm mt-1"/>
                             </div>
                         </div>
@@ -230,6 +226,7 @@ const UpdateRoomGeneralDetails = () => {
                                     type="checkbox"
                                     name="includeBreakfast"
                                     className="mr-2"
+                                    placeholder={data ? data.includeBreakfast : false}
                                 />
                                 <span
                                     className="text-xs md:text-sm font-semibold text-gray-700">Include Breakfast</span>

@@ -8,6 +8,7 @@ import {getAmenityLabel} from "@/utils/FacilityLogoUtils";
 import {useAddPropertiesFacilities} from "@/hooks/properties/useAddPropertiesFacilities";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import Buttons from "@/components/Buttons";
+import usePropertyId from "@/hooks/usePropertyId";
 
 const facilities = [
     {id: "1", name: "High-speed internet access"},
@@ -27,12 +28,14 @@ const FacilitiesCards: React.FC = () => {
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
     const addPropertiesFacilitiesMutation = useAddPropertiesFacilities();
     const[hit, setHit] = useState<boolean>(false);
+    const {propertyId} = usePropertyId({propertyId: ""})
     useEffect(() => {
         if (hit && selectedFacilities.length > 0) {
             addPropertiesFacilitiesMutation.mutate({
-                id: "41",
+                id: propertyId.propertyId,
                 facilitiesId: selectedFacilities
             });
+            setHit(false)
         }
     }, [selectedFacilities]);
 

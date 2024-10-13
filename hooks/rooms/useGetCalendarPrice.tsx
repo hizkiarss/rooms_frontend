@@ -14,6 +14,7 @@ export function useGetCalendarPrice(variables: GetCalendarPriceInput) {
     return useQuery<CalendarPriceType[], Error>({
         queryKey: ["calendarPrice", variables.year, variables.month, variables.propertyId],
         queryFn: async () => {
+
             const response = await graphqlClient.request<{ getCalendarPrice: CalendarPriceType[] }>(
                 GET_CALENDAR_PRICE,
                 variables

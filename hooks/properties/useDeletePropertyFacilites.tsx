@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { graphqlClient } from "../graphQL/graphqlClient";
-import { DELETE_PROPERTY_FACILITIES } from '@/hooks/graphQL/mutations'; // Import the mutation
+import { DELETE_PROPERTY_FACILITIES } from '@/hooks/graphQL/mutations';
+import {useSession} from "next-auth/react"; // Import the mutation
 
 interface DeletePropertyFacilitiesVariables {
     id: string;
@@ -9,10 +10,16 @@ interface DeletePropertyFacilitiesVariables {
 
 export function useDeletePropertyFacilities() {
     const queryClient = useQueryClient();
+    const { data: session } = useSession();
 
     return useMutation<string, Error, DeletePropertyFacilitiesVariables>({
         mutationKey: ["deletePropertyFacilities"],
         mutationFn: async ({ id, facilitiesId }) => {
+            const token = session?.accessToken;
+            graphqlClient.setHeaders({
+                Authorization: `Bearer ${token}`,
+            });
+
             const response = await graphqlClient.request<{ deletePropertyFacilities: string }>(
                 DELETE_PROPERTY_FACILITIES,
                 { id, facilitiesId }

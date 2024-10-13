@@ -25,6 +25,8 @@ export function useGetFilteredRoomsByPropertyId(variables: variables) {
             );
             return response.getFilteredRoomsByPropertyId;
         },
+
+
         meta:{
             onSuccess: (roomData: PagedRoomResult) => {
                 console.log("Available rooms fetched successfully", roomData);

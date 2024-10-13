@@ -7,6 +7,8 @@ import {useCreateRoom} from "@/hooks/rooms/useCreateRoom";
 import useRoomName from "@/hooks/useRoomName";
 import {useToast} from "@/hooks/use-toast";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import {useSession} from "next-auth/react";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
 
 const CreateRoomGeneralDetails = () => {
     const createRoomMutation = useCreateRoom();
@@ -37,6 +39,10 @@ const CreateRoomGeneralDetails = () => {
 
     const {roomName, setRoomName} = useRoomName("")
 
+    const { data: session } = useSession();
+
+    const {selectedProperty} =useSelectedProperty()
+
     const handleSubmit = (values: typeof initialValues) => {
         createRoomMutation.mutate(
             {
@@ -44,11 +50,11 @@ const CreateRoomGeneralDetails = () => {
                     ...values,
                     capacity: Number(values.capacity),
                     price: Number(values.price),
-                    propertyId: "1",
+                    propertyId: selectedProperty || "1",
                     roomArea: Number(values.roomArea),
                     numberOfRooms: Number(values.numberOfRooms),
                 },
-                email: "email@dummy.com",
+                email: session?.user?.email,
             },
             {
                 onSuccess: (data: string) => {

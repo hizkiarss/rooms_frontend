@@ -19,7 +19,7 @@ interface Props {
     onClose: () => void;
 }
 
-const ErrorPopUp: React.FC<Props> = ({title,content,isOpen,onClose}) => {
+const NotificationPopUp: React.FC<Props> = ({title,content,isOpen,onClose}) => {
     return (
             <AlertDialog open={isOpen} onOpenChange={onClose}>
                 {/*<AlertDialogTrigger>Open</AlertDialogTrigger>*/}
@@ -38,4 +38,4 @@ const ErrorPopUp: React.FC<Props> = ({title,content,isOpen,onClose}) => {
     );
 };
 
-export default ErrorPopUp;
+export default NotificationPopUp;

@@ -11,18 +11,25 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import Buttons from "@/components/Buttons";
-import {useGetPropertyBySlug} from "@/hooks/properties/useGetPropertyBySlug";
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
 import Image from "next/image";
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {useDeletePropertyPictures} from '@/hooks/properties/useDeletePropertyPictures';
 import {useToast} from "@/hooks/use-toast";
 import {Check} from "lucide-react";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
+import {useGetPropertyById} from "@/hooks/properties/useGetPropertyById";
+import {useSession} from "next-auth/react";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
-const CreateRoomDeletePhotosPopUp: React.FC = () => {
-    const {data} = useGetPropertyBySlug("Grun-Resort-Uluwatu-c3hz");
+const UpdatePropertyDeletePhotosPopUp: React.FC = () => {
+    const {selectedProperty} = useSelectedProperty()
+    const {data} = useGetPropertyById(selectedProperty || "1")
     const [selectedPictures, setSelectedPictures] = useState<string[]>([]);
     const deletePropertyPicturesMutation = useDeletePropertyPictures();
-    const { toast } = useToast()
+    const {toast} = useToast()
+    const {data: session} = useSession();
+
 
     useEffect(() => {
         console.log(selectedPictures);
@@ -47,7 +54,7 @@ const CreateRoomDeletePhotosPopUp: React.FC = () => {
         }
 
         deletePropertyPicturesMutation.mutate(
-            {propertyPictureId: selectedPictures, email: "user@example.com"},
+            {propertyPictureId: selectedPictures, email: session?.user?.email},
             {
                 onSuccess: (data) => {
                     toast({
@@ -70,41 +77,56 @@ const CreateRoomDeletePhotosPopUp: React.FC = () => {
     return (
         <div>
             <Drawer>
-                <DrawerTrigger><Buttons value={"Delete pictures"} className={"text-xs md:text-base"}/></DrawerTrigger>
+                <DrawerTrigger><Buttons value={"Delete pictures"} className={"text-xs md:text-base w-fit md:w-48 "}/></DrawerTrigger>
                 <DrawerContent className={"md:inset-x-1/4 px-6 md:px-14"}>
                     <DrawerHeader className={"flex justify-end px-0"}></DrawerHeader>
                     <DrawerDescription className={"flex flex-col gap-5 md:gap-10"}>
-                        <ScrollArea className="h-[250px] md:h-[500px] rounded-xl border-none border-slate-400 pr-4 col-span-3">
-                            <div className="grid grid-cols-3 gap-1">
-                                {data?.propertyPictures.map((picture, index) => (
-                                    <div key={index} className="relative">
-                                        <Image
-                                            src={picture.imgUrl}
-                                            alt={"img" + picture.id + ".png"}
-                                            width={400}
-                                            height={400}
-                                            className={`object-cover object-center w-[125px] h-[125px] md:w-[250px] md:h-[250px] cursor-pointer ${
-                                                selectedPictures.includes(picture.id) ? 'opacity-50' : ''
-                                            }`}
-                                            onClick={() => togglePictureSelection(picture.id)}
-                                        />
-                                        {selectedPictures.includes(picture.id) && (
-                                            <div
-                                                className="absolute bg-white text-greenr top-2 right-2  rounded-full p-[2px] md:p-2  ">
-                                                <Check/>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
+
+                        {(data?.propertyPictures?.length ?? 0) > 0 ? (
+                            <ScrollArea
+                                className="h-[250px] md:h-[500px] rounded-xl border-none border-slate-400 pr-4 col-span-3">
+                                {deletePropertyPicturesMutation.isPending ? (
+                                    <div className={"w-full h-full flex justify-center items-center"}>
+                                        <LoadingAnimation/></div> ) : (
+                                <div className="grid grid-cols-3 gap-1">
+                                    {data?.propertyPictures.map((picture, index) => (
+                                        <div key={index} className="relative">
+                                            <Image
+                                                src={picture.imgUrl}
+                                                alt={"img" + picture.id + ".png"}
+                                                width={400}
+                                                height={400}
+                                                className={`object-cover object-center w-[125px] h-[125px] md:w-[250px] md:h-[250px] cursor-pointer ${
+                                                    selectedPictures.includes(picture.id) ? 'opacity-50' : ''
+                                                }`}
+                                                onClick={() => togglePictureSelection(picture.id)}
+                                            />
+                                            {selectedPictures.includes(picture.id) && (
+                                                <div
+                                                    className="absolute bg-white text-greenr top-2 right-2 rounded-full p-[2px] md:p-2">
+                                                    <Check/>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                                    )}
+                            </ScrollArea>
+                        ) : (
+                            <div className="flex items-center justify-center w-full">
+                                <EmptyDataAnimation width={300} height={300} message="No pictures yet"/>
                             </div>
-                        </ScrollArea>
+                        )}
+
                         <div className="col-span-2">
                             <DrawerTitle className={"h-full flex justify-between"}>
                                 <div>
-                                    <h2 className={"text-xl md:text-3xl md:mb-2 text-black tracking-normal"}>Delete Property
+                                    <h2 className={"text-xl md:text-3xl md:mb-2 text-black tracking-normal"}>Delete
+                                        Property
                                         Pictures</h2>
                                     <p className={"font-medium mt-0 text-gray-400 text-sm md:text-[15px] tracking-normal"}>
-                                        Select pictures to delete them. Scroll to see. {selectedPictures.length} picture(s) selected.
+                                        Select pictures to delete them. Scroll to
+                                        see. {selectedPictures.length} picture(s) selected.
                                     </p>
                                 </div>
                             </DrawerTitle>
@@ -113,7 +135,7 @@ const CreateRoomDeletePhotosPopUp: React.FC = () => {
                     <DrawerFooter className={"flex flex-row w-full justify-end items-center mb-3 p-1 md:p-4 md:mb-6"}>
                         <Buttons
                             value={"Delete"}
-                            className={"w-fit"}
+                            className={"w-fit md:text-base text-sm"}
                             onClick={handleDelete}
                             disabled={deletePropertyPicturesMutation.isPending}
                         />
@@ -127,4 +149,4 @@ const CreateRoomDeletePhotosPopUp: React.FC = () => {
     );
 };
 
-export default CreateRoomDeletePhotosPopUp;
+export default UpdatePropertyDeletePhotosPopUp;

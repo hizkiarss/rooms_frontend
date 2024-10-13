@@ -3,6 +3,10 @@ import React from 'react';
 const Top = () => {
     return (
         <div className="">
+            <div className={"flex flex-col items-center justify-center"}>
+                <h2 className={"font-semibold text-4xl"}>Add Facilities</h2>
+                <p className={"mt-2 text-gray-400 mb-8 ml-[2px]"}>Let people know what&apos;s good</p>
+            </div>
 
             <div className={"grid grid-cols-5 gap-2 items-center mb-10 "}>
                 <div className={"flex items-center justify-center"}>

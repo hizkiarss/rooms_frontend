@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -18,10 +17,11 @@ import useFilterRoomsDashboard from "@/hooks/useFilterRoomsDashboard";
 interface Prop {
     isOpen: boolean;
     onClose: () => void;
+    onFilterChange: (available: boolean | null) => void;
 }
 
-export const FilterByAvailablePopUp: React.FC<Prop> = ({ isOpen, onClose }) => {
-    const [position, setPosition] = React.useState("bottom");
+export const FilterByAvailablePopUp: React.FC<Prop> = ({ isOpen, onFilterChange }) => {
+    const [position, setPosition] = React.useState("all");
 
     const { filterContent, setFilterContent } = useFilterRoomsDashboard({
         filterName: null,
@@ -31,17 +31,27 @@ export const FilterByAvailablePopUp: React.FC<Prop> = ({ isOpen, onClose }) => {
     const handleChange = (position: string) => {
         setPosition(position);
 
-        // Set available based on position value
-        const available = position === "top"; // Assuming 'top' means available and 'bottom' means not available
+        let available: boolean | null;
+        if (position === "available") {
+            available = true;
+        } else if (position === "notAvailable") {
+            available = false;
+        } else {
+            available = null;
+        }
+
         setFilterContent({ ...filterContent, available });
+        onFilterChange(available);
     };
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button className={"font-semibold bg-greenr text-white"}>
+                <Button className={"font-semibold bg-greenr text-white text-xs md:text-base"}>
                     <div className={"flex gap-1 items-center"}>
-                        <BookOpenCheck size={18} />
+                        <BookOpenCheck size={18} className={
+                            "size-[12px] md:size-[18px]"
+                        } />
                         <p>Available Rooms</p>
                     </div>
                 </Button>
@@ -50,8 +60,9 @@ export const FilterByAvailablePopUp: React.FC<Prop> = ({ isOpen, onClose }) => {
                 <DropdownMenuLabel>Room Availability</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup value={position} onValueChange={handleChange}>
-                    <DropdownMenuRadioItem value="top">Available</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="bottom">Not available</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="available">Available</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="notAvailable">Not available</DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
             </DropdownMenuContent>
         </DropdownMenu>

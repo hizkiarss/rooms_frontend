@@ -2,6 +2,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {gql} from 'graphql-request';
 import {graphqlClient} from "../graphQL/graphqlClient";
 import {UPDATE_ROOM} from "@/hooks/graphQL/mutations";
+import {useSession} from "next-auth/react";
 
 
 interface UpdateRoomInput {
@@ -23,10 +24,16 @@ interface UpdateRoomVariables {
 
 export function useUpdateRoom() {
     const queryClient = useQueryClient();
+    const { data: session } = useSession();
 
     return useMutation<string, Error, UpdateRoomVariables>({
         mutationKey: ["updateRoom"],
         mutationFn: async (variables) => {
+            const token = session?.accessToken;
+            graphqlClient.setHeaders({
+                Authorization: `Bearer ${token}`,
+            });
+
             const response = await graphqlClient.request<{ updateRoom: string }>(
                 UPDATE_ROOM,
                 variables

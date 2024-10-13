@@ -13,21 +13,20 @@ import {
 import Buttons from "@/components/Buttons";
 import Image from "next/image";
 import {ScrollArea} from "@/components/ui/scroll-area"
-import {useDeletePropertyPictures} from '@/hooks/properties/useDeletePropertyPictures';
 import {useToast} from "@/hooks/use-toast";
 import {Check} from "lucide-react";
-import {useGetPropertyById} from "@/hooks/properties/useGetPropertyById";
 import {useGetRoomById} from "@/hooks/rooms/useGetRoomById";
 import {useSearchParams} from "next/navigation";
 import {useDeleteRoomPictures} from "@/hooks/rooms/useDeleteRoomPictures";
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 const UpdateRoomDeletePhotoPopUp: React.FC = () => {
     const searchParam = useSearchParams()
-    const {data: propertyData} = useGetPropertyById("1");
-    const {data: roomData} = useGetRoomById(searchParam.get("num") || "")
+    const {data: roomData} = useGetRoomById(searchParam.get("num") || "1")
 
     const [selectedPictures, setSelectedPictures] = useState<string[]>([]);
-    const deletePropertyRoomsMutation = useDeleteRoomPictures();
+    const deleteRoomPicturesMutation = useDeleteRoomPictures();
     const {toast} = useToast()
 
     useEffect(() => {
@@ -52,7 +51,7 @@ const UpdateRoomDeletePhotoPopUp: React.FC = () => {
             return;
         }
 
-        deletePropertyRoomsMutation.mutate(
+        deleteRoomPicturesMutation.mutate(
             {roomPictureIds: selectedPictures},
             {
                 onSuccess: (data) => {
@@ -80,31 +79,39 @@ const UpdateRoomDeletePhotoPopUp: React.FC = () => {
                 <DrawerContent className={"md:inset-x-1/4 px-6 md:px-14"}>
                     <DrawerHeader className={"flex justify-end px-0"}></DrawerHeader>
                     <DrawerDescription className={"flex flex-col gap-5 md:gap-10"}>
-                        <ScrollArea
-                            className="h-[250px] md:h-[500px] rounded-xl border-none border-slate-400 pr-4 col-span-3">
-                            <div className="grid grid-cols-3 gap-1">
-                                {roomData?.roomPictures.map((picture, index) => (
-                                    <div key={index} className="relative">
-                                        <Image
-                                            src={picture.imgUrl}
-                                            alt={"img" + picture.id + ".png"}
-                                            width={400}
-                                            height={400}
-                                            className={`object-cover object-center w-[125px] h-[125px] md:w-[250px] md:h-[250px] cursor-pointer ${
-                                                selectedPictures.includes(picture.id) ? 'opacity-50' : ''
-                                            }`}
-                                            onClick={() => togglePictureSelection(picture.id)}
-                                        />
-                                        {selectedPictures.includes(picture.id) && (
-                                            <div
-                                                className="absolute bg-white text-greenr top-2 right-2  rounded-full p-[2px] md:p-2  ">
-                                                <Check/>
+                        {(roomData?.roomPictures?.length ?? 0) > 0 ? (
+                            <ScrollArea
+                                className="h-[250px] md:h-[500px] rounded-xl border-none border-slate-400 pr-4 col-span-3">
+                                {deleteRoomPicturesMutation.isPending ? (
+                                    <div className={"w-full h-full flex justify-center items-center"}>
+                                        <LoadingAnimation/></div>) : (
+                                    <div className="grid grid-cols-3 gap-1">
+                                        {roomData?.roomPictures.map((picture, index) => (
+                                            <div key={index} className="relative">
+                                                <Image
+                                                    src={picture.imgUrl}
+                                                    alt={"img" + picture.id + ".png"}
+                                                    width={400}
+                                                    height={400}
+                                                    className={`object-cover object-center w-[125px] h-[125px] md:w-[250px] md:h-[250px] cursor-pointer ${
+                                                        selectedPictures.includes(picture.id) ? 'opacity-50' : ''
+                                                    }`}
+                                                    onClick={() => togglePictureSelection(picture.id)}
+                                                />
+                                                {selectedPictures.includes(picture.id) && (
+                                                    <div
+                                                        className="absolute bg-white text-greenr top-2 right-2  rounded-full p-[2px] md:p-2  ">
+                                                        <Check/>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )}
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        </ScrollArea>
+                                )}
+
+                            </ScrollArea>) : (<div className="flex items-center justify-center w-full">
+                            <EmptyDataAnimation width={300} height={300} message="No pictures yet"/>
+                        </div>)}
                         <div className="col-span-2">
                             <DrawerTitle className={"h-full flex justify-between"}>
                                 <div>
@@ -124,7 +131,7 @@ const UpdateRoomDeletePhotoPopUp: React.FC = () => {
                             value={"Delete"}
                             className={"w-fit"}
                             onClick={handleDelete}
-                            disabled={deletePropertyRoomsMutation.isPending}
+                            disabled={deleteRoomPicturesMutation.isPending}
                         />
                         <DrawerClose>
                             <Buttons value={"Cancel"} className={"w-fit md:text-base text-sm"}/>
