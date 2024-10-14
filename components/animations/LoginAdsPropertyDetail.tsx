@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useState, useEffect } from "react";
 const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
     ssr: false,
 });
@@ -8,13 +8,24 @@ const LottieAnimation = dynamic(() => import("@/components/LottieAnimation"), {
 import animationData from "../../public/animations/login-ads-propDetail.json";
 
 const LoginAdsPropertyDetailAnimation = () => {
+    const [windowWidth, setWindowWidth] = useState(0);
+
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        handleResize(); // Set initial width
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const animationSize = windowWidth < 768 ? 50 : 80;
+
     return (
         <div className="">
             <LottieAnimation
                 animationData={animationData}
                 loop={true}
                 autoplay={true}
-                style={{ width: 80, height: 80 }}
+                style={{ width: animationSize, height: animationSize }}
             />
         </div>
     );

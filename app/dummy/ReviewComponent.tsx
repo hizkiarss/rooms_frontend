@@ -119,26 +119,29 @@ const ReviewComponent: React.FC = () => {
   const averageRating =
     review.reduce((sum, review) => sum + review.rating, 0) / review.length;
   return (
-    <div className="flex w-full items-center">
-      <div className="w-4/12 flex justify-center ">
-        <div className={"flex flex-col"}>
-          <h1 className="scroll-m-20 text-3xl sm:text-4xl md:text-6xl font-light  tracking-tight ">
-            {averageRating.toFixed(1)} /10
-          </h1>
-          <div
-            className={"bg-greenr text-white px-2 py-2 w-fit rounded-xl h-fit"}>
-            <h2 className="scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight ">
-              {getRatingDescription(averageRating)}
-            </h2>
+    <div className="md:flex w-full items-center">
+      <div className="md:w-4/12 flex md:justify-center ">
+        <div className={"md:flex md:flex-col"}>
+          <div className={"flex gap-3 items-center md:block"}>
+            <h1 className="scroll-m-20 text-3xl sm:text-4xl md:text-6xl font-light  tracking-tight ">
+              {averageRating.toFixed(1)} /10
+            </h1>
+            <div
+                className={"bg-greenr text-white px-2 py-2 w-fit rounded-xl h-fit "}>
+              <h2 className="scroll-m-20 text-base md:text-2xl font-semibold tracking-tight ">
+                {getRatingDescription(averageRating)}
+              </h2>
+            </div>
           </div>
+
           <Popover>
             <PopoverTrigger asChild>
-              <div className="font-thin text-gray-800 flex items-center space-x-2 mt-4">
+              <div className="font-thin text-gray-800 flex items-center text-xs md:text-base space-x-2 mt-1 md:mt-4">
                 <span>
                   {review.length} verified{" "}
                   {review.length === 1 ? "review" : "reviews"}
                 </span>
-                <Info className="w-4 h-4 text-gray-500" />
+                <Info className="w-4 h-4 text-gray-500"/>
               </div>
             </PopoverTrigger>
             <PopoverContent className="w-80">
@@ -153,7 +156,7 @@ const ReviewComponent: React.FC = () => {
           </Popover>
         </div>
       </div>
-      <div className="w-9/12">
+      <div className="md:w-9/12">
         <ReviewCarousel reviews={review} />
         <div className="mt-4">
           <ReviewPopup propertyId={propertyId} />

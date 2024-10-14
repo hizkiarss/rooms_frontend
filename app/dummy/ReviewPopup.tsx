@@ -54,7 +54,7 @@ const ReviewPopup: React.FC<ReviewCarouselProps> = ({ propertyId }) => {
         />
         {/*<Button variant="outline">S</Button>*/}
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="left-[50%] md:left-[50%] max-w-xs md:max-w-3xl">
         <DialogHeader>
           <DialogTitle>Guest reviews</DialogTitle>
         </DialogHeader>

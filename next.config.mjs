@@ -17,7 +17,7 @@
 //const nextConfig = {};
 const nextConfig = {
   images: {
-    domains: ["images.unsplash.com", "plus.unsplash.com", "res.cloudinary.com"],
+    domains: ["images.unsplash.com", "plus.unsplash.com", "res.cloudinary.com", "images.trvl-media.com"],
   },
   remotePatterns: [
     {

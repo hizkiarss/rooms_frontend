@@ -3,6 +3,7 @@ import { PropertyFacility } from "../property-facility/PropertyFacilityType";
 import { PropertyPicturesType } from "../property-pictures/PropertyPicturesType";
 import { ReviewType } from "../review/ReviewType";
 import { UserType } from "../users/Usertype";
+import {City} from "@/types/city/City";
 
 export type PropertiesType = {
   id: string;
@@ -19,4 +20,5 @@ export type PropertiesType = {
   slug: string;
   averageRating: number;
   totalReview: number;
+  city: City
 };

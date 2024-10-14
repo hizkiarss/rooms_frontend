@@ -12,7 +12,7 @@ const ReviewCard: React.FC<{ review: ReviewType }> = ({ review }) => {
   });
 
   return (
-    <Card className="w-[300px] h-[220px] overflow-auto flex-shrink-0 bg-white text-greenr border border-gray-400 shadow-custom ">
+    <Card className="w-[250px] md:w-[300px] h-[180px] md:h-[220px] overflow-auto flex-shrink-0 bg-white text-greenr border border-gray-400 shadow-custom ">
       <CardContent className="p-4 flex flex-col h-full  ">
         <div className={"flex flex-col justify-between h-full"}>
           <div>
@@ -32,7 +32,6 @@ const ReviewCard: React.FC<{ review: ReviewType }> = ({ review }) => {
             <p className={"font-semibold mt-2 "}>
               {review.users?.username || "username"}
             </p>
-            {/* Menampilkan `createdAt` yang sudah diformat */}
             <p className="mt-3 text-sm mb-4">&quot; {review.feedback} </p>
           </div>
           <p className={"text-end text-sm font-semibold"}>{formattedDate}</p>{" "}

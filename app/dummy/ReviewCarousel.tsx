@@ -24,7 +24,7 @@ const ReviewCarousel: React.FC<ReviewCarouselProps> = ({ reviews }) => {
 
   return (
     <div className="relative">
-      <div className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth transition duration-200">
+      <div className="flex mt-4 md:mt-0 gap-4 overflow-x-auto scrollbar-hide scroll-smooth transition duration-200">
         {reviews.slice(currentIndex, currentIndex + 3).map((review) => (
           <ReviewCard key={review.id} review={review} />
         ))}

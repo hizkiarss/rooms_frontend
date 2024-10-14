@@ -977,4 +977,46 @@ export const GET_PEAK_SEASONS_BY_PROPERTY_ID = gql`
 `;
 
 
+export const GET_10_RANDOM_AVAILABLE_ROOMS = `
+  query Get10RandomAvailableRooms {
+    get10RandomAvailableRooms {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+      properties {
+        id
+        name
+        description
+        checkInTime
+        checkOutTime
+        address
+        totalReview
+        averageRating
+        slug
+        phoneNumber
+        star
+        propertyFacilities {
+          id
+        }
+        propertyPictures {
+          id
+          imgUrl
+        }
+        city {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+
 

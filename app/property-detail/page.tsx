@@ -105,7 +105,7 @@ const Page = () => {
     if (!data) return <div>No property data found</div>;
 
     return (
-        <div className={"px-[180px]"}>
+        <div className={"px-5 md:px-[180px]"}>
             <div className={"min-h-screen"}>
                 <Breadcrumbs data={data as PropertyDetailType}/>
                 <PictureLayout data={data}/>

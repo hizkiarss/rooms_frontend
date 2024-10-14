@@ -39,8 +39,8 @@ const Navigation = () => {
     };
 
     return (
-        <nav className="flex justify-between border-b border-slate-300 pt-3 sticky top-0 bg-white z-50">
-            <div className="flex gap-12">
+        <nav className="text-xs md:text-base flex justify-between border-b border-slate-300 pt-3 sticky top-0 bg-white z-50">
+            <div className="flex gap-6 md:gap-12">
                 {sections.map((section) => (
                     <button
                         key={section}
