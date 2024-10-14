@@ -67,7 +67,7 @@ export async function middleware(request: NextRequest) {
   //     return NextResponse.redirect(new URL("/dashboard", request.url));
   //   }
   // }
-  if (request.nextUrl.pathname === "/") {
+  if (request.nextUrl.pathname === "/" || "") {
     if (session) {
       console.log("adanih doi");
       const userRoles = session.user?.roles;
@@ -124,5 +124,6 @@ export const config = {
     "/",
     "/finish-payment/:path*",
     "/user-profile",
+    "",
   ],
 };
