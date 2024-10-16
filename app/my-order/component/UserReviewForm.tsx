@@ -55,7 +55,6 @@ const UserReviewForm: React.FC<UserReviewFormProps> = ({
     try {
       await createReviewMutation.mutateAsync(values);
       setIsSubmitted(true);
-      //saya ingin menerapkan submit animation disini selama 1.2 detik lalu menghilang dan lanjut menjalankan perintah dibawahnya
       onSubmitSuccess();
     } catch (error) {
       console.error("Failed to submit:", error);
