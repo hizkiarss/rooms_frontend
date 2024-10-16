@@ -71,14 +71,14 @@ export function CheckInDatePicker(
                     <Button
                         id="date"
                         className={cn(
-                            "w-full h-fit justify-between text-left font-normal py-4 bg-white text-greenr hover:bg-white",
+                            " w-full h-fit justify-between text-left font-normal md:py-4 bg-white text-greenr hover:bg-white",
                             !date && "text-muted-foreground"
                         )}
                     >
-                        <div className="flex items-center gap-1">
-                            <CalendarIcon className="mr-2 h-6 w-6"/>
-                            <div className="flex flex-col text-base">
-                                <p className={"text-sm font-semibold"}>Check in date</p>
+                        <div className="flex items-center md:gap-1">
+                            <CalendarIcon className="mr-2 h-3 w-3 md:h-6 md:w-6"/>
+                            <div className="flex flex-col text-xs md:text-sm">
+                                <p className={"text-xs md:text-sm font-semibold"}>Check in date</p>
                                 {date?.from ? (
                                     format(date.from, "LLL dd, y")
                                 ) : (

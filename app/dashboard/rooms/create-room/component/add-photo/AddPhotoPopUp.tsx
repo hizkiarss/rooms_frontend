@@ -15,7 +15,6 @@ import {Form, Formik, FormikProps} from "formik";
 import useCloudinaryUpload from "@/hooks/useCloudinaryUpload";
 import * as Yup from "yup";
 import Buttons from "@/components/Buttons";
-import usePropertyId from "@/hooks/usePropertyId";
 import {useAddRoomPictures} from "@/hooks/rooms/useAddRoomPictures";
 import useRoomName from "@/hooks/useRoomName";
 import useSelectedProperty from "@/hooks/useSelectedProperty";
@@ -38,12 +37,14 @@ const CreateRoomAddPhotoPopUp: React.FC = () => {
     const{selectedProperty}= useSelectedProperty()
     const {roomName}= useRoomName("")
 
+    console.log(roomName , "uhuyyy")
+
     const handleSubmit = async (values: FormValues): Promise<void> => {
         try {
             await uploadRoomsPhotoMutation.mutateAsync({
                 propertyId: selectedProperty || "1",
                 roomPicture: values.imageUrls,
-                roomName: roomName || "Lahadalia"
+                roomName: roomName
             });
         } catch (error) {
             console.error("Failed to upload photos:", error);
@@ -88,7 +89,7 @@ const CreateRoomAddPhotoPopUp: React.FC = () => {
                     <DialogHeader className={"flex items-center"}>
                         <DialogTitle className="text-2xl">Upload Room Photos</DialogTitle>
                         <DialogDescription>
-                            Upload multiple photos for your room listing.
+                            Upload multiple photos for your room listing.aaa
                         </DialogDescription>
                     </DialogHeader>
 

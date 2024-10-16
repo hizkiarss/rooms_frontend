@@ -21,8 +21,8 @@ const PictureLayout = ({ data }: { data: PropertyDetailType }) => {
     };
 
     return (
-        <div className="grid grid-cols-2 gap-1 ">
-            <div className="col-span-1 h-[400px] ">
+        <div className="md:grid md:grid-cols-2 gap-1 ">
+            <div className="hidden md:block col-span-1 h-[400px] ">
                 {images.length > 0 && (
                     <Image
                         src={images[0].imgUrl}
@@ -35,12 +35,12 @@ const PictureLayout = ({ data }: { data: PropertyDetailType }) => {
             </div>
             <div className="col-span-1 grid grid-cols-2 gap-1 h-full">
                 {images.slice(1, 5).map((img, index) => (
-                    <div key={index} className="h-[200px]">
+                    <div key={index} className="h-[150px] md:h-[200px]">
                         {index < 3 ? (
                             <Image
                                 src={img.imgUrl}
                                 alt={`hotel-${index + 2}`}
-                                className="h-[200px]"
+                                className="h-[150px] object-cover md:h-[200px]"
                                 height={400}
                                 width={400}
                             />
@@ -56,18 +56,18 @@ const PictureLayout = ({ data }: { data: PropertyDetailType }) => {
                                             onClick={() => setIsOpen(true)}
                                         >
                                             <Camera className="mr-2" />
-                                            {images.length - 4} more
+                                            See all
                                         </Button>
                                     </div>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-4xl">
-                                    <div className="grid grid-cols-3 gap-4">
+                                <DialogContent className="max-w-xs md:max-w-4xl">
+                                    <div className="grid grid-cols-3 gap-1 md:gap-4">
                                         {images.map((img, idx) => (
                                             <Image
                                                 key={idx}
                                                 src={img.imgUrl}
                                                 alt={`Hotel image ${idx + 1}`}
-                                                className="object-cover w-full h-40"
+                                                className="w-30 h-20 md:h-40 object-cover "
                                                 width={300}
                                                 height={160}
                                             />

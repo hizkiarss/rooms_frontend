@@ -32,15 +32,15 @@ const Rooms = ({data}: { data: RoomType[] }) => {
             </div>
             <div
                 className={"sticky top-[49px] flex z-20 pr-4 w-full justify-between  items-center bg-white shadow-custom rounded-xl"}>
-                <div className={"col-span-10 w-1/2 items-center flex"}>
+                <div className={" w-1/2 items-center flex"}>
                     <CheckInDatePicker className={""} />
-                    <div className={"min-w-[1px] h-8 bg-greenr ml-16 mr-4"}></div>
+                    <div className={"hidden md:block min-w-[1px] h-8 bg-greenr ml-16 mr-4"}></div>
                     <CheckOutDatePicker className={""} />
                 </div>
-                <Buttons value={"Search"} className={"col-span-2 h-fit w-fit"} onClick={handleClick} />
+                <Buttons value={"Search"} className={"col-span-2 !text-xs !p-1 md:!text-lg md:!p-4 h-fit w-fit"} onClick={handleClick} />
             </div>
 
-            <div className={"grid grid-cols-4 gap-2 mt-5"}>
+            <div className={"grid md:grid-cols-4 gap-2 mt-5"}>
                 {data.map((room: RoomType, index: number) => (
                     <RoomCards data={room} key={index}/>
                 ))}

@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import {
     Drawer,
@@ -17,6 +18,7 @@ import ChangeAvatar from "@/app/user-profile/components/ChangeAvatar";
 import {useUploadUserInformation} from "@/hooks/user/useUploaduserInformation";
 import {Gender} from "@/types/gender/Gender";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import {useSession} from "next-auth/react";
 
 const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -39,10 +41,12 @@ const initialValues: FormValues = {
     dateOfBirth: new Date(),
 };
 
-const email: String = "qakaben@gmail.com";
 
 
 const EditProfile: React.FC = () => {
+    const {data : session} = useSession()
+    const email: String = session?.user.email;
+
     const {mutate: updateUserInfo, isPending, isError, error} = useUploadUserInformation();
 
     const handleSubmit = (values: FormValues) => {
@@ -52,21 +56,21 @@ const EditProfile: React.FC = () => {
     return (
         <Drawer>
             <DrawerTrigger
-                className="text-greenr font-semibold text-xl hover:text-opacity-40 hover:underline duration-200">
+                className="text-greenr font-semibold md:text-xl hover:text-opacity-40 hover:underline duration-200">
                 Edit
             </DrawerTrigger>
             <DrawerContent className="w-full md:w-1/2">
-                <div className="px-16 py-12">
+                <div className="px-8 md:px-16 py-12">
                     <DrawerHeader className="mb-6 flex justify-between">
                         <div>
-                            <DrawerTitle className="text-2xl">User Information</DrawerTitle>
+                            <DrawerTitle className="text-lg md:text-2xl">User Information</DrawerTitle>
                             <DrawerDescription>
                                 Make sure this information matches your travel ID, like your passport or license.
                             </DrawerDescription>
                         </div>
                         <DrawerClose>
-                            <Button>
-                                <X/>
+                            <Button className={"p-2"}>
+                                <X className="size-6" />
                             </Button>
                         </DrawerClose>
                     </DrawerHeader>
