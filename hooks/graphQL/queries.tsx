@@ -641,6 +641,8 @@ export const GET_FILTERED_PROPERTIES = gql`
     $startPrice: Float
     $endPrice: Float
     $sortBy: String
+    $checkInDate : Date
+    $checkOutDate : Date
   ) {
     getFilteredProperties(
       city: $city
@@ -650,6 +652,8 @@ export const GET_FILTERED_PROPERTIES = gql`
       startPrice: $startPrice
       endPrice: $endPrice
       sortBy: $sortBy
+      checkInDate: $checkInDate
+      checkOutDate: $checkOutDate
     ) {
       totalElements
       totalPages
