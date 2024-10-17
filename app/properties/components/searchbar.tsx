@@ -179,21 +179,20 @@ const Searchbar: React.FC<SearchbarProps> = ({ totalElements = 0 }) => {
   });
 
   const formattedFromDate = new Date(
-    date?.from || new Date()
+    searchInput?.dateRangeParam?.from || new Date()
   ).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 
-  const formattedToDate = new Date(date?.to || new Date()).toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }
-  );
+  const formattedToDate = new Date(
+    searchInput?.dateRangeParam?.to || new Date()
+  ).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
   const showDate: string = formattedFromDate + " - " + formattedToDate;
 
