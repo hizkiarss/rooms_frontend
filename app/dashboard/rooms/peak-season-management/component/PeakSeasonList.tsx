@@ -20,9 +20,11 @@ const PeakSeasonList: React.FC = () => {
     const [updatePopUp, setUpdatePopUp] = useState<boolean>(false);
     const [deletePopUp, setDeletePopUp] = useState<boolean>(false);
     const {selectedProperty} = useSelectedProperty()
-    const {data, isLoading, error, isError} = useGetPeakSeasonsByPropertyId(selectedProperty || "1");
+    const propertyId = selectedProperty ?? "";
+    const {data, isLoading, error, isError} = useGetPeakSeasonsByPropertyId(propertyId);
+
     console.log(selectedProperty);
-    const peakSeasons = data as PeakSeason[];
+    const peakSeasons: PeakSeason[] = Array.isArray(data) ? data : [];
     useEffect(() => {
         if (isError) {
             console.log(error);
