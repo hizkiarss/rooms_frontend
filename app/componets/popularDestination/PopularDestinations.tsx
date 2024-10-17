@@ -14,11 +14,21 @@ import Image from "next/image";
 import HomepageLocations from "@/public/HomepageLocations/HomepageLocations";
 import Autoplay from "embla-carousel-autoplay";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 
 const PopularDestinations = () => {
   const router = useRouter();
+  const today = new Date();
+  const fromDate = new Date(today);
+  fromDate.setDate(fromDate.getDate() + 2);
+  const toDate = new Date(today);
+  toDate.setDate(toDate.getDate() + 3);
+  const formattedFromDate = format(fromDate, "yyyy-MM-dd");
+  const formattedToDate = format(toDate, "yyyy-MM-dd");
   const handleNavigation = (destination: string) => {
-    router.push(`properties?city=${destination}`);
+    router.push(
+      `properties?city=${destination}&from=${formattedFromDate}&to=${formattedToDate}&adult=2&children=0&category=Hotel`
+    );
   };
 
   return (
