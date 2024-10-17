@@ -22,9 +22,9 @@ const Page = () => {
   const [slug, setSlug] = useState<string | null>(null);
   const [isSlugLoading, setIsSlugLoading] = useState(true);
   const [roomsSearchInput, setRoomsSearchInput] = useState({
-    checkinDate: new Date("2024-10-10"),
-    checkOutDate: new Date("2024-10-11"),
-    propertyId: "",
+    checkinDate: new Date(), // Set awal dengan default tanggal sekarang
+    checkOutDate: new Date(), // Sama dengan check-in date sebagai placeholder
+    propertyId: "", // Property ID akan diperbarui nanti berdasarkan slug
   });
 
   useEffect(() => {
@@ -43,6 +43,17 @@ const Page = () => {
     isLoading: boolean;
     error: Error | null;
   };
+
+  useEffect(() => {
+    if (data?.id && slug) {
+      setRoomsSearchInput({
+        checkinDate: new Date(), // Misalnya, default-nya adalah hari ini, atau bisa disesuaikan
+        checkOutDate: new Date(), // Tanggal checkout default bisa diatur sesuai logika
+        propertyId: data.id, // Property ID diambil dari data properti yang terkait dengan slug
+      });
+    }
+  }, [data?.id, slug]);
+
   console.log(slug, "Slug value");
   console.log(data, "API response data");
   console.log(data?.id, "id cuy");
