@@ -2,38 +2,37 @@ import React, {useState, useEffect} from 'react';
 import {ChevronRight} from "lucide-react";
 import {useSendResetPasswordLink} from "@/hooks/user/useSendResetPasswordLink";
 import EmailSentPopUp from "@/app/user-profile/components/EmailSentPopUp";
-import ErrorHandler from "@/app/reset-password/components/ErrorHandler";
 import NotificationPopUp from "@/components/NotificationPopUp";
 import {useRouter} from "next/navigation";
+import {useSession} from "next-auth/react";
 
 interface SecurityProps {
     setIsPageLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setResetSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+
 }
 
-const Security: React.FC<SecurityProps> = ({setIsPageLoading}) => {
+const Security: React.FC<SecurityProps> = ({setIsPageLoading, setResetSuccess}) => {
     const {mutate: sendResetPasswordLink, isPending, isError, error} = useSendResetPasswordLink();
     const [emailSent, setEmailSent] = useState<boolean>(false);
     const [isErrorDialogOpen, setIsErrorDialogOpen] = useState<boolean>(false);
     const router = useRouter();
-    const email: string = "qakaben@gmail.com";
+    const {data: session} = useSession();
+    const email: string = session?.user?.email;
 
     const handleChangePasswordClick = () => {
         sendResetPasswordLink(
             {email},
             {
-                onSuccess: (data) => {
-                    console.log(data, "Email sent successfully");
-                    setIsPageLoading(false); // Stop loading animation
-                    setEmailSent(true); // Trigger email sent popup
+                onSuccess: () => {
+                    setIsPageLoading(false);
+                    setEmailSent(true);
                 },
-                onError: (error) => {
-                    console.error("Failed to send email:", error);
-                    setIsErrorDialogOpen(true); // Trigger error dialog
-                    setIsPageLoading(false); // Stop loading animation even if there's an error
-                },
-                onSettled: () => {
-                    setIsPageLoading(false); // Stop loading animation in any case (error or success)
+                onError: () => {
+                    setIsErrorDialogOpen(true);
+                    setIsPageLoading(false);
                 }
+
             }
         );
     };
@@ -42,6 +41,7 @@ const Security: React.FC<SecurityProps> = ({setIsPageLoading}) => {
     const handleCloseErrorDialog = () => {
         setIsErrorDialogOpen(false);
     };
+
 
     return (
         <div>
@@ -75,7 +75,7 @@ const Security: React.FC<SecurityProps> = ({setIsPageLoading}) => {
 
                 <button
                     className="flex justify-between mt-5 md:mt-10 mb-5 bg-greenr text-earth p-4 rounded-lg items-center hover:bg-earth hover:text-greenr transition duration-200"
-                    onClick={()=>router.push("/delete-account")}
+                    onClick={() => router.push("/delete-account")}
                     disabled={isPending}
                 >
                     <div>

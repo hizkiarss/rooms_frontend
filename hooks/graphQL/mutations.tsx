@@ -290,7 +290,8 @@ export const CHANGE_PRICE_FOR_PEAK_SEASON = gql`
             id
             startDate
             endDate
-            markUpPercentage
+            markUpValue
+            markUpType
         }
     }
 `;
@@ -308,7 +309,8 @@ export const UPDATE_PEAK_SEASON = gql`
             id
             startDate
             endDate
-            markUpPercentage
+            markUpValue
+            markUpType
         }
     }
 `;

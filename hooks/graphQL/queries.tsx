@@ -641,6 +641,8 @@ export const GET_FILTERED_PROPERTIES = gql`
     $startPrice: Float
     $endPrice: Float
     $sortBy: String
+    $checkInDate : Date
+    $checkOutDate : Date
   ) {
     getFilteredProperties(
       city: $city
@@ -650,6 +652,8 @@ export const GET_FILTERED_PROPERTIES = gql`
       startPrice: $startPrice
       endPrice: $endPrice
       sortBy: $sortBy
+      checkInDate: $checkInDate
+      checkOutDate: $checkOutDate
     ) {
       totalElements
       totalPages
@@ -971,9 +975,52 @@ export const GET_PEAK_SEASONS_BY_PROPERTY_ID = gql`
             id
             startDate
             endDate
-            markUpPercentage
+            markUpValue
+            markUpType
         }
     }
+`;
+
+
+export const GET_10_RANDOM_AVAILABLE_ROOMS = `
+  query Get10RandomAvailableRooms {
+    get10RandomAvailableRooms {
+      id
+      name
+      description
+      capacity
+      isAvailable
+      roomNumber
+      price
+      includeBreakfast
+      roomArea
+      slug
+      properties {
+        id
+        name
+        description
+        checkInTime
+        checkOutTime
+        address
+        totalReview
+        averageRating
+        slug
+        phoneNumber
+        star
+        propertyFacilities {
+          id
+        }
+        propertyPictures {
+          id
+          imgUrl
+        }
+        city {
+          id
+          name
+        }
+      }
+    }
+  }
 `;
 
 

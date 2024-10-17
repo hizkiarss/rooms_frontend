@@ -11,18 +11,18 @@ import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
 
 const Breadcrumbs = ({ data }: { data: PropertyDetailType }) => {
     return (
-        <Breadcrumb className={"font-semibold mb-2 font-"}>
+        <Breadcrumb className={"text-xs md:text-base font-semibold mb-2 font-"}>
             <BreadcrumbList>
                 <BreadcrumbItem>
-                    <BreadcrumbLink className={"hover:none"}> {data.propertyCategories.name}</BreadcrumbLink>
+                    <BreadcrumbLink className={"hover:none text-xs md:text-base"}> {data.propertyCategories.name}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    <BreadcrumbLink > {data.city.name}</BreadcrumbLink>
+                    <BreadcrumbLink className={"text-xs md:text-base"} > {data.city.name}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    <BreadcrumbPage className={"font-semibold"}>{data.name}</BreadcrumbPage>
+                    <BreadcrumbPage className={"text-xs md:text-base font-semibold"}>{data.name}</BreadcrumbPage>
                 </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>

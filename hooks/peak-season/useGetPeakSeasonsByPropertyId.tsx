@@ -7,16 +7,11 @@ import {useSession} from "next-auth/react";
 
 export function useGetPeakSeasonsByPropertyId(propertyId: string) {
     const queryClient = useQueryClient();
-    const {data: session} = useSession();
-
 
     return useQuery<PeakSeason[], Error>({
         queryKey: ["peakSeasons", propertyId],
         queryFn: async () => {
-            const token = session?.accessToken;
-            graphqlClient.setHeaders({
-                Authorization: `Bearer ${token}`,
-            });
+
 
             const response = await graphqlClient.request<{
                 getPeakSeasonsByPropertyId: PeakSeason[];

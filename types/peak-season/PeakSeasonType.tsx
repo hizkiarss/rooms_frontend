@@ -3,5 +3,6 @@ export type PeakSeason ={
     name: string;
     startDate: string;
     endDate: string;
-    markUpPercentage: number;
+    markUpValue: number;
+    markUpType: string;
 }

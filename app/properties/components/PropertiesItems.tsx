@@ -101,6 +101,8 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({
     const rating = ratingParam ? parseFloat(ratingParam) : null;
     const startPrice = startPriceParam ? parseFloat(startPriceParam) : null;
     const endPrice = endPriceParam ? parseFloat(endPriceParam) : null;
+    const checkInDate = params.get("from");
+    const checkOutDate = params.get("to");
 
     const {data, error, isLoading} = useGetFilteredProperties({
         city: cityParam || "Jakarta",
@@ -111,6 +113,8 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({
         endPrice: endPrice || null,
         isBreakfast: isBreakfastParam ? true : null,
         sortBy: sortByParam || null,
+        checkInDate: checkInDate || "",
+        checkOutDate: checkOutDate || "",
     });
 
     const pagedData = data as PagedPropertyResult | undefined;

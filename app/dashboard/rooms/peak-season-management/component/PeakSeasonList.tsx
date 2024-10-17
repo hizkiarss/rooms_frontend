@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {CalendarCheck, CircleFadingArrowUp} from "lucide-react";
 import Buttons from "@/components/Buttons"
@@ -16,13 +16,21 @@ import LoadingAnimation from "@/components/animations/LoadingAnimation";
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
 
-
 const PeakSeasonList: React.FC = () => {
     const [updatePopUp, setUpdatePopUp] = useState<boolean>(false);
     const [deletePopUp, setDeletePopUp] = useState<boolean>(false);
     const {selectedProperty} = useSelectedProperty()
-    const {data, isLoading, error} = useGetPeakSeasonsByPropertyId("1");
-    const peakSeasons = data as PeakSeason[];
+    const propertyId = selectedProperty ?? "";
+    const {data, isLoading, error, isError} = useGetPeakSeasonsByPropertyId(propertyId);
+
+    console.log(selectedProperty);
+    const peakSeasons: PeakSeason[] = Array.isArray(data) ? data : [];
+    useEffect(() => {
+        if (isError) {
+            console.log(error);
+        }
+    }, [isError]);
+
     if (isLoading) return <div><LoadingAnimation/></div>;
     if (error) return <div><ErrorAnimation/></div>;
 
@@ -32,6 +40,7 @@ const PeakSeasonList: React.FC = () => {
             targetDiv.scrollIntoView({behavior: "smooth"});
         }
     };
+
 
     return (
         <div>
@@ -60,7 +69,10 @@ const PeakSeasonList: React.FC = () => {
                                 <div className={"flex items-center gap-2 mt-2"}>
                                     <CircleFadingArrowUp/>
                                     <p className={"text-sm md:text-bas"}><span
-                                        className={"font-semibold mr-1 "}>Markup percentage:</span> {season.markUpPercentage}%
+                                        className={"font-semibold mr-1 "}>Markup percentage:</span>
+                                        {season.markUpType == "PERCENTAGE" ? <p>{season.markUpValue}%</p> :
+                                            <p>IDR {season.markUpValue}</p>
+                                        }
                                     </p>
                                 </div>
 

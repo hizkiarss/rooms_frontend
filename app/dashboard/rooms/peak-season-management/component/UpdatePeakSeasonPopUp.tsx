@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -12,11 +12,15 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import * as Yup from "yup";
 import {useUpdatePeakSeason} from "@/hooks/peak-season/useUpdatePeakSeason";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
+import {isError} from "node:util";
+import {useToast} from "@/hooks/use-toast";
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    peakSeasonId: string
+    peakSeasonId: string;
 }
 
 const validationSchema = Yup.object().shape({
@@ -26,14 +30,21 @@ const validationSchema = Yup.object().shape({
         Yup.ref('startDate'),
         'End date must be after start date'
     ),
-    markUpPercentage: Yup.number()
-        .required('Markup percentage is required')
-        .min(0, 'Markup percentage must be positive')
-        .max(100, 'Markup percentage cannot exceed 100%'),
+    markUpValue: Yup.number()
+        .required('Markup value is required')
+        .min(0, 'Markup value must be positive')
+        .when('markUpType', {
+            is: 'PERCENTAGE',
+            then: (schema) => schema.max(100, 'Percentage cannot exceed 100%'),
+        }),
+    markUpType: Yup.string()
+        .required('Markup type is required')
+        .oneOf(['PERCENTAGE', 'NOMINAL'], 'Invalid markup type'),
 });
 
 const UpdatePeakSeasonPopUp: React.FC<Props> = ({isOpen, onClose, peakSeasonId}) => {
     const updatePeakSeason = useUpdatePeakSeason();
+    const {toast} = useToast()
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
@@ -42,17 +53,32 @@ const UpdatePeakSeasonPopUp: React.FC<Props> = ({isOpen, onClose, peakSeasonId})
                 name: values.name,
                 startDate: values.startDate,
                 endDate: values.endDate,
-                markUpPercentage: parseFloat(values.markUpPercentage),
+                markupValue: parseFloat(values.markUpValue),
+                markupType: values.markUpType,
             });
             resetForm();
-            alert('Peak season pricing updated successfully!');
+            toast({
+                title: "Success",
+                description: `Peak season pricing updated successfully.`,
+                className: "text-greenr border-2 border-greenr",
+            });
             onClose();
         } catch (error) {
-            alert('Failed to update peak season pricing. Please try again.');
+            toast({
+                title: "Error",
+                description: "Failed to update. Please try again.",
+                variant: "destructive",
+            });
         } finally {
             setSubmitting(false);
         }
     };
+
+    useEffect(() => {
+        if (updatePeakSeason.isError){
+            console.log(error)
+        }
+    }, [updatePeakSeason.isError]);
 
     return (
         <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -73,12 +99,13 @@ const UpdatePeakSeasonPopUp: React.FC<Props> = ({isOpen, onClose, peakSeasonId})
                             name: '',
                             startDate: '',
                             endDate: '',
-                            markUpPercentage: '',
+                            markUpValue: '',
+                            markUpType: 'PERCENTAGE',
                         }}
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                     >
-                        {({isSubmitting}) => (
+                        {({isSubmitting, values}) => (
                             <Form className="space-y-4">
                                 <div className="col-span-4">
                                     <Label htmlFor="name" className="">Name</Label>
@@ -100,11 +127,25 @@ const UpdatePeakSeasonPopUp: React.FC<Props> = ({isOpen, onClose, peakSeasonId})
                                 </div>
 
                                 <div>
-                                    <Label htmlFor="markUpPercentage" className="">Markup
-                                        Percentage</Label>
-                                    <Field name="markUpPercentage" type="number" as={Input}/>
-                                    <ErrorMessage name="markUpPercentage" component="div"
+                                    <Label htmlFor="markUpValue" className="">
+                                        Markup Value {values.markUpType === 'PERCENTAGE' ? '(%)' : '($)'}
+                                    </Label>
+                                    <Field name="markUpValue" type="number" as={Input}/>
+                                    <ErrorMessage name="markUpValue" component="div"
                                                   className="text-red-500 text-sm"/>
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="markUpType" className="">Markup Type</Label>
+                                    <Field
+                                        name="markUpType"
+                                        as="select"
+                                        className="w-full rounded-md border border-input bg-background px-3 py-3 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                    >
+                                        <option value="PERCENTAGE">Percentage</option>
+                                        <option value="NOMINAL">Nominal</option>
+                                    </Field>
+                                    <ErrorMessage name="markUpType" component="div" className="text-red-500 text-sm"/>
                                 </div>
 
                                 <div className="flex justify-end items-end gap-2">
@@ -120,7 +161,6 @@ const UpdatePeakSeasonPopUp: React.FC<Props> = ({isOpen, onClose, peakSeasonId})
                         )}
                     </Formik>
                 </AlertDialogHeader>
-
             </AlertDialogContent>
         </AlertDialog>
     );
