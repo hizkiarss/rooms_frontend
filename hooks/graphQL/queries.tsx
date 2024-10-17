@@ -971,7 +971,8 @@ export const GET_PEAK_SEASONS_BY_PROPERTY_ID = gql`
             id
             startDate
             endDate
-            markUpPercentage
+            markUpValue
+            markUpType
         }
     }
 `;

@@ -8,7 +8,8 @@ interface ChangePriceForPeakSeasonInput {
     propertyId: string;
     startDate: string;
     endDate: string;
-    markUpPercentage: number;
+    markupValue: number;
+    markupType: string;
 }
 
 export function useChangePriceForPeakSeason() {
