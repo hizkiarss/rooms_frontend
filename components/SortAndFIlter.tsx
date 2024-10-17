@@ -46,9 +46,12 @@ const SortAndFilter: React.FC<SortAndFilterProps> = ({
         <SelectContent>
           <SelectItem value="all">All</SelectItem>
           <SelectItem value="Success">Success</SelectItem>
-          <SelectItem value="Pending">Pending</SelectItem>
+          <SelectItem value="Pending">Waiting Payment</SelectItem>
           <SelectItem value="Cancelled">Cancelled</SelectItem>
-          <SelectItem value="Expired">Expired</SelectItem>
+          <SelectItem value="Expired">Transaction Expired</SelectItem>
+          <SelectItem value="Check">
+            Waiting Confirmation From Tenant
+          </SelectItem>
         </SelectContent>
       </Select>
     </div>

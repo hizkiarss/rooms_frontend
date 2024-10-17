@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { TransactionsType } from "@/types/transactions/TransactionsType";
+import { getStatusStyle } from "@/utils/statusStyle";
+import { getStatusLabel } from "@/utils/statusLabel";
 
 export const columns: ColumnDef<TransactionsType>[] = [
   {
@@ -135,9 +137,15 @@ export const columns: ColumnDef<TransactionsType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
+    cell: ({ row }) => {
+      const status: string = row.getValue("status");
+
+      return (
+        <div className="capitalize">
+          <span>{getStatusLabel(status)}</span>
+        </div>
+      );
+    },
   },
 
   {
