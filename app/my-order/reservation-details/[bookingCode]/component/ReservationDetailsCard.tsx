@@ -13,6 +13,8 @@ import { Separator } from "@/components/ui/separator";
 import { PropertyFacility } from "@/types/property-facility/PropertyFacilityType";
 import { getAmenityLabel } from "@/utils/FacilityLogoUtils";
 import AnimationWrapper from "@/components/animations/AnimationWrapper";
+import { getStatusStyle } from "@/utils/statusStyle";
+import { getStatusLabel } from "@/utils/statusLabel";
 
 interface ReservationDetailsCardProps {
   orderId: string;
@@ -47,27 +49,21 @@ const ReservationDetailsCard: React.FC<ReservationDetailsCardProps> = ({
     <AnimationWrapper y={40} transition={{ ease: "easeOut", duration: 1 }}>
       <Card className="w-full">
         <CardHeader>
-          <CardTitle className="flex justify-between items-center">
+          <CardTitle className="flex flex-col justify-between items-start">
             <span>Reservation Details</span>
-            <div className="flex text-sm">
-              <div className="mr-2">
-                {status === "Pending" || status === "Check" ? (
-                  <span className="text-yellow-500 border border-yellow-500 rounded-lg p-1">
-                    {status}
-                  </span>
-                ) : status === "Success" ? (
-                  <span className="text-greenr border border-greenr rounded-lg p-1">
-                    {status}
-                  </span>
-                ) : status === "Cancelled" ||
-                  status === "Rejected" ||
-                  status === "Expired" ? (
-                  <span className="text-red-500 border border-red-500 rounded-lg p-1">
-                    {status}
-                  </span>
-                ) : null}
-              </div>
+            <div className="flex w-full text-sm mt-2 justify-between items-center">
               <span className="text-sm font-normal">Booking ID: {orderId}</span>
+
+              <div>
+                {status && (
+                  <span
+                    className={`${getStatusStyle(
+                      status
+                    )} border rounded-lg p-1`}>
+                    {getStatusLabel(status)}
+                  </span>
+                )}
+              </div>
             </div>
           </CardTitle>
         </CardHeader>
