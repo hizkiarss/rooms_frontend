@@ -156,12 +156,6 @@ const Page: React.FC = () => {
                                     </div>
                                 ))}
 
-                                {/* Forgot password link */}
-                                <button type="button" className="text-end font-semibold mt-1 text-xs md:text-sm">
-                                    Forgot password?
-                                </button>
-
-                                {/* Submit button */}
                                 <Buttons
                                     value="Sign up"
                                     className={`w-full font-semibold border border-white md:border-none rounded-md text-sm md:text-xl mt-8 md:mt-5 ${
@@ -188,7 +182,14 @@ const Page: React.FC = () => {
                         <p>Sign up with Google</p>
                     </button>
 
-                    {/* Decorative elements */}
+                    <div className="flex gap-1 items-center mt-4 mb-2 text-sm justify-end z-10">
+                        <p className={"mt-1"}>Already have an account?</p>
+                        <button onClick={() => router.push('/login')}
+                                className={"font-semibold p-1 rounded-lg hover:bg-greenr hover:text-white  transition duration-200"}>
+                            Login
+                        </button>
+                    </div>
+
                     <div className="hidden md:block absolute bottom-0 right-0 w-[300px] h-[300px] overflow-hidden">
                         <div className="absolute -bottom-40 -right-28 w-[300px] h-[300px]">
                             <Image src={circle_png} alt="circle.png"/>
@@ -206,6 +207,7 @@ const Page: React.FC = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

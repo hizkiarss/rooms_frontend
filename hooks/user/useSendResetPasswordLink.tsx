@@ -21,12 +21,6 @@ export function useSendResetPasswordLink() {
             console.log(response.sendResetPasswordLink);
             return response.sendResetPasswordLink;
         }
-        // // onSuccess: () => {
-        // //     console.log( "User information updated successfully");
-        // // },
-        // onError: (error) => {
-        //     console.error("Failed to update user information:", error);
-        // },
 
     })
 }
