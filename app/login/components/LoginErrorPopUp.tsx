@@ -2,14 +2,11 @@
 import React, {useEffect, useState} from 'react';
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import Buttons from "@/components/Buttons";
 
@@ -43,7 +40,6 @@ const ErrorPopUp: React.FC<Props> = ({errorMessage, isOpen, onClose}) => {
 
     return (
         <AlertDialog open={isOpen} onOpenChange={onClose}>
-            {/*<AlertDialogTrigger>Open</AlertDialogTrigger>*/}
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle className={"text-2xl mb-4 "}>{title}</AlertDialogTitle>
