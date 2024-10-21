@@ -13,6 +13,8 @@ export const useCreateTransaction = () => {
   return useMutation<string, Error, TransactionRequest>({
     mutationFn: async (input: TransactionRequest) => {
       const token = session?.accessToken;
+      console.log("ini token transaksi", token);
+      console.log("ini isi data session", session);
       graphqlClient.setHeaders({
         Authorization: `Bearer ${token}`,
       });
