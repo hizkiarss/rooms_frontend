@@ -24,9 +24,6 @@ const TransactionByIdComponent: React.FC = () => {
       const response = await axios.post("http://localhost:8080/graphql", {
         query,
       });
-
-      //setData(response.);
-      console.log("ini response.data ", response.data);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
