@@ -7,6 +7,8 @@ import DeletePhoto from "./components/delete-photo/DeletePhoto";
 import GeneralDetailsByName from "@/app/dashboard/rooms/update-room/components/general-details/GeneralDetailsByName";
 import Buttons from "@/components/Buttons"
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
+import AddPhotoForSingleRoom
+    from "@/app/dashboard/rooms/update-room/components/add-photo-for-single-room/AddPhotoForSingleRoom";
 
 const Page = () => {
     const [isUpdateByName, setIsUpdateByName] = useState(false);
@@ -27,7 +29,7 @@ const Page = () => {
                         <p className={"mt-[2px] md:mt-2 text-xs md:text-base text-gray-400  md:ml-[2px]"}>
                             {isUpdateByName
                                 ? "Update multiple rooms of the same type at once."
-                                : "Fill this field to update your room information."}
+                                : "Change these fields to update your room information."}
                         </p>
                     </div>
 
@@ -38,7 +40,7 @@ const Page = () => {
                 <div className={'flex flex-col gap-6 md:gap-x-10'}>
                     {isUpdateByName ? <GeneralDetailsByName/> : <GeneralDetails/>}
                     <div className={"mb-6 md:mb-0 flex-col md:flex gap-3 md:gap-0"}>
-                        <AddPhoto/>
+                        {isUpdateByName ? <AddPhoto/> : <AddPhotoForSingleRoom/>}
                         <DeletePhoto/>
                     </div>
                 </div>

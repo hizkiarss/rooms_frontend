@@ -15,7 +15,7 @@ const PeakSeasonPricingForm = dynamic(
 
 const Page = () => {
     return (
-        <div className={"px-5 md:px-40 md:mt-20"}>
+        <div className={"px-5 md:px-40 md:my-20"}>
             <div className={"flex flex-col "}>
                 <PeakSeasonList />
             </div>

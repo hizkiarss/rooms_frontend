@@ -20,6 +20,7 @@ import {useAddRoomPictures} from "@/hooks/rooms/useAddRoomPictures";
 import useRoomName from "@/hooks/useRoomName";
 import {useSearchParams} from "next/navigation";
 import useSelectedProperty from "@/hooks/useSelectedProperty";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 interface FormValues {
     imageUrls: string[];
@@ -101,24 +102,28 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
                               isSubmitting,
                           }: FormikProps<FormValues>) => (
                             <Form>
-                                <div className="flex flex-wrap gap-4 mb-4">
-                                    {previewImages.map((preview, index) => (
-                                        <div key={index} className="relative">
-                                            <img
-                                                src={preview}
-                                                alt={`Preview ${index + 1}`}
-                                                className="w-24 h-24 object-cover rounded"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => removeImage(index, setFieldValue, values)}
-                                                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                                            >
-                                                <X size={16}/>
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
+
+                                {isUploading ? <LoadingAnimation/>
+
+                                    : <div className="flex flex-wrap gap-4 mb-4">
+                                        {previewImages.map((preview, index) => (
+                                            <div key={index} className="relative">
+                                                <img
+                                                    src={preview}
+                                                    alt={`Preview ${index + 1}`}
+                                                    className="w-24 h-24 object-cover rounded"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeImage(index, setFieldValue, values)}
+                                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                                                >
+                                                    <X size={16}/>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>}
+
                                 <div
                                     className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-green-500 transition"
                                     onClick={() => document.getElementById("image-input")?.click()}

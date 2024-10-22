@@ -199,7 +199,7 @@ const Page = () => {
                                        className="block text-sm font-semibold text-gray-700">Stars</label>
                                 <Field as="select" name="star"
                                        className="mt-1 block w-full px-4 py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10">
-                                    <option value="">Select Rating</option>
+                                    <option value="">Select Star</option>
                                     <option value="1">1 Star</option>
                                     <option value="2">2 Stars</option>
                                     <option value="3">3 Stars</option>

@@ -6,6 +6,9 @@ import {RoomType} from "@/types/rooms/RoomsType";
 import {useSetUnavailable} from "@/hooks/rooms/useSetUnavailable";
 import {useSetAvailable} from "@/hooks/rooms/useSetAvailable";
 import Image from 'next/image';
+import {useDeleteRoom} from "@/hooks/rooms/useDeleteRoom";
+import {useSession} from "next-auth/react";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 
 interface RoomCardsProps {
@@ -13,16 +16,19 @@ interface RoomCardsProps {
     refetch: () => void;  // Add this line
 }
 
-const RoomCards: React.FC<RoomCardsProps> = ({ data, refetch }) => {
+
+const RoomCards: React.FC<RoomCardsProps> = ({data, refetch}) => {
+    const {data: session} = useSession();
     const setUnavailableMutation = useSetUnavailable();
     const setAvailableMutation = useSetAvailable();
+    const deleteRoomMutation = useDeleteRoom()
 
     const handleAvailabilityToggle = async (room: RoomType) => {
         try {
             if (room.isAvailable) {
-                await setUnavailableMutation.mutateAsync({ roomId: room.id });
+                await setUnavailableMutation.mutateAsync({roomId: room.id});
             } else {
-                await setAvailableMutation.mutateAsync({ roomId: room.id });
+                await setAvailableMutation.mutateAsync({roomId: room.id});
             }
             refetch();
         } catch (error) {
@@ -30,8 +36,25 @@ const RoomCards: React.FC<RoomCardsProps> = ({ data, refetch }) => {
         }
     };
 
+    const handleDeleteRoom = async (roomId: string) => {
+        if (!session?.user?.email) {
+            console.error("No user email found");
+            return;
+        }
+        try {
+            await deleteRoomMutation.mutateAsync({
+                id: roomId,
+                email: session.user.email
 
-    if (!data ) {
+            });
+            refetch();
+        } catch (error) {
+            console.error("Error deleting room:", error);
+        }
+    };
+
+
+    if (!data) {
         return <div>No properties available.</div>;
     }
 
@@ -72,18 +95,19 @@ const RoomCards: React.FC<RoomCardsProps> = ({ data, refetch }) => {
                         <div className="px-4 pt-3 pb-5 flex flex-col justify-between">
 
                             <div className={""}>
-                                <div className={"flex justify-between"}>
+                                <div className={"flex flex-col  justify-between"}>
                                     <p className="font-semibold text-sm md:text-base">{room.name}</p>
-                                    <p className={"font-semibold text-sm md:text-base"}>{room.roomNumber}</p>
+                                    <p className={"text-xs md:text-sm"}>Room number : {room.roomNumber}</p>
                                 </div>
-                                <div className="grid md:grid-cols-2 gap-y-2 md:gap-y-3 mt-1 md:mt-4 text-[13px] text-xs md:text-sm">
+                                <div
+                                    className="grid md:grid-cols-2 gap-y-2 md:gap-y-3 mt-1 md:mt-4 text-[13px] text-xs md:text-sm">
                                     <div className="flex gap-2 items-center ">
                                         <Grid3X3 className={"size-3"}/>
                                         <p className="-mb-1">{room.roomArea} m²</p>
                                     </div>
                                     {room.includeBreakfast && (
                                         <div className="flex gap-2 items-center">
-                                            <Utensils size={18} className={"size-3 md:size-[18px]"} />
+                                            <Utensils size={18} className={"size-3 md:size-[18px]"}/>
                                             <p className="-mb-1">Include breakfast</p>
                                         </div>
                                     )}
@@ -112,17 +136,26 @@ const RoomCards: React.FC<RoomCardsProps> = ({ data, refetch }) => {
                                     <p className={"text-xs mt-2 md:mt-0 md:text-sm font-semibold text-green-600"}>Available</p> :
                                     <p className={"text-sm font-semibold text-red-600"}>Not available</p>}
                             </div>
-                            <div className={'flex flex-col gap-2 mt-2'}>
-                                <Buttons
-                                    value="Update room"
-                                    className="!text-[9px] !py-1 md:py-4 md:text-sm w-full h-fit"
-                                    onClick={() => window.location.href = `/dashboard/rooms/update-room?num=${room.id}&name=${room.name}`}
-                                />
+                            <div className={'flex flex-col md:gap-2 mt-2'}>
                                 <Buttons
                                     value={room.isAvailable ? "Mark Unavailable" : "Mark Available"}
-                                    className={`${room.isAvailable ? "bg-red-800 hover:text-red-800 !border-red-800" : "bg-greenr"} !text-[9px] md:!text-sm h-fit w-full !py-1 md:py-4 `}
+                                    className={`${room.isAvailable ? "bg-red-600 hover:text-red-600 !border-red-600" : "bg-greenr"} !text-[9px] md:!text-sm h-fit w-full !py-1 md:!py-2 `}
                                     onClick={() => handleAvailabilityToggle(room)}
                                 />
+                                {deleteRoomMutation.isPending ? <LoadingAnimation/>
+                                    :
+                                    <div className={"flex flex-col md:flex-row gap-1 md:gap-2 mt-2"}>
+                                        <Buttons value={"Delete room"} className={"md:!text-sm !text-[9px] !py-1 md:!py-2 w-full"}
+                                                 onClick={() => handleDeleteRoom(room.id)}/>
+
+                                        <Buttons
+                                            value="Update room"
+                                            className="md:!text-sm !text-[9px] !py-1 md:!py-2 w-full "
+                                            onClick={() => window.location.href = `/dashboard/rooms/update-room?num=${room.id}&name=${room.name}`}
+                                        />
+                                    </div>}
+
+
                             </div>
 
                         </div>

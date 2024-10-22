@@ -31,9 +31,7 @@ export const useCurrentlyOccupiedRooms = (propertyId: string) => {
           ) {
             return null;
           }
-          console.error("Error fetching occupied room:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

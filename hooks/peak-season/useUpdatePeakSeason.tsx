@@ -9,7 +9,7 @@ interface UpdatePeakSeasonInput {
     name: string
     startDate: string;
     endDate: string;
-    markupValue: number;
+    markUpValue: number;
     markupType: string;
 }
 

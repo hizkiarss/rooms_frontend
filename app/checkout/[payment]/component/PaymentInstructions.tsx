@@ -9,7 +9,6 @@ const PaymentInstructions: React.FC = () => {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    // You can add a toast notification here to indicate successful copy
   };
 
   return (

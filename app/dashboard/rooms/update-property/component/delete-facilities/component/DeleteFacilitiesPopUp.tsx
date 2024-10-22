@@ -1,16 +1,11 @@
 "use client"
 import React, {useState, useMemo, useEffect} from 'react';
-import {ArrowRight, X} from "lucide-react";
-import {useAddPropertiesFacilities} from "@/hooks/properties/useAddPropertiesFacilities";
 import {getAmenityLabel} from "@/utils/FacilityLogoUtils";
 import Buttons from "@/components/Buttons";
-import usePropertyId from "@/hooks/usePropertyId";
-import {useGetPropertyBySlug} from "@/hooks/properties/useGetPropertyBySlug";
 import {Checkbox} from "@/components/ui/checkbox"
 
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -19,15 +14,13 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import {Button} from "@/components/ui/button"
 import {PropertyDetailType} from "@/types/properties/PropertiesDetail";
-import {FacilitiesType} from "@/types/facilities/FacilitiesType";
 import {PropertyFacility} from "@/types/property-facility/PropertyFacilityType";
-import {map} from "d3-array";
 import {useDeletePropertyFacilities} from "@/hooks/properties/useDeletePropertyFacilites";
 import useSelectedProperty from "@/hooks/useSelectedProperty";
 import {useGetPropertyById} from "@/hooks/properties/useGetPropertyById";
 import {useToast} from "@/hooks/use-toast";
+import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
 
 const facilities = [
     {id: "1", name: "High-speed internet access"},
@@ -42,7 +35,6 @@ const facilities = [
     {id: "11", name: "Hot Tub"},
 
 ];
-
 
 const DeleteFacilitiesPopUp: React.FC = () => {
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
@@ -71,7 +63,6 @@ const DeleteFacilitiesPopUp: React.FC = () => {
                     id: selectedProperty || "1",
                     facilitiesId: selectedFacilities
                 });
-                await refetch();
                 setSelectedFacilities([]);
                 toast({
                     title: "Success",
@@ -109,27 +100,33 @@ const DeleteFacilitiesPopUp: React.FC = () => {
                                     <p className={"text-sm md:text-base text-gray-400 font-medium"}> Remove these
                                         facilities and keep your listing fresh</p>
                                 </AlertDialogTitle>
-                                <div className={"flex flex-col md:grid grid-cols-2 gap-y-3 gap-x-8 "}>
-                                    {existingFacility.length > 0 ? (
-                                        existingFacility.map((facility, index) => (
+
+                                {existingFacility.length > 0 ? (
+                                    <div className={"flex flex-col md:grid grid-cols-2 gap-y-3 gap-x-8 "}>
+                                        {existingFacility.map((facility, index) => (
                                             <div key={index} className="flex items-center space-x-2">
-                                                <Checkbox className={"size-5"}
-                                                          checked={selectedFacilities.includes(facility.id)}
-                                                          onCheckedChange={() => handleToggle(facility.id)}
-                                                          id={facility.id}/>
+                                                <Checkbox
+                                                    className={"size-5"}
+                                                    checked={selectedFacilities.includes(facility.id)}
+                                                    onCheckedChange={() => handleToggle(facility.id)}
+                                                    id={facility.id}
+                                                />
                                                 <label
-                                                    htmlFor="terms"
+                                                    htmlFor={facility.id}
                                                     className="text-sm md:text-base flex items-center gap-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                                 >
                                                     {getAmenityLabel(facility.name)}
                                                     {facility.name}
                                                 </label>
                                             </div>
-                                        ))
-                                    ) : (
-                                        <p>Your guest must be so lucky! You already have them all!</p>
-                                    )}
-                                </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className={"flex items-center justify-center w-full"}>
+                                        <EmptyDataAnimation message={"There is no facilities yet"} height={200}
+                                                            width={200}/>
+                                    </div>
+                                )}
                             </div>
 
 

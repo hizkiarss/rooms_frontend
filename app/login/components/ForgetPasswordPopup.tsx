@@ -14,6 +14,7 @@ import Buttons from "@/components/Buttons"
 import {useSendResetPasswordLink} from "@/hooks/user/useSendResetPasswordLink";
 import EmailSentPopUp from "@/app/user-profile/components/EmailSentPopUp";
 import LoadingAnimation from "@/components/animations/LoadingAnimation";
+import {useSendForgetPasswordLink} from "@/hooks/user/useSendForgetPasswordLink";
 
 interface Props {
     isOpen: boolean;
@@ -26,14 +27,14 @@ const ForgetPasswordPopup: React.FC<Props> = ({isOpen, onClose, setIsPageLoading
     const [emailSent, setEmailSent] = useState(false);
     const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
 
-    const {mutate: sendResetPasswordLink, isPending, isError, error} = useSendResetPasswordLink();
+    const {mutate: sendForgetPasswordLink, isPending, isError, error} = useSendForgetPasswordLink();
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
     };
 
     const handleChangePasswordClick = () => {
-        sendResetPasswordLink(
+        sendForgetPasswordLink(
             {email},
             {
                 onSuccess: () => {

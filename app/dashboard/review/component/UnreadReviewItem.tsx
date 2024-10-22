@@ -56,14 +56,11 @@ const UnReadReviewItem: React.FC<UnReadReviewProps> = ({
       setReadReview({ reviewId });
       setShowAnimation(true);
     } else {
-      console.error("Review ID is missing");
     }
   };
-  console.log("bangke emang", propertyId);
   const router = useRouter();
 
   const handleDialogClose = () => {
-    console.log("Dialog has been closed.");
     onRefresh();
   };
 

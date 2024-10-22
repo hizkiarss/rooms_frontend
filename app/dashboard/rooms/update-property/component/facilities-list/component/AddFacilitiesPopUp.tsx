@@ -43,7 +43,6 @@ const facilities = [
 ];
 
 
-
 const UpdatePropertyAddFacilitiesPopUp: React.FC = () => {
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
     const addPropertiesFacilitiesMutation = useAddPropertiesFacilities();

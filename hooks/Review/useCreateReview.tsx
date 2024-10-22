@@ -1,9 +1,7 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { graphqlClient } from "../graphQL/graphqlClient";
-
-import { CREATE_REVIEW, SAVE_PAYMENT_INITIAL } from "../graphQL/mutations";
-import { PaymentInitial } from "@/types/payment/PaymentInitial";
+import { CREATE_REVIEW } from "../graphQL/mutations";
 import { ReviewRequest } from "@/types/review/ReviewInputType";
 import { useSession } from "next-auth/react";
 
@@ -17,9 +15,11 @@ export const useCreateReview = () => {
       graphqlClient.setHeaders({
         Authorization: `Bearer ${token}`,
       });
+
       const { createReview } = await graphqlClient.request(CREATE_REVIEW, {
         input,
       });
+
       return createReview;
     },
     onSuccess: () => {

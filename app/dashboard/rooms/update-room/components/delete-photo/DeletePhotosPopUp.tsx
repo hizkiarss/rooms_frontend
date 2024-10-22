@@ -129,7 +129,7 @@ const UpdateRoomDeletePhotoPopUp: React.FC = () => {
                     <DrawerFooter className={"flex flex-row w-full justify-end items-center mb-3 p-1 md:p-4 md:mb-6"}>
                         <Buttons
                             value={"Delete"}
-                            className={"w-fit"}
+                            className={"w-fit md:text-base text-sm"}
                             onClick={handleDelete}
                             disabled={deleteRoomPicturesMutation.isPending}
                         />

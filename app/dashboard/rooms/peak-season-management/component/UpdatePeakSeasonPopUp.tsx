@@ -14,7 +14,6 @@ import * as Yup from "yup";
 import {useUpdatePeakSeason} from "@/hooks/peak-season/useUpdatePeakSeason";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
-import {isError} from "node:util";
 import {useToast} from "@/hooks/use-toast";
 
 interface Props {
@@ -53,7 +52,7 @@ const UpdatePeakSeasonPopUp: React.FC<Props> = ({isOpen, onClose, peakSeasonId})
                 name: values.name,
                 startDate: values.startDate,
                 endDate: values.endDate,
-                markupValue: parseFloat(values.markUpValue),
+                markUpValue: parseFloat(values.markUpValue),
                 markupType: values.markUpType,
             });
             resetForm();

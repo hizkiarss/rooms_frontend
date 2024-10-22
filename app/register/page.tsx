@@ -12,6 +12,7 @@ import {Formik, Form, Field, ErrorMessage, FormikHelpers} from 'formik';
 import {useRegister} from "@/hooks/user/useRegister";
 import WaitingForVerificationPopUp from "@/components/WaitingForVerificationPopUp";
 import EmailAlreadyUsedPopUp from "@/components/EmailAlreadyUsedPopUp";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 interface FormValues {
     email: string;
@@ -42,7 +43,7 @@ const Page: React.FC = () => {
         username: Yup.string().required("Username is required"),
     });
 
-    const {mutate: registerUser} = useRegister();
+    const {mutate: registerUser, isPending} = useRegister();
 
     const handleSubmit = async (values: FormValues, formikHelpers: FormikHelpers<FormValues>) => {
         setError(null);
@@ -56,13 +57,10 @@ const Page: React.FC = () => {
                 mobileNumber: values.mobileNumber,
             }, {
                 onSuccess: (data) => {
-                    console.log("Registration successful", data);
                     setIsPopupOpen(true);
                 },
                 onError: (error: any) => {
-                    console.error("Registration failed", error);
                     if (error.message.includes("Email is already in use")) {
-                        // formikHelpers.setFieldError("email", error.message);
                         setIsPopupOpen(false);
                         setIsEmailAlreadyUsed(true)
                     } else {
@@ -125,7 +123,6 @@ const Page: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Right side (form) */}
                 <div
                     className="col-span-1 flex flex-col md:justify-center px-12 pt-16 md:pt-0 pb-12 md:pb-0 md:px-32 relative rounded-3xl bg-white bg-opacity-90">
                     <Formik
@@ -156,16 +153,19 @@ const Page: React.FC = () => {
                                     </div>
                                 ))}
 
-                                <Buttons
-                                    value="Sign up"
-                                    className={`w-full font-semibold border border-white md:border-none rounded-md text-sm md:text-xl mt-8 md:mt-5 ${
-                                        !dirty || !isValid || isLoading
-                                            ? 'bg-opacity-90 cursor-not-allowed'
-                                            : 'hover:bg-white text-greenr border border-greenr'
-                                    }`}
-                                    type="submit"
-                                    disabled={!dirty || !isValid || isLoading}
-                                />
+
+                                {isPending ? <div className={"py-3"}><LoadingAnimation/></div>
+                                    : <Buttons
+                                        value="Sign up"
+                                        className={`w-full font-semibold border border-white md:border-none rounded-md text-sm md:text-xl mt-8 md:mt-5 ${
+                                            !dirty || !isValid || isLoading
+                                                ? 'bg-opacity-90 cursor-not-allowed'
+                                                : 'hover:bg-white text-greenr border border-greenr'
+                                        }`}
+                                        type="submit"
+                                        disabled={!dirty || !isValid || isLoading}
+                                    />}
+
                             </Form>
                         )}
                     </Formik>
@@ -173,7 +173,6 @@ const Page: React.FC = () => {
 
                     <p className="font-semibold text-xs md:text-base text-center mt-[3px] md:mt-2">or</p>
 
-                    {/* Google Sign In button */}
                     <button
                         onClick={handleSubmitGoogle}
                         className="w-full font-semibold rounded-md text-sm md:text-lg mt-[3px] md:mt-2 border border-greenr flex items-center justify-center gap-2 p-2"

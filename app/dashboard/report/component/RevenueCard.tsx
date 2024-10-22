@@ -5,8 +5,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useRevenueByPropertyId } from "@/hooks/report/useRevenueByPropertyId";
 import { useRevenueWithTaxByPropertyId } from "@/hooks/report/useRevenueWithTaxByPropertyId";

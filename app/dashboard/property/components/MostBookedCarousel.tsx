@@ -72,9 +72,9 @@ const MostBookedCarousel = () => {
 
                                 <div className="px-4 pt-3 pb-5 flex flex-col justify-between">
                                     <div>
-                                        <div className="flex justify-between">
-                                            <p className="font-semibold">{room.name}</p>
-                                            <p className="font-semibold">{room.roomNumber}</p>
+                                        <div className={"flex flex-col  justify-between"}>
+                                            <p className="font-semibold text-sm md:text-base">{room.name}</p>
+                                            <p className={"text-xs md:text-sm"}>Room number : {room.roomNumber}</p>
                                         </div>
                                         <div className="grid  grid-cols-2 gap-y-3 mt-4 text-xs md:text-[13px]">
                                             <div className="flex gap-2 items-center text-sm">
