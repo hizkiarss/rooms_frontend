@@ -23,7 +23,6 @@ export async function middleware(request: NextRequest) {
     if (!hasTenantRole) {
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
-    console.log("User is TENANT, allowing access to dashboard");
     return NextResponse.next();
   }
 
