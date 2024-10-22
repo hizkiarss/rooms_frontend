@@ -30,16 +30,15 @@ import {useToast} from "@/hooks/use-toast";
 
 const facilities = [
     {id: "1", name: "High-speed internet access"},
-    {id: "3", name: "Fitness Center"},
-    {id: "4", name: "Swimming Pool"},
-    {id: "5", name: "Spa and Wellness"},
-    {id: "6", name: "Airport Shuttle"},
-    {id: "7", name: "Childcare Services"},
-    {id: "8", name: "Disability Support"},
-    {id: "9", name: "Bar/Lounge"},
-    {id: "10", name: "24-Hour Front Desk"},
-    {id: "11", name: "Hot Tub"},
-
+    {id: "2", name: "Fitness Center"},
+    {id: "3", name: "Swimming Pool"},
+    {id: "4", name: "Spa and Wellness"},
+    {id: "5", name: "Airport Shuttle"},
+    {id: "6", name: "Childcare Services"},
+    {id: "7", name: "Disability Support"},
+    {id: "8", name: "Bar/Lounge"},
+    {id: "9", name: "24-Hour Front Desk"},
+    {id: "10", name: "Hot Tub"},
 ];
 
 
