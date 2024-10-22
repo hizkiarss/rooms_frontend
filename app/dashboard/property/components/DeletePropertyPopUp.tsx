@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import Buttons from "@/components/Buttons";
 import {useDeleteProperties} from "@/hooks/properties/useDeleteProperties";
+import useSelectedProperty from "@/hooks/useSelectedProperty";
 
 interface Props {
     open: boolean;
@@ -19,10 +20,11 @@ interface Props {
 
 const DeletePropertyPopUp: React.FC<Props> = ({open, onClose}) => {
     const deletePropertyMutation = useDeleteProperties();
-
+    const propertyid = useSelectedProperty()
+    const propertyId = propertyid as unknown as string
     const handleDelete = () => {
         deletePropertyMutation.mutate(
-            {id: "45"},
+            {id: propertyId },
             {
                 onSuccess: () => {
                     console.log('Property deleted successfully');

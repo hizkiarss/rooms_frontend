@@ -20,7 +20,7 @@ const amenities = [
 ];
 
 
-const Overview = ({ data }: { data: PropertyDetailType }) =>
+const Overview = ({data}: { data: PropertyDetailType }) =>
     <div id="overview" className="my-5 scroll-mt-20  pb-4 border-b border-slate-300 mb-8 ">
         <div className="md:flex justify-between items-center  ">
             <div>
@@ -35,7 +35,7 @@ const Overview = ({ data }: { data: PropertyDetailType }) =>
 
                 <h1 className={"font-semibold text-2xl md:text-4xl"}>{data.name}</h1>
                 <div className={"flex items-end gap-3 text-[15px]"}>
-                <p className="font-semibold text-sm md:text-xl text-gray-500">
+                    <p className="font-semibold text-sm md:text-xl text-gray-500">
                         <span className="text-sm md:text-xl text-black -translate-x-1">{data.averageRating}</span>
                         /10
                     </p>
@@ -48,11 +48,17 @@ const Overview = ({ data }: { data: PropertyDetailType }) =>
             </div>
             <div className={"flex md:block justify-between items-center mt-3 md:mt-0"}>
                 <div className={"flex flex-col text-xs  md:text-end md:justify-end text-slate-500 md:text-sm "}>
-                    <p className={""}>Starts from</p>
-                    <p className={"font-semibold text-base md:text-2xl text-red-600"}>IDR 1.745.868</p>
-                    <p className={""}>/room/night</p>
+                    {/*<p className={""}>Starts from</p>*/}
+                    {/*<p className={"font-semibold text-base md:text-2xl text-red-600"}>IDR 1.745.868</p>*/}
+                    {/*<p className={""}>/room/night</p>*/}
                 </div>
-                <Buttons value={"See rooms"} className={"text-xs md:text-lg h-fit w-fit md:w-full  mt-2 border-2 "}></Buttons>
+                <Buttons value={"See rooms"} className={"text-xs md:text-lg h-fit w-fit md:w-full  mt-2 border-2 "}
+                         onClick={() => {
+                             const element = document.getElementById("rooms");
+                             if (element) {
+                                 element.scrollIntoView({behavior: "smooth"});
+                             }
+                         }}/>
 
             </div>
 
@@ -62,7 +68,8 @@ const Overview = ({ data }: { data: PropertyDetailType }) =>
             <div id="amenities" className=" scroll-mt-20 col-span-2  ">
                 <div className="">
                     <h2 className={"font-semibold text-lg md:text-2xl "}>Popular Amenities</h2>
-                    <div className={"grid grid-cols-2 text-xs md:text-base md:grid-cols-3 w-full gap-x-6 gap-y-3 md:gap-y-5 mt-6"}>
+                    <div
+                        className={"grid grid-cols-2 text-xs md:text-base md:grid-cols-3 w-full gap-x-6 gap-y-3 md:gap-y-5 mt-6"}>
                         {data.propertyFacilities.map((amenity, index) => (
                             <div key={index} className="flex items-center space-x-2">
                                 <span className={""}>{getAmenityLabel(amenity.facilities.name)}</span>
@@ -74,14 +81,15 @@ const Overview = ({ data }: { data: PropertyDetailType }) =>
             </div>
 
 
-            <div className={"grid grid-cols-2 md:flex justify-between w-[300px] gap-8 border border-slate-300 md:w-fit md:h-fit py-4 px-4 md:px-12 rounded-xl col-span-1 "}>
+            <div
+                className={"grid grid-cols-2 md:flex justify-between w-[300px] gap-8 border border-slate-300 md:w-fit md:h-fit py-4 px-4 md:px-12 rounded-xl col-span-1 "}>
                 <div className={"flex  flex-col items-center"}>
                     <LogIn className={""} size={'30'}/>
                     <p className={"font-semibold text-sm md:text-xl"}>
                         Check-in time
                     </p>
                     <p className={"text-base md:text-xl "}>
-                        {data.checkInTime.slice(0,5)}
+                        {data.checkInTime.slice(0, 5)}
                     </p>
                 </div>
 
