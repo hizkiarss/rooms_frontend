@@ -1,7 +1,7 @@
 "use client";
 
 import { PaymentProofType } from "@/types/payment-proof/PaymentProofType";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { graphqlClient } from "../graphQL/graphqlClient";
 import { GET_CHECK_PAYMENT_PROOF_BY_PROPERTY_ID } from "../graphQL/queries";
@@ -24,7 +24,6 @@ const useCheckPaymentProofByPropertyId = () => {
         );
         return checkPaymentProofByPropertyId;
       } catch (error) {
-        console.error("Error fetching data:", error);
         throw error;
       }
     },
