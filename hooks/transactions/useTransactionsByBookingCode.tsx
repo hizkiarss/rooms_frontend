@@ -1,15 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  GET_TRANSACTIONS,
-  GET_TRANSACTIONS_BY_BOOKING_CODE,
-  GET_TRANSACTIONS_BY_PROPERTY_ID,
-} from "../graphQL/queries";
+import { GET_TRANSACTIONS_BY_BOOKING_CODE } from "../graphQL/queries";
 import { graphqlClient } from "../graphQL/graphqlClient";
 import { TransactionsType } from "@/types/transactions/TransactionsType";
-import useSelectedProperty from "../useSelectedProperty";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { TransactionDetailType } from "@/types/transactions/TransactionDetailType";
 
@@ -23,11 +17,11 @@ export const useTransactionsByBookingCode = (bookingCode: string) => {
       }
 
       try {
-        console.log("Fetching transactions for booking code:", bookingCode);
         const token = session?.accessToken;
         graphqlClient.setHeaders({
           Authorization: `Bearer ${token}`,
         });
+
         const response = await graphqlClient.request(
           GET_TRANSACTIONS_BY_BOOKING_CODE,
           { bookingCode }
@@ -36,6 +30,7 @@ export const useTransactionsByBookingCode = (bookingCode: string) => {
         if (!response || !response.transactionsByBookingCode) {
           throw new Error("No transactions data in the response");
         }
+
         response.transactionsByBookingCode.transactionDetails =
           response.transactionsByBookingCode.transactionDetails.map(
             (detail: TransactionDetailType) => ({
@@ -53,9 +48,7 @@ export const useTransactionsByBookingCode = (bookingCode: string) => {
           ) {
             return null;
           }
-          console.error("Error fetching transaction:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

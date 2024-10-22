@@ -1,4 +1,3 @@
-import Buttons from "@/components/Buttons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,8 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { PaymentProofType } from "@/types/payment-proof/PaymentProofType";
-import { PaymentMethodType } from "@/types/transactions/PaymentMethodType";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCancelTransaction } from "@/hooks/transactions/useCancelTransaction";
@@ -22,8 +19,9 @@ import SubmitSuccessAnimation from "@/components/animations/SubmitSuccessAnimati
 import OrderListCardHeader from "./OrderListCardHeader";
 import { RoomType } from "@/types/rooms/RoomsType";
 import { TransactionDetailType } from "@/types/transactions/TransactionDetailType";
-import { Hotel, Moon } from "lucide-react";
 import OrderListCardBody from "./OrderListCardBody";
+import { useSession } from "next-auth/react";
+import { useFindUserbyEmail } from "@/hooks/user/useFindUserbyEmail";
 
 interface OrderListProps {
   bookingCode: string;
@@ -38,6 +36,7 @@ interface OrderListProps {
   transactionDetails: TransactionDetailType;
   review: ReviewType[];
   room: RoomType;
+  propertyId: string;
 }
 
 const OrderListItem: React.FC<OrderListProps> = ({
@@ -53,6 +52,7 @@ const OrderListItem: React.FC<OrderListProps> = ({
   transactionDetails,
   review,
   room,
+  propertyId,
 }) => {
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openReviewDialog, setOpenReviewDialog] = useState(false);
@@ -62,10 +62,15 @@ const OrderListItem: React.FC<OrderListProps> = ({
   const { mutate: cancelTransaction } = useCancelTransaction();
   const router = useRouter();
 
-  const handleDialogClose = () => {
-    console.log("Dialog has been closed.");
+  const { data: session } = useSession();
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useFindUserbyEmail(session?.user?.email);
 
-    onRefresh(); // Assuming you have an `onRefresh` function to call
+  const handleDialogClose = () => {
+    onRefresh();
   };
 
   const handlePaymentGateway = () => {
@@ -84,7 +89,6 @@ const OrderListItem: React.FC<OrderListProps> = ({
     if (bookingCode) {
       cancelTransaction({ bookingCode });
     } else {
-      console.error("Booking code is missing");
     }
     setOpenConfirmDialog(false);
   };
@@ -93,12 +97,7 @@ const OrderListItem: React.FC<OrderListProps> = ({
     setOpenConfirmDialog(false);
   };
 
-  const handleAddReview = () => {
-    // Implement the logic to add a review
-    console.log("Add review clicked for booking:", bookingCode);
-    // You might want to open a review dialog or navigate to a review page
-    // router.push(`/add-review/${bookingCode}`);
-  };
+  const handleAddReview = () => {};
 
   const endDatePrimitive: string =
     transactionDetails?.endDate?.toString() || "";
@@ -141,7 +140,6 @@ const OrderListItem: React.FC<OrderListProps> = ({
     };
 
     checkEndDate();
-    // Re-check every day
     const interval = setInterval(checkEndDate, 24 * 60 * 60 * 1000);
 
     return () => clearInterval(interval);
@@ -255,8 +253,8 @@ const OrderListItem: React.FC<OrderListProps> = ({
           </DialogTitle>
 
           <UserReviewForm
-            userId="1"
-            propertyId="1"
+            userId={user?.id || ""}
+            propertyId={propertyId}
             bookingCode={bookingCode}
             onSubmitSuccess={() => {
               setOpenReviewDialog(false);

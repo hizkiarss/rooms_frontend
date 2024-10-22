@@ -24,7 +24,6 @@ const ReplyReviewForm: React.FC<ReplyReviewFormProps> = ({
 }) => {
   const replyReview = useReplyReview();
   const [isSubmitted, setIsSubmitted] = useState(false);
-  console.log("gamasuk anjay nih", propertyId);
   const initialValues: FormValues = {
     reply: "",
   };
@@ -43,11 +42,9 @@ const ReplyReviewForm: React.FC<ReplyReviewFormProps> = ({
         reply: values.reply,
         propertyId,
       });
-      console.log("ini nih proprtyIdnya", propertyId);
       setIsSubmitted(true);
       onSubmitSuccess();
     } catch (error) {
-      console.error("Failed to submit:", error);
     } finally {
       setSubmitting(false);
     }

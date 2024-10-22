@@ -27,9 +27,6 @@ export const useRevenueByPropertyId = (
           startDate: startDateISO,
           endDate: endDateISO,
         });
-        console.log("ini property", propertyId);
-        console.log("ini startDate", startDate);
-        console.log("ini endDate", endDate);
         if (!response || !response.revenueByProperty) {
           throw new Error("No Revenue data in the response");
         }
@@ -42,9 +39,7 @@ export const useRevenueByPropertyId = (
           ) {
             return null;
           }
-          console.error("Error fetching revenue:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

@@ -28,9 +28,7 @@ export const useMostBookedRooms = (propertyId: string) => {
           ) {
             return null;
           }
-          console.error("Error fetching transactions:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

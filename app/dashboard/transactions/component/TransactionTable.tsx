@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   ColumnFiltersState,
@@ -32,7 +31,6 @@ import {
 } from "@/components/ui/table";
 import { columns } from "./TransactionColums";
 import { TransactionFilter } from "./TransactionFilter";
-import { useTransactions } from "@/hooks/transactions/useTransactions";
 import { useTransactionsByPropertyId } from "@/hooks/transactions/useTransactionsByPropertyId";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
@@ -40,7 +38,6 @@ import useSelectedDate from "@/hooks/useSelectedDate";
 import DateRangePicker from "../../component/DateRangePicker";
 
 const TransactionTable = () => {
-  //const { data, isLoading, error } = useTransactions();
   const { selectedDates } = useSelectedDate();
   const currentYear = new Date().getFullYear();
   const { data, isLoading, error } = useTransactionsByPropertyId(
@@ -51,7 +48,6 @@ const TransactionTable = () => {
       ? new Date(selectedDates.endDate)
       : new Date(currentYear, 11, 31)
   );
-  console.log("ini datanya: ", data);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -105,7 +101,6 @@ const TransactionTable = () => {
             value={globalFilter ?? ""}
             onChange={(event) => {
               const value = event.target.value;
-              console.log("Global filter value:", value);
               setGlobalFilter(value);
             }}
             className="max-w-sm"

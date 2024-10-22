@@ -32,7 +32,7 @@ const ReviewCard: React.FC<{ review: ReviewType }> = ({ review }) => {
             <p className={"font-semibold mt-2 "}>
               {review.users?.username || "username"}
             </p>
-            <p className="mt-3 text-sm mb-4">&quot; {review.feedback} </p>
+            <p className="mt-3 text-sm mb-4">{review.feedback} </p>
           </div>
           <p className={"text-end text-sm font-semibold"}>{formattedDate}</p>{" "}
         </div>

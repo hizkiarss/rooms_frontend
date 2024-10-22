@@ -57,6 +57,11 @@ const DesktopNavMenu: React.FC = () => {
               <DropdownMenuItem onClick={() => router.push("/user-profile")}>
                 Account
               </DropdownMenuItem>
+              {isTenant && (
+                <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                  Dashboard
+                </DropdownMenuItem>
+              )}
 
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignout}>

@@ -12,7 +12,6 @@ const LatestTransactionsCard: React.FC = () => {
   const { data: latestTransactions } = useLatestTransactionsByPropertyId(
     selectedProperty || ""
   );
-  console.log("ini transaksinya", latestTransactions);
   return (
     <AnimationWrapper y={40} transition={{ ease: "easeOut", duration: 1 }}>
       <Card>

@@ -23,10 +23,6 @@ const TotalRoomsCard: React.FC = () => {
         ) : (
           <div className="text-2xl font-bold">{total}</div>
         )}
-
-        {/* <p className="text-xs text-muted-foreground">
-    +180.1% from last month
-  </p> */}
       </CardContent>
     </Card>
   );
