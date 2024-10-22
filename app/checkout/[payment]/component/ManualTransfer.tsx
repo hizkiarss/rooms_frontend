@@ -221,19 +221,3 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
 };
 
 export default ManualTransfer;
-{
-  /* <div className="flex mt-4">
-            <div className="w-6/12">
-              <div className="flex-col">
-                <div>Account Name</div>
-                <div>PT. Kuki Sukses Makmur</div>
-              </div>
-            </div>
-            <div className="w-6/12">
-              <div className="flex-col">
-                <div>Account Number</div>
-                <div>312321312312312</div>
-              </div>
-            </div>
-          </div> */
-}
