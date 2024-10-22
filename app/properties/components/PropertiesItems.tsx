@@ -8,17 +8,8 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
 import {getRateLabel} from "@/utils/rateutils";
-import {Car, Utensils} from "lucide-react";
+import {Utensils} from "lucide-react";
 import {useGetFilteredProperties} from "@/hooks/properties/useGetFilteredProperties";
 import useSearchInput from "@/hooks/useSearchInput";
 import {useSearchParams} from "next/navigation";
@@ -29,7 +20,6 @@ import Image from "next/image";
 import Buttons from "@/components/Buttons";
 import AnimationWrapper from "@/components/animations/AnimationWrapper";
 
-// import {useRouter} from "next/router";
 
 interface PropertiesItemsProps {
     setIsPageLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -254,12 +244,12 @@ const PropertiesItems: React.FC<PropertiesItemsProps> = ({
                                         <div className="flex gap-2 items-center mt-3">
                                             <div className="bg-greenr text-white rounded-sm p-1 px-2">
                                                 <p className="text-sm">
-                                                    <span className="font-semibold text-lg">9.5</span>/10
+                                                    <span className="font-semibold text-lg">{propertyItem.property.averageRating.toString()}</span>/10
                                                 </p>
                                             </div>
                                             <div className="flex mt-[3px] gap-1 text-[14px]">
-                                                <p className="font-semibold">{getRateLabel("9.5")}</p>
-                                                <p className="mt-[1px]">(2.801 reviews)</p>
+                                                <p className="font-semibold">{getRateLabel(propertyItem.property.averageRating.toString())}</p>
+                                                <p className="mt-[1px]">{propertyItem.property.totalReview} review</p>
                                             </div>
                                         </div>
 
