@@ -44,7 +44,7 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
   useEffect(() => {
     const calculateTimeLeft = () => {
       const createdAtDate = new Date(createdAt);
-      const expirationDate = new Date(createdAtDate.getTime() + 60 * 60 * 1000); // 1 hour
+      const expirationDate = new Date(createdAtDate.getTime() + 60 * 60 * 1000);
       const now = new Date();
       const difference = expirationDate.getTime() - now.getTime();
 
@@ -74,9 +74,7 @@ const ManualTransfer: React.FC<ManualTransferProps> = ({
   };
 
   const handleDialogClose = () => {
-    console.log("Dialog has been closed.");
-
-    router.push("/my-order");
+    router.push("/user-profile");
   };
 
   return (
