@@ -25,6 +25,7 @@ export const useTotalTransactionsByPropertyId = (
         graphqlClient.setHeaders({
           Authorization: `Bearer ${token}`,
         });
+
         const response = await graphqlClient.request(
           TOTAL_TRANSACTIONS_BY_PROPERTY_ID,
           {
@@ -33,6 +34,7 @@ export const useTotalTransactionsByPropertyId = (
             endDate: endDateISO,
           }
         );
+
         if (!response || !response.totalTransactionsByPropertyId) {
           throw new Error("No total transaction data in the response");
         }
@@ -45,9 +47,7 @@ export const useTotalTransactionsByPropertyId = (
           ) {
             return null;
           }
-          console.error("Error fetching total transactions:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }
