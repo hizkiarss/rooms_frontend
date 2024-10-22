@@ -52,7 +52,7 @@ const UpdatePeakSeasonPopUp: React.FC<Props> = ({isOpen, onClose, peakSeasonId})
                 name: values.name,
                 startDate: values.startDate,
                 endDate: values.endDate,
-                markupValue: parseFloat(values.markUpValue),
+                markUpValue: parseFloat(values.markUpValue),
                 markupType: values.markUpType,
             });
             resetForm();

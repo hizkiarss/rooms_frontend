@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginAdsPropertyDetailAnimation from "@/components/animations/LoginAdsPropertyDetail";
-import Buttons from "@/components/Buttons";
+
+
 
 const LoginAdsPropDetail = () => {
     return (
