@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {ImageUp, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {
-    Dialog, DialogClose,
+    Dialog,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -15,19 +15,16 @@ import {Form, Formik, FormikProps} from "formik";
 import useCloudinaryUpload from "@/hooks/useCloudinaryUpload";
 import * as Yup from "yup";
 import Buttons from "@/components/Buttons";
-import usePropertyId from "@/hooks/usePropertyId";
-import {useAddRoomPictures} from "@/hooks/rooms/useAddRoomPictures";
-import useRoomName from "@/hooks/useRoomName";
+import {useAddPicturesForSingleRoom} from "@/hooks/rooms/useAddPictureForSingleRoom";
 import {useSearchParams} from "next/navigation";
-import useSelectedProperty from "@/hooks/useSelectedProperty";
 import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 interface FormValues {
     imageUrls: string[];
 }
 
-const UpdateRoomAddPhotoPopUp: React.FC = () => {
-    const searchParam = useSearchParams()
+const UpdateRoomAddPhotoForSingleRoomPopUp: React.FC = () => {
+    const searchParams = useSearchParams();
     const [previewImages, setPreviewImages] = useState<string[]>([]);
     const initialValues: FormValues = {
         imageUrls: [],
@@ -37,15 +34,18 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
         imageUrls: Yup.array().of(Yup.string()).min(1, "At least one image is required"),
     });
 
-    const uploadRoomsPhotoMutation = useAddRoomPictures();
-    const {selectedProperty} = useSelectedProperty()
+    const addPicturesMutation = useAddPicturesForSingleRoom();
 
     const handleSubmit = async (values: FormValues): Promise<void> => {
+        const roomId = searchParams.get("num");
+        if (!roomId) {
+            console.error("No room ID found");
+            return;
+        }
         try {
-            await uploadRoomsPhotoMutation.mutateAsync({
-                propertyId: selectedProperty || "1",
-                roomPicture: values.imageUrls,
-                roomName: searchParam.get("name") || "Lahadalia"
+            await addPicturesMutation.mutateAsync({
+                roomId,
+                imgUrls: values.imageUrls
             });
         } catch (error) {
             console.error("Failed to upload photos:", error);
@@ -71,11 +71,11 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-
     const handleDialogOpenChange = (open: boolean) => {
         setIsDialogOpen(open);
         if (!open) {
-            uploadRoomsPhotoMutation.reset();
+            addPicturesMutation.reset();
+            setPreviewImages([]);
         }
     };
 
@@ -94,7 +94,11 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
                         </DialogDescription>
                     </DialogHeader>
 
-                    <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+                    <Formik
+                        initialValues={initialValues}
+                        onSubmit={handleSubmit}
+                        validationSchema={validationSchema}
+                    >
                         {({
                               setFieldValue,
                               values,
@@ -103,7 +107,7 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
                           }: FormikProps<FormValues>) => (
                             <Form>
 
-                                {isUploading ? <LoadingAnimation/>
+                                {isUploading ? <div className={"mb-3"}><LoadingAnimation/></div>
 
                                     : <div className="flex flex-wrap gap-4 mb-4">
                                         {previewImages.map((preview, index) => (
@@ -154,11 +158,19 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
                                 />
                                 {errors.imageUrls && <div className="text-red-500 mt-2">{errors.imageUrls}</div>}
                                 <div className="flex justify-end gap-4 mt-4 items-center">
-                                    {uploadRoomsPhotoMutation.isSuccess ?
-                                        <p className={"text-greenr"}>Upload Success!</p> : null}
-                                    <Button type="submit" size="sm" className="px-3 font-semibold"
-                                            disabled={isSubmitting}>
-                                        {isSubmitting ? 'Uploading...' : 'Upload Photos'}
+                                    {addPicturesMutation.isSuccess && (
+                                        <p className={"text-green-600"}>Photos uploaded successfully!</p>
+                                    )}
+                                    {addPicturesMutation.isError && (
+                                        <p className={"text-red-600"}>Failed to upload photos. Please try again.</p>
+                                    )}
+                                    <Button
+                                        type="submit"
+                                        size="sm"
+                                        className="px-3 font-semibold"
+                                        disabled={isSubmitting || addPicturesMutation.isPending}
+                                    >
+                                        {(isSubmitting || addPicturesMutation.isPending) ? 'Uploading...' : 'Upload Photos'}
                                     </Button>
                                 </div>
                             </Form>
@@ -170,4 +182,4 @@ const UpdateRoomAddPhotoPopUp: React.FC = () => {
     );
 };
 
-export default UpdateRoomAddPhotoPopUp;
+export default UpdateRoomAddPhotoForSingleRoomPopUp;

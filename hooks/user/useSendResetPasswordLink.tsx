@@ -18,7 +18,6 @@ export function useSendResetPasswordLink() {
                 SEND_RESET_PASSWORD_LINK,
                 {email}
             );
-            console.log(response.sendResetPasswordLink);
             return response.sendResetPasswordLink;
         }
 

@@ -41,7 +41,7 @@ export function useUpdateRoom() {
             return response.updateRoom;
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["room", "rooms"] });
+            queryClient.invalidateQueries({ queryKey: ["room", "rooms", "Room"] });
             console.log("Room updated successfully", data);
         },
         onError: (error) => {

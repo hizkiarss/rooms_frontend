@@ -16,18 +16,7 @@ export function useRegisterTenant() {
             );
 
 
-            //
-            // if (!response.tenantRegister) {
-            //     throw new Error("No data returned from the server");
-            // }
-
             return response.tenantRegister ?? '';
         },
-        // onError: (error) => {
-        //     console.error("Registration failed:", error.message);
-        // },
-        // onSuccess: (data) => {
-        //     console.log('Registration successful', data);
-        // },
     });
 }

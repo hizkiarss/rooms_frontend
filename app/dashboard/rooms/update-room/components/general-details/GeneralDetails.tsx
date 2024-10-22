@@ -11,8 +11,7 @@ import {useGetRoomById} from "@/hooks/rooms/useGetRoomById";
 import {useSearchParams} from "next/navigation";
 import {useUpdateRoom} from "@/hooks/rooms/useUpdateRoom";
 import {useSession} from "next-auth/react";
-import { useRouter } from 'next/navigation';
-import SlugErrorPopUp from "@/app/dashboard/rooms/update-room/components/SlugErrorPopUp";
+
 
 
 const UpdateRoomGeneralDetails = () => {
@@ -31,6 +30,7 @@ const UpdateRoomGeneralDetails = () => {
         includeBreakfast: data ? data.includeBreakfast : false,
         bedType: data?.bedTypes.name || '',
         roomArea: data ? data.roomArea : "",
+        roomNumber: data ? data.roomNumber : "",
     };
 
     const validationSchema = Yup.object({
@@ -44,7 +44,6 @@ const UpdateRoomGeneralDetails = () => {
     });
 
     const {data: session} = useSession();
-    const router = useRouter();
 
     const handleSubmit = (values: typeof initialValues) => {
         updateRoomMutation.mutate(
@@ -99,21 +98,14 @@ const UpdateRoomGeneralDetails = () => {
         return <div>No room data available.</div>;
     }
 
-    const formInitialValues = {
-        name: '',
-        description: '',
-        capacity:  '',
-        price:  '',
-        includeBreakfast:  false,
-        bedType:  '',
-        roomArea: '',
-    };
+
     return (
         <div className="">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
+                enableReinitialize={true}
             >
                 {({isSubmitting}) => (
                     <Form className="space-y-3 md:space-y-4 text-sm md:text-base">
@@ -216,6 +208,21 @@ const UpdateRoomGeneralDetails = () => {
 
                                 />
                                 <ErrorMessage name="roomArea" component="div"
+                                              className="text-red-500 text-xs md:text-sm mt-1"/>
+                            </div>
+
+                            <div>
+                                <label htmlFor="roomNumber"
+                                       className="block text-xs md:text-sm font-semibold text-gray-700">
+                                    Room Number
+                                </label>
+                                <Field
+                                    name="roomNumber"
+                                    type="text"
+                                    className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
+                                    placeholder={data ? data.roomNumber : ""}
+                                />
+                                <ErrorMessage name="roomNumber" component="div"
                                               className="text-red-500 text-xs md:text-sm mt-1"/>
                             </div>
                         </div>

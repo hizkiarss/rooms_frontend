@@ -1,7 +1,6 @@
 "use client"
 import React, {useEffect, useState} from 'react';
 import Top from "@/app/dashboard/rooms/create-property/facilities-list/component/top";
-import {ArrowRight} from "lucide-react";
 import {useAddPropertiesFacilities} from "@/hooks/properties/useAddPropertiesFacilities";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
 import {getAmenityLabel} from "@/utils/FacilityLogoUtils";
@@ -56,6 +55,8 @@ const Page: React.FC = () => {
         return <div className={"h-screen w-full flex items-center justify-center"}><LoadingStateAnimation/></div>
     }
 
+    const hasFacilitiesSelected = selectedFacilities.length > 0;
+    const showContinueButton = hasFacilitiesSelected && addPropertiesFacilitiesMutation.isSuccess;
 
     return (
         <div className="px-80 mt-8">
@@ -80,7 +81,6 @@ const Page: React.FC = () => {
                     </div>
                 </ToggleGroup>
 
-
                 <NotificationPopUp title={"Facilities Added"}
                                    content={"You have successfully added facilities to your property"}
                                    isOpen={successPopUp}
@@ -92,17 +92,18 @@ const Page: React.FC = () => {
                         className="mt-10 text-lg"
                         type="submit"
                         onClick={handleSubmit}
-                        disabled={selectedFacilities.length === 0 || addPropertiesFacilitiesMutation.isPending}
+                        disabled={!hasFacilitiesSelected || addPropertiesFacilitiesMutation.isPending}
                     />
 
-                    <Buttons
-                        value="Continue to next step"
-                        className="mt-10 text-lg"
-                        type="submit"
-                        onClick={() => window.location.href = "/dashboard/rooms/create-property/add-photo"}
-                        disabled={selectedFacilities.length === 0 || addPropertiesFacilitiesMutation.isPending}
-                    />
-
+                    {showContinueButton && (
+                        <Buttons
+                            value="Continue to next step"
+                            className="mt-10 text-lg"
+                            type="submit"
+                            onClick={() => window.location.href = "/dashboard/rooms/create-property/add-photo"}
+                            disabled={addPropertiesFacilitiesMutation.isPending}
+                        />
+                    )}
                 </div>
             </div>
         </div>

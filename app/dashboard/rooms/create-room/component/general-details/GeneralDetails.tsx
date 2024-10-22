@@ -161,7 +161,7 @@ const CreateRoomGeneralDetails = () => {
 
                             <div>
                                 <label htmlFor="price" className="block text-xs md:text-sm font-semibold text-gray-700">
-                                    Price
+                                    Price per night
                                 </label>
                                 <Field
                                     name="price"

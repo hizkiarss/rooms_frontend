@@ -85,7 +85,7 @@
                             />
                             <Buttons
                                 value={"Reset"}
-                                className={"hover:!bg-greenr hover:!text-white py-[10px] text-xs md:text-base"}
+                                className={"hover:!bg-greenr hover:!text-white py-[10px] md:py-[6px] text-xs md:text-base"}
                                 onClick={handleResetFilter}
                             />
                         </div>

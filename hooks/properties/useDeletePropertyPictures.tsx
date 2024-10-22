@@ -25,13 +25,12 @@ export function useDeletePropertyPictures() {
             );
             return response.deletePropertyPictures;
         },
+
         onSuccess: (data) => {
-            console.log("Property pictures deleted successfully:", data);
-            queryClient.invalidateQueries({ queryKey: ["propertyPictures", "property"] });
-            // queryClient.invalidateQueries(['properties']);
+            queryClient.invalidateQueries({ queryKey: ["property"] });
         },
-        onError: (error) => {
-            console.error("Failed to delete property pictures:", error);
-        },
+
+
+
     });
 }

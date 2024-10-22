@@ -12,6 +12,7 @@ import {Formik, Form, Field, ErrorMessage, FormikHelpers} from 'formik';
 import WaitingForVerificationPopUp from "@/components/WaitingForVerificationPopUp";
 import {useRegisterTenant} from "@/hooks/user/useRegisterTenant";
 import EmailAlreadyUsedPopUp from "@/components/EmailAlreadyUsedPopUp";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 interface FormValues {
     email: string;
@@ -42,7 +43,7 @@ const Page: React.FC = () => {
         username: Yup.string().required("Username is required"),
     });
 
-    const {mutate: registerTenant} = useRegisterTenant();
+    const {mutate: registerTenant, isPending} = useRegisterTenant();
 
     const handleSubmit = async (values: FormValues, formikHelpers: FormikHelpers<FormValues>) => {
         setError(null);
@@ -155,13 +156,10 @@ const Page: React.FC = () => {
                                     </div>
                                 ))}
 
-                                {/* Forgot password link */}
-                                <button type="button" className="text-end font-semibold mt-1 text-xs md:text-sm">
-                                    Forgot password?
-                                </button>
 
-                                {/* Submit button */}
-                                <Buttons
+
+                                {isPending ? <div className={"py-3"}><LoadingAnimation/></div>
+                                    : <Buttons
                                     value="Sign up"
                                     className={`w-full font-semibold border border-white md:border-none rounded-md text-sm md:text-xl mt-8 md:mt-5 ${
                                         !dirty || isLoading
@@ -170,7 +168,8 @@ const Page: React.FC = () => {
                                     }`}
                                     type="submit"
                                     disabled={!dirty || isLoading}
-                                />
+                                />}
+
                             </Form>
                         )}
                     </Formik>

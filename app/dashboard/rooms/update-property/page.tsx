@@ -11,7 +11,7 @@ const Page = () => {
         <div className={"px-8 md:px-20 md:mt-20"}>
             <div className={"flex flex-col "}>
                 <h2 className={"font-semibold text-xl md:text-3xl"}>Update your property</h2>
-                <p className={"mt-[2px] md:mt-2 text-sm md:text-base  text-gray-400 mb-6 md:mb-8 md:ml-[2px]"}>Fill this field to update the property
+                <p className={"mt-[2px] md:mt-2 text-sm md:text-base  text-gray-400 mb-6 md:mb-8 md:ml-[2px]"}>Change these fields to update the property
                     information.</p>
             </div>
             <div className={'flex flex-col gap-6 md:grid grid-cols-2 md:gap-x-10'}>

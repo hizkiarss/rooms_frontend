@@ -14,6 +14,7 @@ import {useUpdateProperties} from "@/hooks/properties/useUpdateProperties";
 import useSelectedProperty from "@/hooks/useSelectedProperty";
 import {useGetPropertyById} from "@/hooks/properties/useGetPropertyById";
 import NotificationPopUp from "@/components/NotificationPopUp";
+import LoadingAnimation from "@/components/animations/LoadingAnimation";
 
 const GeneralDetails = () => {
     const {selectedProperty} = useSelectedProperty();
@@ -37,15 +38,15 @@ const GeneralDetails = () => {
     };
 
     const initialValues = {
-        propertyName: "",
-        propertyCategories: "",
-        description: "",
-        checkInTime: "",
-        checkOutTime: "",
-        address: "",
+        propertyName: currentProperty.name,
+        propertyCategories: currentProperty.propertyCategories.name,
+        description: currentProperty.description,
+        checkInTime: currentProperty.checkInTime,
+        checkOutTime: currentProperty.checkOutTime,
+        address: currentProperty.address,
         city: "",
-        phoneNumber: "",
-        star: "",
+        phoneNumber: currentProperty.phoneNumber,
+        star: currentProperty.star,
     };
 
     const validationSchema = Yup.object({
@@ -63,7 +64,7 @@ const GeneralDetails = () => {
             .required('Required'),
     });
 
-    const updatePropertiesMutation = useUpdateProperties(selectedProperty || "1");
+    const updatePropertiesMutation = useUpdateProperties(selectedProperty || "");
     const [selectedCity, setSelectedCity] = useState<City | null>(null);
     const handleSubmit = (values: typeof initialValues) => {
         updatePropertiesMutation.mutate(
@@ -71,6 +72,7 @@ const GeneralDetails = () => {
                 ...values,
                 star: Number(values.star),
                 city: selectedCity?.name ?? "",
+
             },
             {
                 onSuccess: (data) => {
@@ -83,11 +85,9 @@ const GeneralDetails = () => {
         );
     };
 
-
     if (isLoading) {
         return <div><LoadingStateAnimation/></div>
     }
-
 
     return (
         <div className="">
@@ -174,7 +174,7 @@ const GeneralDetails = () => {
                             <Field
                                 name="checkOutTime"
                                 type="text"
-                                placeholder={currentProperty.checkOutTime} // Placeholder for check-out time
+                                placeholder={currentProperty.checkOutTime}
                                 className="mt-1 block w-full px-2 md:px-4 py-2 md:py-3 rounded-md shadow-sm bg-white border border-slate-300 focus:border-greenr focus:bg-opacity-10"
                             />
                             <ErrorMessage name="checkOutTime" component="div"
@@ -236,9 +236,12 @@ const GeneralDetails = () => {
                         </div>
                     </div>
 
-                    <div className="flex justify-end">
-                        <Buttons value="Submit" type="submit" className="text-base md:text-xl px-5"/>
-                    </div>
+
+                    {updatePropertiesMutation.isPending ? <div className={"w-full flex justify-end"}><LoadingAnimation/></div> :
+                        <div className="flex justify-end">
+                            <Buttons value="Submit" type="submit" className="text-base md:text-xl px-5"/>
+                        </div>
+                    }
                 </Form>
             </Formik>
 

@@ -1,15 +1,15 @@
 "use client";
 import React, {useEffect, useState} from 'react';
-import {useVerifyEmail} from '@/hooks/user/useVerifyEmail'; // Adjust the import path based on your project structure
-import {useRouter, useSearchParams} from 'next/navigation';
+import {useVerifyEmail} from '@/hooks/user/useVerifyEmail';
+import {useRouter} from 'next/navigation';
+import VerificationSuccessPopUp from './component/VerificationSuccessPopUp';
+import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 
 const VerifyEmailPage: React.FC = () => {
     const router = useRouter();
-
     const {mutate: verifyEmail, isError, isSuccess, error} = useVerifyEmail();
-
-    const [email,setEmail] = useState<string | null>(null);
-
+    const [email, setEmail] = useState<string | null>(null);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -21,23 +21,29 @@ const VerifyEmailPage: React.FC = () => {
             }
         }
     }, []);
+
     useEffect(() => {
         if (email) {
             verifyEmail(email as string);
         }
     }, [email, verifyEmail]);
 
+    useEffect(() => {
+        if (isSuccess) {
+            setShowSuccessPopup(true);
+        }
+    }, [isSuccess]);
+
     if (isError) {
-        console.error("Verification failed:", error);
         return <p>Verification failed. Please try again.</p>;
     }
-    if (isSuccess) {
-        router.push('/login');
-        return <p>Verification successful, redirecting...</p>;
 
-    }
-
-    return <p>Verifying...</p>;
+    return (
+        <>
+            <VerificationSuccessPopUp isOpen={showSuccessPopup}/>
+            {!isSuccess && <LoadingStateAnimation/>}
+        </>
+    );
 };
 
 export default VerifyEmailPage;

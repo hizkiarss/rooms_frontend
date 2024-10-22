@@ -314,3 +314,29 @@ export const UPDATE_PEAK_SEASON = gql`
         }
     }
 `;
+
+export const DELETE_ROOM = gql`
+mutation DELETE_ROOM($id: ID!, $email: String!) {
+    deleteRoom(id: $id, email: $email)
+}`
+
+
+export const ADD_PICTURES_FOR_SINGLE_ROOM = gql`
+  mutation addPicturesForSingleRoom($roomId: ID!, $imgUrls: [String]!) {
+    addPicturesForSingleRoom(roomId: $roomId, imgUrls: $imgUrls)
+  }
+`;
+
+export const SEND_FORGET_PASSWORD_LINK = gql`
+  mutation SendForgetPasswordLink($email: String!) {
+    sendForgetPasswordLink(email: $email)
+  }
+`;
+
+export const FORGET_PASSWORD = gql`
+  mutation ForgetPassword($email: String!, $newPassword: String!) {
+    forgetPassword(email: $email, newPassword: $newPassword)
+  }
+`;
+
+

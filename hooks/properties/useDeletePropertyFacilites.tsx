@@ -27,7 +27,7 @@ export function useDeletePropertyFacilities() {
             return response.deletePropertyFacilities;
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["propertyFacilities", "property"] });
+            queryClient.invalidateQueries({ queryKey: ["property"] });
             console.log("Property facilities deleted successfully:", data);
         },
         onError: (error) => {

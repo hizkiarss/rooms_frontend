@@ -17,7 +17,6 @@ const WaitingForVerificationPopUp: React.FC<WaitingForVerificationPopUpProps> = 
         <Dialog open={isOpen}>
 
             <DialogContent>
-
                     <DialogTitle className={"text-2xl"}>Waiting for verification</DialogTitle>
                     <DialogDescription className={"text-[16px]"}>
                         We have send an email to your account. Please finish the verification process in 5 minutes. Refresh this page for a new verification link after 5 minutes.
