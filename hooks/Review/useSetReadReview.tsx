@@ -14,9 +14,11 @@ export const useSetReadReview = () => {
       graphqlClient.setHeaders({
         Authorization: `Bearer ${token}`,
       });
+
       const { setReadReview } = await graphqlClient.request(SET_READ_REVIEW, {
         reviewId,
       });
+
       return setReadReview;
     },
     onSuccess: () => {

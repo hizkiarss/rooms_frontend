@@ -37,28 +37,7 @@ const OrderListCardHeader: React.FC<OrderListCardHeaderProps> = ({
       </div>
 
       <div className="flex items-center space-x-2">
-        <div>
-          {/* {status === "Pending" || status === "Check" ? (
-            <span className="text-yellow-500 border border-yellow-500 rounded-lg p-1">
-              {getStatusLabel(status)}
-            </span>
-          ) : status === "Success" ? (
-            <span className="text-greenr border border-greenr rounded-lg p-1">
-              {status}
-            </span>
-          ) : status === "Cancelled" ||
-            status === "Rejected" ||
-            status === "Expired" ? (
-            <span className="text-red-500 border border-red-500 rounded-lg p-1">
-              {status}
-            </span>
-          ) : null} */}
-          {/* {status && (
-            <span className={`${getStatusStyle(status)} border rounded-lg p-1`}>
-              {getStatusLabel(status)}
-            </span>
-          )} */}
-        </div>
+        <div></div>
 
         <div>
           <DropdownMenu>
@@ -74,9 +53,6 @@ const OrderListCardHeader: React.FC<OrderListCardHeaderProps> = ({
               <DropdownMenuItem onClick={handleDetailReservation}>
                 View Details
               </DropdownMenuItem>
-              {/* <DropdownMenuItem className="text-red-600">
-                Delete order
-              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

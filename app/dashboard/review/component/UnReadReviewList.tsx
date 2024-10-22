@@ -1,10 +1,8 @@
 "use client";
-import NoDataFoundAnimation from "@/components/animations/DataNotFoundAnimation";
 import ErrorAnimation from "@/components/animations/ErrorAnimation";
 import LoadingStateAnimation from "@/components/animations/LoadingStateAnimation";
 import { useUnReadReviewByPropertyId } from "@/hooks/Review/useUnReadReviewByPropertyId";
 import React from "react";
-import ReplyReviewForm from "./ReplyReviewForm";
 import UnReadReviewItem from "./UnreadReviewItem";
 
 const UnReadReviewList = () => {
@@ -17,12 +15,6 @@ const UnReadReviewList = () => {
   if (error) {
     return <ErrorAnimation />;
   }
-
-  // console.log("Data state:", data);
-  // if (useUnReadReviewByPropertyId() === null) {
-  //   console.log("gaada datanya broku");
-  //   return <NoDataFoundAnimation />;
-  // }
 
   const refreshTransactions = () => {
     refetch();

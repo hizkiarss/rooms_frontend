@@ -26,18 +26,13 @@ export const useMonthlyTransactions = (propertyId: string) => {
         return response.monthlyTransactionsByPropertyId;
       } catch (error) {
         if (error instanceof Error) {
-          // Handle known error instance
           if (
             (error as any).response?.errors?.[0]?.extensions?.classification ===
             "NOT_FOUND"
           ) {
-            // Return null to indicate no data found
             return null;
           }
-          console.error("Error fetching transactions:", error);
         } else {
-          // Handle unknown error
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

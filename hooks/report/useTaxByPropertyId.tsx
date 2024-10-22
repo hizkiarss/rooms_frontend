@@ -20,14 +20,13 @@ export const useTaxByPropertyId = (
         graphqlClient.setHeaders({
           Authorization: `Bearer ${token}`,
         });
+
         const response = await graphqlClient.request(TAX_BY_PROPERTY, {
           propertyId: propertyId,
           startDate: startDateISO,
           endDate: endDateISO,
         });
-        console.log("ini property", propertyId);
-        console.log("ini startDate", startDate);
-        console.log("ini endDate", endDate);
+
         if (!response || !response.taxByProperty) {
           throw new Error("No Tax data in the response");
         }
@@ -40,9 +39,7 @@ export const useTaxByPropertyId = (
           ) {
             return null;
           }
-          console.error("Error fetching tax:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

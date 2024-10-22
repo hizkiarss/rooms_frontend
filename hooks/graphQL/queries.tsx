@@ -208,6 +208,9 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
           rating
           reply
         }
+        properties {
+          id
+        }
         createdAt
         tax
         adult
@@ -641,8 +644,8 @@ export const GET_FILTERED_PROPERTIES = gql`
     $startPrice: Float
     $endPrice: Float
     $sortBy: String
-    $checkInDate : Date
-    $checkOutDate : Date
+    $checkInDate: Date
+    $checkOutDate: Date
   ) {
     getFilteredProperties(
       city: $city
@@ -763,7 +766,6 @@ export const GET_AVAILABLE_ROOMS = gql`
   }
 `;
 
-
 export const GET_ROOM_BY_SLUG = gql`
   query RoomBySlug($slug: String!) {
     roomBySlug(slug: $slug) {
@@ -795,8 +797,6 @@ export const GET_ROOM_PRICE = gql`
   }
 `;
 
-
-
 export const GET_CALENDAR_PRICE = gql`
   query GetCalendarPrice($year: Int!, $month: Int!, $propertyId: ID!) {
     getCalendarPrice(year: $year, month: $month, propertyId: $propertyId) {
@@ -805,8 +805,6 @@ export const GET_CALENDAR_PRICE = gql`
     }
   }
 `;
-
-
 
 export const GET_PROPERTIES_BY_OWNER_EMAIL = gql`
   query GetPropertiesByOwnerEmail($email: String!) {
@@ -847,7 +845,6 @@ export const GET_PROPERTIES_BY_OWNER_EMAIL = gql`
   }
 `;
 
-
 export const GET_FILTERED_ROOMS_BY_PROPERTY_ID = gql`
   query GetFilteredRoomsByPropertyId(
     $propertyId: ID!
@@ -863,32 +860,32 @@ export const GET_FILTERED_ROOMS_BY_PROPERTY_ID = gql`
       pageSize: $pageSize
       pageNumber: $pageNumber
     ) {
-       totalElements
-        totalPages
-        currentPage
-        pageSize
-        rooms {
-            id
-            name
-            description
-            capacity
-            isAvailable
-            roomNumber
-            price
-            includeBreakfast
-            roomArea
-            slug
-            bedTypes {
-                id
-                name
-            }
-            roomPictures {
-                id
-                imgUrl
-            }
+      totalElements
+      totalPages
+      currentPage
+      pageSize
+      rooms {
+        id
+        name
+        description
+        capacity
+        isAvailable
+        roomNumber
+        price
+        includeBreakfast
+        roomArea
+        slug
+        bedTypes {
+          id
+          name
         }
+        roomPictures {
+          id
+          imgUrl
+        }
+      }
     }
-}
+  }
 `;
 
 export const GET_ROOMS_TYPES_BY_PROPERTY_ID = gql`
@@ -896,7 +893,6 @@ export const GET_ROOMS_TYPES_BY_PROPERTY_ID = gql`
     getRoomsTypesByPropertyId(propertyId: $propertyId)
   }
 `;
-
 
 export const GET_ROOM_BY_ID = gql`
   query GetRoomsById($id: ID!) {
@@ -922,7 +918,6 @@ export const GET_ROOM_BY_ID = gql`
     }
   }
 `;
-
 
 export const GET_PROPERTIES_BY_ID = gql`
   query GetPropertiesById($id: ID!) {
@@ -967,20 +962,18 @@ export const GET_PROPERTIES_BY_ID = gql`
   }
 `;
 
-
 export const GET_PEAK_SEASONS_BY_PROPERTY_ID = gql`
-    query GetPeakSeasonsByPropertyId($propertyId: ID!) {
-        getPeakSeasonsByPropertyId(propertyId: $propertyId) {
-            name
-            id
-            startDate
-            endDate
-            markUpValue
-            markUpType
-        }
+  query GetPeakSeasonsByPropertyId($propertyId: ID!) {
+    getPeakSeasonsByPropertyId(propertyId: $propertyId) {
+      name
+      id
+      startDate
+      endDate
+      markUpValue
+      markUpType
     }
+  }
 `;
-
 
 export const GET_10_RANDOM_AVAILABLE_ROOMS = `
   query Get10RandomAvailableRooms {
@@ -1022,6 +1015,3 @@ export const GET_10_RANDOM_AVAILABLE_ROOMS = `
     }
   }
 `;
-
-
-

@@ -2,7 +2,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { graphqlClient } from "../graphQL/graphqlClient";
-
 import { ACCEPT_PAYMENT_PROOF } from "../graphQL/mutations";
 
 export const useAcceptPaymentProof = () => {

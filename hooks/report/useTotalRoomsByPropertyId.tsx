@@ -15,12 +15,15 @@ export const useTotalRoomsByPropertyId = (propertyId: string) => {
         graphqlClient.setHeaders({
           Authorization: `Bearer ${token}`,
         });
+
         const response = await graphqlClient.request(TOTAL_ROOMS_BY_PROPERTY, {
           propertyId,
         });
+
         if (!response || !response.totalRoom) {
           throw new Error("No Room data in the response");
         }
+
         return response.totalRoom;
       } catch (error) {
         if (error instanceof Error) {
@@ -30,9 +33,7 @@ export const useTotalRoomsByPropertyId = (propertyId: string) => {
           ) {
             return null;
           }
-          console.error("Error fetching total room:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

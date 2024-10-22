@@ -2,7 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { graphqlClient } from "../graphQL/graphqlClient";
-import { ADD_PAYMENT_PROOF, CANCEL_TRANSACTION } from "../graphQL/mutations";
+import { CANCEL_TRANSACTION } from "../graphQL/mutations";
 
 export const useCancelTransaction = () => {
   const queryClient = useQueryClient();
@@ -14,10 +14,12 @@ export const useCancelTransaction = () => {
       graphqlClient.setHeaders({
         Authorization: `Bearer ${token}`,
       });
+
       const { cancelTransaction } = await graphqlClient.request(
         CANCEL_TRANSACTION,
         { bookingCode }
       );
+
       return cancelTransaction;
     },
     onSuccess: (_, bookingCode) => {

@@ -93,6 +93,7 @@ const OrderList = () => {
                           transactionDetails={transaction.transactionDetails[0]}
                           review={transaction.reviews}
                           room={transaction.transactionDetails[0].rooms}
+                          propertyId={transaction.properties.id}
                         />
                       </AnimationWrapper>
                     </div>

@@ -1,8 +1,5 @@
 import React from "react";
-import PropertyReservationDetailCard from "./component/PropertyReservationDetailCard";
 import Reservation from "./component/Reservation";
-
-import ReservationDetailsCard from "./component/ReservationDetailsCard";
 
 const page = () => {
   return (

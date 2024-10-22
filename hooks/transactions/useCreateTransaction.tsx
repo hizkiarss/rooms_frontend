@@ -1,7 +1,6 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { graphqlClient } from "../graphQL/graphqlClient";
-
 import { CREATE_TRANSACTION } from "../graphQL/mutations";
 import { TransactionRequest } from "@/types/transactions/TransactionRequestType";
 import { useSession } from "next-auth/react";
@@ -13,15 +12,16 @@ export const useCreateTransaction = () => {
   return useMutation<string, Error, TransactionRequest>({
     mutationFn: async (input: TransactionRequest) => {
       const token = session?.accessToken;
-      console.log("ini token transaksi", token);
-      console.log("ini isi data session", session);
+
       graphqlClient.setHeaders({
         Authorization: `Bearer ${token}`,
       });
+
       const { createTransaction } = await graphqlClient.request(
         CREATE_TRANSACTION,
         { input }
       );
+
       return createTransaction;
     },
     onSuccess: (_, input) => {
