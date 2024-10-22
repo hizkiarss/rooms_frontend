@@ -20,6 +20,8 @@ import OrderListCardHeader from "./OrderListCardHeader";
 import { RoomType } from "@/types/rooms/RoomsType";
 import { TransactionDetailType } from "@/types/transactions/TransactionDetailType";
 import OrderListCardBody from "./OrderListCardBody";
+import { useSession } from "next-auth/react";
+import { useFindUserbyEmail } from "@/hooks/user/useFindUserbyEmail";
 
 interface OrderListProps {
   bookingCode: string;
@@ -34,6 +36,7 @@ interface OrderListProps {
   transactionDetails: TransactionDetailType;
   review: ReviewType[];
   room: RoomType;
+  propertyId: string;
 }
 
 const OrderListItem: React.FC<OrderListProps> = ({
@@ -49,6 +52,7 @@ const OrderListItem: React.FC<OrderListProps> = ({
   transactionDetails,
   review,
   room,
+  propertyId,
 }) => {
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openReviewDialog, setOpenReviewDialog] = useState(false);
@@ -57,6 +61,13 @@ const OrderListItem: React.FC<OrderListProps> = ({
   const [showAnimation, setShowAnimation] = useState(false);
   const { mutate: cancelTransaction } = useCancelTransaction();
   const router = useRouter();
+
+  const { data: session } = useSession();
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useFindUserbyEmail(session?.user?.email);
 
   const handleDialogClose = () => {
     onRefresh();
@@ -242,8 +253,8 @@ const OrderListItem: React.FC<OrderListProps> = ({
           </DialogTitle>
 
           <UserReviewForm
-            userId="1"
-            propertyId="1"
+            userId={user?.id || ""}
+            propertyId={propertyId}
             bookingCode={bookingCode}
             onSubmitSuccess={() => {
               setOpenReviewDialog(false);

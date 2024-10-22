@@ -83,7 +83,7 @@ const Reservation: React.FC = () => {
           <PropertyReservationDetailCard
             propertyName={transaction.properties.name}
             propertyAddress={transaction.properties.name}
-            imgUrl={transaction.properties.propertyPictures[0].imgUrl}
+            imgUrl={transaction.properties.propertyPictures[0].imgUrl || ""}
             slug={transaction.properties.slug}
           />
           <ReservationDetailsCard
