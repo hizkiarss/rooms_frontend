@@ -22,7 +22,6 @@ const Reservation: React.FC = () => {
 
   const guestName =
     (transaction?.firstName || "") + " " + (transaction?.lastName || "");
-  console.log("ini transaksinya", transaction);
 
   const startDate: Date = new Date(
     transaction?.transactionDetails[0].startDate || ""
@@ -84,7 +83,7 @@ const Reservation: React.FC = () => {
           <PropertyReservationDetailCard
             propertyName={transaction.properties.name}
             propertyAddress={transaction.properties.name}
-            imgUrl={transaction.properties.propertyPictures[0].imgUrl}
+            imgUrl={transaction.properties.propertyPictures[0].imgUrl || ""}
             slug={transaction.properties.slug}
           />
           <ReservationDetailsCard

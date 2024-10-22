@@ -45,6 +45,13 @@ const MobileNavItems: React.FC = () => {
         className="text-sm font-medium text-gray-700  hover:text-greenr hover:font-medium">
         Account
       </Link>
+      {isTenant && (
+        <Link
+          href="/dashboard"
+          className="text-sm font-medium text-gray-700 hover:text-greenr hover:font-medium">
+          Dashboard
+        </Link>
+      )}
 
       <div
         onClick={handleSignout}

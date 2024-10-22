@@ -72,8 +72,8 @@ const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
                 <div className="mt-6">
                   Almost there! Upload your payment proof to finish. Only PNG
                   and JPG files under 1MB are allowed. Heads up! You can only
-                  upload once, so make sure it&apos;s the right one. Thanks for being
-                  awesome!
+                  upload once, so make sure it&apos;s the right one. Thanks for
+                  being awesome!
                 </div>
                 <div>
                   <Label htmlFor="image" className="sr-only">
@@ -111,17 +111,6 @@ const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
                     type="file"
                     accept="image/png, image/jpeg, image/jpg"
                     className="hidden"
-                    // onChange={async (event) => {
-                    //     const file = event.currentTarget.files?.[0];
-                    //     if (file) {
-                    //         try {
-                    //             const imageUrl = await uploadImage(file);
-                    //             setFieldValue("imageUrl", imageUrl);
-                    //         } catch (err) {
-                    //             console.error("Upload failed:", err);
-                    //         }
-                    //     }
-                    // }}
                     onChange={async (event) => {
                       const file = event.currentTarget.files?.[0];
                       if (file) {
@@ -136,9 +125,7 @@ const UploadPaymentProofForm: React.FC<UploadPaymentProofFormProps> = ({
                         try {
                           const imageUrl = await uploadImage(file);
                           setFieldValue("imageUrl", imageUrl);
-                        } catch (err) {
-                          console.error("Upload failed:", err);
-                        }
+                        } catch (err) {}
                       }
                     }}
                   />

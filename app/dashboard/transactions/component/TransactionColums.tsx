@@ -1,11 +1,7 @@
 "use client";
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-
 import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,9 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { TransactionsType } from "@/types/transactions/TransactionsType";
-import { getStatusStyle } from "@/utils/statusStyle";
 import { getStatusLabel } from "@/utils/statusLabel";
 
 export const columns: ColumnDef<TransactionsType>[] = [
@@ -193,15 +187,6 @@ export const columns: ColumnDef<TransactionsType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
-      // const router = useRouter();
-      //
-      // const handleViewCustomer = () => {
-      //   const email = payment.users?.email;
-      //     router.push(
-      //       `/dashboard/transactions/user-detail/${encodeURIComponent(email)}`
-      //     );
-      // };
-
       const handleViewCustomer = (bookingCode: string) => {
         const url = `/transaction-detail/${bookingCode}`;
         window.open(url, "_blank");

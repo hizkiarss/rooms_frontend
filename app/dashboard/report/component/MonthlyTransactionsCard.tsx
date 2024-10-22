@@ -63,9 +63,6 @@ const MonthlyTransactionsCard: React.FC = () => {
       };
     }
   );
-
-  console.log(fetchedData);
-  console.log("ini monthlynya", monthlyTransactions);
   const currentDate = new Date();
   const currentMonthIndex = currentDate.getMonth();
   const monthNames = [

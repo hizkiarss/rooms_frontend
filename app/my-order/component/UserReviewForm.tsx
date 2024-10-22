@@ -2,12 +2,10 @@
 import React, { useState } from "react";
 import { Formik, Form, FormikHelpers, FormikProps } from "formik";
 import * as Yup from "yup";
-import useCloudinaryUpload from "@/hooks/useCloudinaryUpload";
-import { useAddPaymentProof } from "@/hooks/payment-proof/useAddPaymentProof";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { FileInput, Frown, ImageUp, Smile } from "lucide-react";
+import { Frown, Smile } from "lucide-react";
 import { useCreateReview } from "@/hooks/Review/useCreateReview";
 
 import { Textarea } from "@/components/ui/textarea";
@@ -57,7 +55,6 @@ const UserReviewForm: React.FC<UserReviewFormProps> = ({
       setIsSubmitted(true);
       onSubmitSuccess();
     } catch (error) {
-      console.error("Failed to submit:", error);
     } finally {
       setSubmitting(false);
     }

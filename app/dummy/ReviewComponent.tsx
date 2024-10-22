@@ -85,8 +85,12 @@ import ErrorAnimation from "@/components/animations/ErrorAnimation";
 
 // export default ReviewComponent;
 
-const ReviewComponent: React.FC = () => {
-  const propertyId: string = "1";
+interface ReviewComponentProps {
+  propertyId: string;
+}
+
+const ReviewComponent: React.FC<ReviewComponentProps> = ({ propertyId }) => {
+  //const propertyId: string = "1";
   const [page, setPage] = useState(0);
   const [sortBy, setSortBy] = useState("MOST_RECENT");
   const size = 10;
@@ -127,7 +131,9 @@ const ReviewComponent: React.FC = () => {
               {averageRating.toFixed(1)} /10
             </h1>
             <div
-                className={"bg-greenr text-white px-2 py-2 w-fit rounded-xl h-fit "}>
+              className={
+                "bg-greenr text-white px-2 py-2 w-fit rounded-xl h-fit "
+              }>
               <h2 className="scroll-m-20 text-base md:text-2xl font-semibold tracking-tight ">
                 {getRatingDescription(averageRating)}
               </h2>
@@ -141,7 +147,7 @@ const ReviewComponent: React.FC = () => {
                   {review.length} verified{" "}
                   {review.length === 1 ? "review" : "reviews"}
                 </span>
-                <Info className="w-4 h-4 text-gray-500"/>
+                <Info className="w-4 h-4 text-gray-500" />
               </div>
             </PopoverTrigger>
             <PopoverContent className="w-80">

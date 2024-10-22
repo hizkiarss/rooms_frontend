@@ -1,10 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { graphqlClient } from "../graphQL/graphqlClient";
-import {
-  REVENUE_WITH_TAX_BY_PROPERTY,
-  TAX_BY_PROPERTY,
-} from "../graphQL/queries";
+import { REVENUE_WITH_TAX_BY_PROPERTY } from "../graphQL/queries";
 
 export const useRevenueWithTaxByPropertyId = (
   propertyId: string,
@@ -23,6 +20,7 @@ export const useRevenueWithTaxByPropertyId = (
         graphqlClient.setHeaders({
           Authorization: `Bearer ${token}`,
         });
+
         const response = await graphqlClient.request(
           REVENUE_WITH_TAX_BY_PROPERTY,
           {
@@ -31,12 +29,11 @@ export const useRevenueWithTaxByPropertyId = (
             endDate: endDateISO,
           }
         );
-        console.log("ini property", propertyId);
-        console.log("ini startDate", startDate);
-        console.log("ini endDate", endDate);
+
         if (!response || !response.revenueWithTaxByProperty) {
           throw new Error("No Revenue with tax data in the response");
         }
+
         return response.revenueWithTaxByProperty;
       } catch (error) {
         if (error instanceof Error) {
@@ -46,9 +43,7 @@ export const useRevenueWithTaxByPropertyId = (
           ) {
             return null;
           }
-          console.error("Error fetching revenue with tax:", error);
         } else {
-          console.error("Unexpected error:", error);
         }
         throw error;
       }

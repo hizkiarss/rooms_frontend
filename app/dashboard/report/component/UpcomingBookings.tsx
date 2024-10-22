@@ -4,7 +4,6 @@ import NoDataFoundAnimation from "@/components/animations/DataNotFoundAnimation"
 import EmptyDataAnimation from "@/components/animations/EmptyDataAnimation";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useLatestTransactionsByPropertyId } from "@/hooks/report/useLatestTransactions";
 import { useUpcomingBookings } from "@/hooks/report/useUpcomingBookings";
 import useSelectedProperty from "@/hooks/useSelectedProperty";
 import { Avatar } from "@radix-ui/react-avatar";
