@@ -22,7 +22,6 @@ const Reservation: React.FC = () => {
 
   const guestName =
     (transaction?.firstName || "") + " " + (transaction?.lastName || "");
-  console.log("ini transaksinya", transaction);
 
   const startDate: Date = new Date(
     transaction?.transactionDetails[0].startDate || ""
