@@ -23,7 +23,7 @@ const SmallSearchInput: React.FC<SmallSearchInputProps> = ({
             <div className="flex  w-full justify-between">
               <div>{date}</div>
               <div>
-                {adult}Adult, {childrenNumber} Children{" "}
+                {adult} Adult, {childrenNumber} Children{" "}
               </div>
             </div>
           </div>
