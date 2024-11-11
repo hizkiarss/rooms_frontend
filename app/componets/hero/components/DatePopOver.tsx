@@ -72,6 +72,18 @@ export function DatePickerWithRange({
     setDate(selected);
     setSearchInput({ ...searchInput, dateRangeParam: selected });
   };
+  const [numberOfMonths, setNumberOfMonths] = useState(
+      window.innerWidth >= 768 ? 2 : 1
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setNumberOfMonths(window.innerWidth >= 768 ? 2 : 1);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -81,11 +93,11 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-full h-full items-start justify-start border-black rounded-xl",
+              "w-full h-full items-start justify-start border-black rounded-xl p-2",
               !date && "text-muted-foreground"
             )}>
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="mr-2 h-6 w-6" />
+            <div className="flex items-center md:gap-2">
+              <CalendarIcon className="mr-2 h-5 w-5 md:h-6 md:w-6" />
               <div className="flex flex-col items-start">
                 <p>Pick a date</p>
                 {searchInput.dateRangeParam?.from ? (
@@ -119,8 +131,8 @@ export function DatePickerWithRange({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={handleSelect} // Pass selected date to handleSelect
-            numberOfMonths={2}
+            onSelect={handleSelect} 
+            numberOfMonths={numberOfMonths}
             disabled={(date) => isBefore(date, today)}
           />
         </PopoverContent>
