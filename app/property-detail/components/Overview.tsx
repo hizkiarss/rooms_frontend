@@ -48,9 +48,6 @@ const Overview = ({data}: { data: PropertyDetailType }) =>
             </div>
             <div className={"flex md:block justify-between items-center mt-3 md:mt-0"}>
                 <div className={"flex flex-col text-xs  md:text-end md:justify-end text-slate-500 md:text-sm "}>
-                    {/*<p className={""}>Starts from</p>*/}
-                    {/*<p className={"font-semibold text-base md:text-2xl text-red-600"}>IDR 1.745.868</p>*/}
-                    {/*<p className={""}>/room/night</p>*/}
                 </div>
                 <Buttons value={"See rooms"} className={"text-xs md:text-lg h-fit w-fit md:w-full  mt-2 border-2 "}
                          onClick={() => {
