@@ -27,7 +27,7 @@ const SmallSearchInput: React.FC<SmallSearchInputProps> = ({
                             <CalendarIcon className="mr-1 h-4 w-4"/>
                             {date}</div>
                         <div className="flex gap-1 justify-center">
-                        <UserRound className="flex-shrink-0 w-4 h-4 "/>
+                            <UserRound className="flex-shrink-0 w-4 h-4 "/>
                             <p className={""}>
                                 {adult} Adult, {childrenNumber} Children{" "}
                             </p>

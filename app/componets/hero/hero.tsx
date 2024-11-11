@@ -11,19 +11,28 @@ import SmallSearchInput from "../SmallSerchInput";
 import {City} from "@/types/city/City";
 import {DateRange} from "react-day-picker";
 import {addDays} from "date-fns";
+import {useRouter} from "next/navigation";
 
 const Hero = () => {
     const [isSticky, setIsSticky] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [selectedCity, setSelectedCity] = React.useState<City | null>(null);
-
-    const handleScroll = () => {
-        setIsSticky(window.scrollY > 100);
-    };
+    const router = useRouter();
+    // const handleScroll = () => {
+    //         if (typeof window !== 'undefined') {
+    //             setIsSticky(window.scrollY > 100);
+    //         }
+    //     }
+    // ;
 
     useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        if (typeof window !== 'undefined') {
+            const handleScroll = () => {
+                setIsSticky(window.scrollY > 100);
+            };
+            window.addEventListener("scroll", handleScroll);
+            return () => window.removeEventListener("scroll", handleScroll);
+        }
     }, []);
 
     const {searchInput, setSearchInput} = useSearchInput({
@@ -128,7 +137,8 @@ const Hero = () => {
                 searchInput.travellersParam?.children?.toString() ||
                 children.toString(),
         }).toString();
-        window.location.href = `/properties?${queryParams}`;
+        // window.location.href = `/properties?${queryParams}`;
+        router.push(`/properties?${queryParams}`);
     };
 
     const toggleSearchForm = () => {
