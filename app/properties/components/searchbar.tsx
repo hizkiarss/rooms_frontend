@@ -1,5 +1,4 @@
-"use client"
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     ArrowDownAZ,
     Filter,
@@ -8,25 +7,33 @@ import {
     UserRound,
     X,
 } from "lucide-react";
-import {LocationPopOver} from "@/app/componets/hero/components/LocationPopOver";
-import {DatePickerWithRange} from "@/app/componets/hero/components/DatePopOver";
+import { LocationPopOver } from "@/app/componets/hero/components/LocationPopOver";
+import { DatePickerWithRange } from "@/app/componets/hero/components/DatePopOver";
 import TravellerPopOver from "@/app/componets/hero/components/TravellerPopOver";
 import Buttons from "@/components/Buttons";
 import useSearchInput from "@/hooks/useSearchInput";
 import FilterPopup from "@/app/properties/components/FilterPopup";
 import SortPopUp from "@/app/properties/components/SortPopUp";
-import {useSearchParams} from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import OnAnimation from "@/components/animations/OnAnimation";
 import SmallSearchInput from "@/app/componets/SmallSerchInput";
-import {City} from "@/types/city/City";
-import {DateRange} from "react-day-picker";
-
+import { City } from "@/types/city/City";
+import { DateRange } from "react-day-picker";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface SearchbarProps {
     totalElements?: number;
 }
 
-const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
+const Searchbar: React.FC<SearchbarProps> = ({ totalElements = 0 }) => {
     const [isAtTop, setIsAtTop] = useState(false);
     const [openFilterPopup, setOpenFilterPopup] = useState<boolean>(false);
     const [openSortPopup, setOpenSortPopup] = useState<boolean>(false);
@@ -34,19 +41,20 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
     const [sortOn, setSortOn] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [selectedCity, setSelectedCity] = React.useState<City | null>(null);
+    const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+
     useEffect(() => {
         const handleScroll = () => {
-            if (typeof window !== 'undefined') {
-                const topOffset = window.scrollY;
-                setIsAtTop(topOffset > 50);
-            }
+            const topOffset = window.scrollY;
+            setIsAtTop(topOffset > 50);
         };
 
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const {searchInput, setSearchInput} = useSearchInput({
+    const { searchInput, setSearchInput } = useSearchInput({
         ready: false,
         searchButtonHit: false,
         totalProperties: null,
@@ -61,38 +69,41 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
         dateRangeParam: null,
         isHomepage: null,
         closed: null,
-        setClosed: () => {
-        },
-        setIsHomepage: () => {
-        },
-        setCityParam: () => {
-        },
-        setDateRangeParam: () => {
-        },
-        setTravellersParam: () => {
-        },
-        setRating: () => {
-        },
-        setIncludeBreakfast: () => {
-        },
-        setCategory: () => {
-        },
-        setEndPrice: () => {
-        },
-        setStartPrice: () => {
-        },
-        setSortBy: () => {
-        },
-        setTotalProperties: () => {
-        },
-        setReady: () => {
-        },
-        setSearchButtonHit: () => {
-        },
+        setClosed: () => {},
+        setIsHomepage: () => {},
+        setCityParam: () => {},
+        setDateRangeParam: () => {},
+        setTravellersParam: () => {},
+        setRating: () => {},
+        setIncludeBreakfast: () => {},
+        setCategory: () => {},
+        setEndPrice: () => {},
+        setStartPrice: () => {},
+        setSortBy: () => {},
+        setTotalProperties: () => {},
+        setReady: () => {},
+        setSearchButtonHit: () => {},
     });
 
     const handleClick = () => {
-        setSearchInput({...searchInput, searchButtonHit: true});
+        if (searchInput.cityParam == null) {
+            setAlertMessage(
+                "Oops! No city selected yet. Just choose a city, and we&apos;ll find the best options for you."
+            );
+            setIsAlertOpen(true);
+        } else if (searchInput.dateRangeParam == null) {
+            setAlertMessage(
+                "Wait! You forgot the dates. Please select your travel dates to continue."
+            );
+            setIsAlertOpen(true);
+        } else if (searchInput.travellersParam == null) {
+            setAlertMessage(
+                "Hold on! We need to know how many travelers are coming along. Add the number of adults and children to proceed."
+            );
+            setIsAlertOpen(true);
+        } else {
+            setSearchInput({ ...searchInput, searchButtonHit: true });
+        }
     };
 
     useEffect(() => {
@@ -121,7 +132,6 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
         }
     }, [searchInput.sortBy]);
 
-
     const param = useSearchParams();
     useEffect(() => {
         const cityInitialValue = param.get("city");
@@ -132,10 +142,9 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
         const fromDate = fromDateParam ? new Date(fromDateParam) : undefined;
         const toDate = toDateParam ? new Date(toDateParam) : undefined;
 
-
         setSearchInput({
             ...searchInput,
-            dateRangeParam: {from: fromDate, to: toDate},
+            dateRangeParam: { from: fromDate, to: toDate },
             cityParam: cityInitialValue,
             travellersParam: {
                 adults: Number(adultInitialValue),
@@ -169,7 +178,6 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
                 to: searchInput.dateRangeParam.to,
             };
         }
-
     });
 
     const formattedFromDate = new Date(
@@ -197,7 +205,7 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
                     <button
                         onClick={toggleSearchForm}
                         className="absolute right-2 top-2 p-1 rounded-full hover:bg-gray-100">
-                        <X className="w-6 h-6"/>
+                        <X className="w-6 h-6" />
                     </button>
                     <div
                         className={`${
@@ -215,21 +223,18 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
                                 className={`${
                                     isAtTop ? "px-0" : "px-16"
                                 } grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-10 gap-4 justify-center items-center py-[6px] w-full`}>
-                                <div
-                                    className="col-span-3 border border-black rounded-xl px-3 py-2 flex gap-2 items-center hover:bg-slate-100 overflow-hidden">
-                                    <MapPin className=""/>
+                                <div className="col-span-3 border border-black rounded-xl px-3 py-2 flex gap-2 items-center hover:bg-slate-100 overflow-hidden">
+                                    <MapPin className="" />
                                     <div className="flex flex-col w-full">
-                                        <LocationPopOver/>
+                                        <LocationPopOver />
                                     </div>
                                 </div>
-                                <DatePickerWithRange
-                                    className="col-span-3 h-full w-full rounded-xl flex gap-2 items-start overflow-hidden"/>
-                                <div
-                                    className="col-span-3 border border-black rounded-xl px-3 py-2 flex gap-2 items-center hover:bg-slate-100 overflow-hidden">
-                                    <UserRound className=""/>
+                                <DatePickerWithRange className="col-span-3 h-full w-full rounded-xl flex gap-2 items-start overflow-hidden" />
+                                <div className="col-span-3 border border-black rounded-xl px-3 py-2 flex gap-2 items-center hover:bg-slate-100 overflow-hidden">
+                                    <UserRound className="" />
                                     <div className="flex flex-col">
                                         <p className="text-xs">Travellers</p>
-                                        <TravellerPopOver/>
+                                        <TravellerPopOver />
                                     </div>
                                 </div>
                                 <div className="col-span-1  w-full flex justify-start">
@@ -244,22 +249,21 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
 
                         {isAtTop ? (
                             <div className="flex justify-end pr-4 mb-10 ">
-                                <div
-                                    className="w-fit shadow-lg flex border-t border-slate-300 rounded-b-xl bg-white items-center">
+                                <div className="w-fit shadow-lg flex border-t border-slate-300 rounded-b-xl bg-white items-center">
                                     <button
                                         onClick={() => setOpenFilterPopup(true)}
                                         className="flex gap-2 items-center px-4 py-3 text-[#007989] rounded-bl-xl text-base font-semibold bg-white transition-colors duration-300 ease-out hover:text-opacity-80 ">
-                                        <Filter size={18}/>
+                                        <Filter size={18} />
                                         Filter
-                                        {filterOn ? <OnAnimation/> : null}
+                                        {filterOn ? <OnAnimation /> : null}
                                     </button>
                                     <div className={"w-[1px] bg-greenr  h-5"}></div>
                                     <button
                                         onClick={() => setOpenSortPopup(true)}
                                         className="flex gap-2 items-center px-4 py-3 text-[#007989] rounded-br-xl text-base font-semibold bg-white transition-colors duration-300 ease-out hover:text-opacity-80 ">
-                                        <ArrowDownAZ size={18}/>
+                                        <ArrowDownAZ size={18} />
                                         Sort
-                                        {sortOn ? <OnAnimation/> : null}
+                                        {sortOn ? <OnAnimation /> : null}
                                     </button>
 
                                     {filterOn || sortOn ? (
@@ -268,7 +272,7 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
                                             <button
                                                 onClick={handleReset}
                                                 className="flex gap-2 items-center px-4 py-3 text-[#007989] rounded-br-xl text-base font-semibold bg-white transition-colors duration-300 ease-out hover:text-opacity-80 ">
-                                                <ListRestart size={18}/>
+                                                <ListRestart size={18} />
                                                 Reset
                                             </button>
                                         </div>
@@ -288,9 +292,9 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
                                                 ? "bg-greenr text-white px-2"
                                                 : "bg-white text-greenr px-4"
                                         } flex gap-2 items-center py-2 text-sm font-semibold text-greenr border-greenr border-2 rounded-xl transition-colors duration-300 ease-out hover:text-white hover:bg-greenr `}>
-                                        <Filter size={18}/>
+                                        <Filter size={18} />
                                         Filter
-                                        {filterOn ? <OnAnimation/> : null}
+                                        {filterOn ? <OnAnimation /> : null}
                                     </button>
                                     <button
                                         onClick={() => setOpenSortPopup(true)}
@@ -299,16 +303,16 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
                                                 ? "bg-greenr text-white px-2"
                                                 : "bg-white text-greenr px-4"
                                         } flex gap-2 items-center py-2 text-sm font-semibold text-greenr border-greenr border-2 rounded-xl transition-colors duration-300 ease-out hover:text-white hover:bg-greenr `}>
-                                        <ArrowDownAZ size={18}/>
+                                        <ArrowDownAZ size={18} />
                                         Sort
-                                        {sortOn ? <OnAnimation/> : null}
+                                        {sortOn ? <OnAnimation /> : null}
                                     </button>
 
                                     {filterOn || sortOn ? (
                                         <button
                                             onClick={handleReset}
                                             className={`bg-earth px-4 flex gap-2 items-center py-2 text-sm font-semibold text-greenr border-greenr border-2 rounded-xl transition-colors duration-300 ease-out hover:text-white hover:bg-greenr `}>
-                                            <ListRestart size={18}/>
+                                            <ListRestart size={18} />
                                             Reset
                                         </button>
                                     ) : null}
@@ -337,6 +341,20 @@ const Searchbar: React.FC<SearchbarProps> = ({totalElements = 0}) => {
                     />
                 </div>
             )}
+
+            <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Oops!</AlertDialogTitle>
+                        <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogAction onClick={() => setIsAlertOpen(false)}>
+                            Okay
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 };
