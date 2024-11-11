@@ -109,10 +109,10 @@ export function LocationPopOver() {
                 >
                     {error && <div>Error: {error.message || "An error occurred"}</div>}
 
-                    <div className="flex flex-col justify-start items-start w-full">
+                    <div className="flex text-xs md:text-sm flex-col justify-start items-start w-full">
                         Where to?
-                        <div className="flex justify-between w-full">
-                            <div className="flex text-[16px]">
+                        <div className="flex justify-between w-full mt-[2px] md:mt-0">
+                            <div className="flex text-sm  md:text-[16px]">
                                 {searchInput.cityParam || selectedCity?.name || "Select city"}
                             </div>
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>

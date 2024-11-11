@@ -83,24 +83,24 @@ const TravellerPopOver: React.FC = () => {
         return (
             <Popover onOpenChange={setIsPopoverOpen} open={isPopoverOpen}>
                 <PopoverTrigger>{searchInput.travellersParam?.adults || adults} Adults, {searchInput.travellersParam?.children || children} Children</PopoverTrigger>
-                <PopoverContent className="w-[450px] mt-3 px-10 flex flex-col gap-6">
+                <PopoverContent className="translate-x-12 w-[250px] md:w-[450px] mt-3  md:px-10 flex flex-col gap-6">
                     <div className="flex justify-between items-center">
-                        <p>Adults</p>
-                        <div className="flex gap-6 items-center">
+                        <p className={'text-sm md:text-base'}>Adults</p>
+                        <div className="flex gap-3 md:gap-6 items-center">
                             <div
-                                className="rounded-full border border-black p-1 w-[30px] h-[30px] flex justify-center items-center">
+                                className="rounded-full border border-black p-[2px] md:p-1 w-[25px] h-[25px] md:w-[30px] md:h-[30px] flex justify-center items-center">
                                 <button
-                                    className="text-2xl mt-[6px]"
+                                    className="text-lg md:text-2xl mt-[6px]"
                                     onClick={() => handleAdultsChange(1)}
                                 >
                                     +
                                 </button>
                             </div>
-                            <p className="mt-1">{adults}</p>
+                            <p className="mt-1 ">{adults}</p>
                             <div
-                                className="rounded-full border border-black p-1 w-[30px] h-[30px] flex justify-center items-center">
+                                className="rounded-full border border-black p-[2px] md:p-1 w-[25px] h-[25px] md:w-[30px] md:h-[30px] flex justify-center items-center">
                                 <button
-                                    className="text-2xl mt-[6px]"
+                                    className="text-lg md:text-2xl mt-[6px]"
                                     onClick={() => handleAdultsChange(-1)}
                                 >
                                     -
@@ -111,14 +111,14 @@ const TravellerPopOver: React.FC = () => {
 
                     <div className="flex justify-between items-center">
                         <div>
-                            <p>Children</p>
+                            <p className={"text-sm md:text-base"}>Children</p>
                             <p className="text-xs">Age 0-17</p>
                         </div>
-                        <div className="flex gap-6 items-center">
+                        <div className="flex gap-3 md:gap-6 items-center">
                             <div
-                                className="rounded-full border border-black p-1 w-[30px] h-[30px] flex justify-center items-center">
+                                className="rounded-full border border-black p-[2px] md:p-1 w-[25px] h-[25px] md:w-[30px] md:h-[30px] flex justify-center items-center">
                                 <button
-                                    className="text-2xl mt-[6px]"
+                                    className="text-lg md:text-2xl mt-[6px]"
                                     onClick={() => handleChildrenChange(1)}
                                 >
                                     +
@@ -126,9 +126,9 @@ const TravellerPopOver: React.FC = () => {
                             </div>
                             <p className="mt-1">{children}</p>
                             <div
-                                className="rounded-full border border-black p-1 w-[30px] h-[30px] flex justify-center items-center">
+                                className="rounded-full border border-black p-[2px] md:p-1 w-[25px] h-[25px] md:w-[30px] md:h-[30px] flex justify-center items-center">
                                 <button
-                                    className="text-2xl mt-[6px]"
+                                    className="text-lg md:text-2xl mt-[6px]"
                                     onClick={() => handleChildrenChange(-1)}
                                 >
                                     -

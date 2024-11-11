@@ -23,9 +23,6 @@ const MostBookedCarousel = () => {
         return <LoadingStateAnimation/>;
     }
 
-    console.log(selectedProperty)
-
-    console.log(RoomsData)
 
     return (
         <div className={""}>
